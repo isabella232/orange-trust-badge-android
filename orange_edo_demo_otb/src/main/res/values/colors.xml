@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Orange trust badge demo app colors -->
+    <item name="otb_header_color" type="color">#FF39B0A8</item>
+    <color name="colorAccent">#4285f4</color>
+</resources>

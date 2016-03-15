@@ -1,0 +1,32 @@
+apply plugin: 'com.android.library'
+apply plugin: 'maven'
+
+group = 'com.orange.essentials'
+version = 'G01R00C00'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.2"
+
+    defaultConfig {
+        //applicationId "com.orange.essentials.otb"
+        minSdkVersion 10
+        targetSdkVersion 23
+        versionCode 13
+        archivesBaseName = "Orange_TrustBadge"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile 'com.android.support:cardview-v7:23.1.1'
+    compile 'com.android.support:recyclerview-v7:23.1.1'
+}

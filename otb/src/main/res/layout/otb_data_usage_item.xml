@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2016 Orange
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<!--
+  Orange Trust Badge library
+
+  Module name: com.orange.essentials:otb
+  Version:     1.0
+  Created:     2016-03-15 by Aurore Penault, Vincent Boesch, and Giovanni Battista Accetta
+-->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/otb_data_usage_item_ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="@dimen/otb_key_data_padding_10dp"
+        android:paddingTop="@dimen/otb_key_data_padding_24dp">
+
+        <ImageView
+            android:id="@+id/otb_data_usage_item_iv_icon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_camera_black_24dp"/>
+
+        <TextView
+            android:id="@+id/otb_data_usage_item_tv_title"
+            style="@style/otb_main_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:maxLines="2"
+            android:paddingLeft="@dimen/otb_key_data_padding_24dp"/>
+
+        <android.support.v7.widget.SwitchCompat
+            android:id="@+id/otb_data_usage_item_sc_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="16dp"
+            android:clickable="true"
+            android:focusable="false"
+            android:visibility="gone"
+            app:theme="@style/otb_color_switch"/>
+
+        <TextView
+            android:id="@+id/otb_data_usage_item_tv_status"
+            style="@style/otb_main_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/otb_landing_padding_8dp"
+            android:importantForAccessibility="no"
+            tools:ignore="UnusedAttribute"
+            tools:text="@string/otb_toggle_button_granted"/>
+
+        <ImageView
+            android:id="@+id/otb_data_usage_item_iv_child_indicator"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/otb_landing_padding_8dp"
+            android:layout_marginRight="@dimen/otb_key_data_padding_16dp"
+            android:src="@drawable/ic_expand_more"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/otb_data_usage_item_tv_description"
+        style="@style/otb_body"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="54dp"
+        android:paddingRight="40dp"
+        android:paddingTop="@dimen/otb_key_data_padding_10dp"
+        android:visibility="gone"/>
+
+</LinearLayout>

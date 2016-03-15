@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--/*-->
+<!--* Copyright (C) 2016 Orange-->
+<!--*-->
+<!--* This software is distributed under the terms and conditions of the 'Apache-2.0'-->
+<!--* license which can be found in the file 'LICENSE.txt' in this package distribution-->
+<!--* or at 'http://www.apache.org/licenses/LICENSE-2.0'.-->
+<!--*/-->
+<!--/* Orange Trust Badge library-->
+<!--*-->
+<!--* Module name: com.orange.essentials:otb-->
+<!--* Version:     1.0-SNAPSHOT-->
+<!--* Created:     2016-02-09 by Aurore Penault and Vincent Boesch-->
+<!--*/-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:background="@color/otb_page_background"
+              android:orientation="vertical"
+              android:paddingEnd="16dip"
+              android:paddingStart="16dip"
+              android:paddingTop="20dip">
+
+    <TextView
+        android:id="@+id/otb_dialog_toggle_tv_permission_title"
+        style="@style/otb_dialog_title_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/otb_desactivation_dialog_title_warning"/>
+
+    <TextView
+        android:id="@+id/otb_dialog_toggle_tv_permission_message"
+        style="@style/otb_dialog_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dip"
+        android:layout_marginTop="10dip"
+        android:text="@string/otb_desactivation_dialog_message_warning"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="48dip"
+        android:layout_gravity="bottom|right"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/otb_dialog_toggle_bt_cancel"
+            style="@style/otb_dialog_button_text"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/otb_accessibility_desactivated_description"
+            android:text="@string/otb_desactivation_dialog_button_cancel"/>
+
+        <Button
+            android:id="@+id/otb_dialog_toggle_bt_deactivate"
+            style="@style/otb_dialog_button_text"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/otb_accessibility_desactivated_description"
+            android:text="@string/otb_desactivation_dialog_button_deactivate"/>
+    </LinearLayout>
+</LinearLayout>

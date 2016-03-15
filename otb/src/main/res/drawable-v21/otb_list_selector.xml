@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Non focused states -->
+    <item
+        android:drawable="@android:color/white"
+        android:state_focused="false"
+        android:state_pressed="false"
+        android:state_selected="false"/>
+    <item
+        android:drawable="@color/about_color_grey_3"
+        android:state_focused="false"
+        android:state_pressed="false"
+        android:state_selected="true"/>
+
+    <!-- Focused states -->
+    <item
+        android:drawable="@color/about_color_grey_3"
+        android:state_focused="true"
+        android:state_pressed="false"
+        android:state_selected="false"/>
+
+    <item
+        android:drawable="@color/about_color_grey_3"
+        android:state_focused="true"
+        android:state_pressed="false"
+        android:state_selected="true"/>
+
+    <!-- Pressed -->
+    <item android:state_pressed="true">
+        <!--<ripple android:color="?attr/colorPrimaryDark">-->
+            <!--<item-->
+                <!--android:id="@android:id/mask"-->
+                <!--android:drawable="?attr/colorPrimary"/>-->
+        <!--</ripple>-->
+        <ripple android:color="@color/about_color_grey_4">
+            <item
+                android:id="@android:id/mask"
+                android:drawable="@color/about_color_grey_3"/>
+        </ripple>
+    </item>
+
+</selector>
+

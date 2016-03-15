@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="otb_activity" type="layout">@layout/otb_activity_small</item>
+    <item name="otb_home" type="layout">@layout/otb_home_small</item>
+</resources>

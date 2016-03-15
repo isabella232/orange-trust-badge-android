@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--/*-->
+<!--* Copyright (C) 2016 Orange-->
+<!--*-->
+<!--* This software is distributed under the terms and conditions of the 'Apache-2.0'-->
+<!--* license which can be found in the file 'LICENSE.txt' in this package distribution-->
+<!--* or at 'http://www.apache.org/licenses/LICENSE-2.0'.-->
+<!--*/-->
+<!--/* Orange Trust Badge library-->
+<!--*-->
+<!--* Module name: com.orange.essentials:otb-->
+<!--* Version:     1.0-SNAPSHOT-->
+<!--* Created:     2016-02-09 by Aurore Penault and Vincent Boesch-->
+<!--*/-->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context="${relativePackage}.${activityClass}">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerHorizontal="true"
+            android:contentDescription="@string/content_description_logo"
+            android:paddingTop="5dp"
+            android:src="@drawable/ic_launcher_home"/>
+
+        <TextView
+            android:id="@+id/text_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingTop="100dp"
+            android:text="@string/app_title"
+            android:textColor="@color/otb_main_text"
+            android:textSize="@dimen/about_font_size_xlarge"/>
+
+        <TextView
+            android:id="@+id/text_version"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text_title"
+            android:layout_centerHorizontal="true"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingTop="4dp"
+            android:text="@string/demo_version"
+            android:textColor="@color/otb_main_text"
+            android:textSize="@dimen/about_font_size_small"/>
+
+        <TextView
+            android:id="@+id/text_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text_version"
+            android:layout_centerHorizontal="true"
+            android:paddingBottom="10dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingTop="10dp"
+            android:text="@string/description_text"
+            android:textColor="@color/otb_main_text"
+            android:textSize="@dimen/about_font_size_small"/>
+
+        <Button
+            android:id="@+id/button_start"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text_description"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:onClick="startDemOTB"
+            android:text="@string/button_text"
+            android:textColor="@color/otb_main_text"/>
+
+        <TextView
+            android:id="@+id/text_more_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/button_start"
+            android:autoLink="all"
+            android:linksClickable="true"
+            android:padding="20dp"
+            android:text="@string/text_more_info_text"
+            android:textColor="@color/otb_main_text"
+            android:textColorLink="@color/colorAccent"
+            android:textSize="@dimen/about_font_size_small" />
+
+    </RelativeLayout>
+
+
+</ScrollView>

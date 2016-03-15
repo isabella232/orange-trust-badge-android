@@ -1,0 +1,27 @@
+<resources>
+
+    <string name="app_name">Orange trust badge</string>
+    <!--<string name="app_title">Composant Orange TrustBadge</string>-->
+    <!--<string name="button_text">Tester le composant</string>-->
+    <!--<string name="description_text">Orange TrustBadge Essential Component allows user to be aware about collected data by Orange, user\'s allowed permissions and kid\'s policies.</string>-->
+    <!--<string name="demo_version">1.0</string>-->
+
+    <string name="content_description_logo">Icone application</string>
+
+    <!-- Desactivation_dialog -->
+    <string name="otb_desactivation_dialog_title_warning">Désactiver l\'envoi des données d\'usages</string>
+    <string name="otb_desactivation_dialog_message_warning">L\'envoi des données d\'usage est anonyme et est essentiel afin d\'améliorer nos services. Êtes-vous sûr de vouloir désactiver l\'envoi de ces données?</string>
+    <string name="otb_desactivation_dialog_button_cancel">ANNULER</string>
+    <string name="otb_desactivation_dialog_button_deactivate">DESACTIVER</string>
+
+    <!-- terms page -->
+    <string name="otb_terms_video_title">Nos engagements en vidéo</string>
+    <string name="otb_terms_video_content">http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4</string>
+    <string name="otb_terms_usage_title">Comment nous  utilisons vos données</string>
+    <string name="otb_terms_usage_content"><![CDATA[<h2>Partage des données</h2><p>Nous nous engageons à assurer la confidentialité des données personnelles que cette application utilise. Nous nous interdisons également de communiquer à des partenaires commerciaux vos données personnelles sans vous avoir informé et sans vous avoir offert la possibilité d’exercer votre droit d’opposition.</p><h2>Utilisation des données</h2><p>Nous utilisons vos données personnelles afin de vous authentifier, de vous fournir le service souscrit et, le cas échéant, vous proposer des offres adaptées à vos besoins. Nous sommes susceptible d’utiliser vos données, préalablement rendues anonymes de manière irréversible, à des fins statistiques.</p><h2>Conservation des données</h2>Nous ne conservons pas vos données personnelles plus longtemps qu’il n’est nécessaire au regard des buts pour lesquels elles ont été collectés ou plus longtemps que le prévoit la loi en vigueur.]]></string>
+    <string name="otb_terms_help_title">Aide</string>
+    <string name="otb_terms_help_content"><![CDATA[<p>Si besoin, cette application met à disposition cette adresse mail pour répondre à vos questions :</p><a href="mailto:exemple@exemple.fr">exemple@exemple.fr</a>]]></string>
+    <string name="otb_terms_more_info_title">La charte de confidentialité</string>
+    <string name="otb_terms_more_info_content"><![CDATA[Retrouvez aussi toutes ces informations dans la <a href="lien_vers_votre_charte_de_confidentialite.pdf">charte de confidentialité</a> de l’application.]]></string>
+
+</resources>
