@@ -2,7 +2,7 @@
 
 ## Introduction
 
-The OrangeTrustBadge Component can be used to present Legal Information, privacy policy, terms of use or any other information about an application.
+The _OrangeTrustBadge_ Component can be used to present Legal Information, privacy policy, terms of use or any other information about an application.
 
 The OrangeTrustBadge Component is compatible with Android 10 to 23 and is build for phones and tablet in portrait or landscape mode.
 
@@ -13,33 +13,36 @@ The OrangeTrustBadge Component provides a GUI to display informations regarding 
 
 * To run the example project, clone the repo, import it in Android Studio (versions above v1.0).
 
-* To use the component in your own project, add the lib .aar to to your project.
+* To use the component in your own project, add the lib `.aar` to to your project.
 
-#### Customized colors
-User should define its own color named colorAccent to change default color for links, toggle and text as follows in a color resource file.
+### Customized colors
+User should define its own color named `colorAccent` to change default color for links, toggle and text as follows in a color resource file.
 The header background color can also be redefined
-##### Color to define (red exemple)
+#### Color to define (red exemple)
+```xml
     <color name="colorAccent">#AA0000</color>
     <color name="otb_header_color">#00DD00</color>
-
-#### Customized logo
-The header logo can be redefined by defining your own image. You should provide a drawable named header_logo 
+```
+### Customized logo
+The header logo can be redefined by defining your own image. You should provide a drawable named `header_logo`. 
 Please be aware that an incorrect image can lead to malformed header page
-##### Image logo (surcharging default drawable, file header_logo.xml)
+#### Image logo (overloading default drawable, file `header_logo.xml`)
+```xml
     <?xml version="1.0" encoding="utf-8"?>
     <selector xmlns:android="http://schemas.android.com/apk/res/android">
         <item android:drawable="@drawable/otb_illustration_bleu"/>
     </selector>
-
-#### Customized icons and labels
+```
+### Customized icons and labels
 User should define its own labels and icon for the different badges, but default values are available to provide a decent app.
 Please be aware that string resources are localized, so overriding french values should be done in **values-fr** resource directory.
 
-#### Configure the component and add in your project
+### Configure the component and add in your project
 To configure the component follow these steps
 
 1. Create a list of TrustBadgeElement and a list of Term. TrustBadgeElements can be easily created using the helper class TrustBadgeElementFactory, which provide convenient methods to create a badge
-##### Create necessary elements (example)
+#### Create necessary elements (example)
+```java
     List<TrustBadgeElement> trustBadgeElements = new ArrayList<TrustBadgeElement>();
     /** MANDATORY : MAIN BADGE */
     trustBadgeElements.add(TrustBadgeElementFactory.build(mContext, GroupType.IDENTITY, ElementType.MAIN, AppUsesPermission.TRUE));
@@ -69,32 +72,35 @@ To configure the component follow these steps
     terms.add(new Term(TermType.TEXT, R.string.otb_terms_usage_title, R.string.otb_terms_usage_content));
     terms.add(new Term(TermType.TEXT, R.string.otb_terms_help_title, R.string.otb_terms_help_content));
     terms.add(new Term(TermType.TEXT, R.string.otb_terms_more_info_title, R.string.otb_terms_more_info_content));
-
-
+```
 2. Initialize TrustBadgeManager singleton with Mandatory items : a list of TrustBadgeElement and a list of Terms.
-##### Initialise
+#### Initialize
+```java
     TrustBadgeManager.INSTANCE.initialize(getApplicationContext(), trustBadgeElements, terms);
-
+```
 
 3. Optionally provide a listener to listen to badges with toggles
-##### Badge listener
+#### Badge listener
+```java
     TrustBadgeManager.INSTANCE.addTrustBadgeElementListener(new TrustBadgeElementListener(){
         @Override
         public void onBadgeChange(GroupType groupType, boolean value, AppCompatActivity callingActivity) {
             //Do your own work : example, what to do if badge improvement program change
         }
     });
-
+```
 4. Optionaly set a value definig if your app currently uses improvement program badge (default true, if value not provided)
-##### Improvement program
+#### Improvement program
+```java
     TrustBadgeManager.INSTANCE.setUsingImprovementProgram(improvement);
-
+```
 
 5. Launch the main activity named OtbActivity to access to the TrustBadge component main UI.
 ##### Launch activity
+```java
     Intent intent = new Intent(MainActivity.this, OtbActivity.class);
     this.startActivity(intent);
-
+```
 
 ## Release note
 
@@ -132,5 +138,3 @@ Version 1.0
 BOESCH Vincent, [vincent.boesch@orange.com](mailto://vincent.boesch@orange.com)
 PENAULT Aurore, [aurore.penault@orange.com](mailto://aurore.penault@orange.com)
 ACCETTA Giovanni Battista, [giovannibattista.accetta@orange.com](mailto://giovannibattista.accetta@orange.com)
-
-
