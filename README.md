@@ -57,7 +57,7 @@ To run the example project, clone the repo, import it in Android Studio (version
 
 ### Importing library
 
-To use the component in your own project, import the lib `.aar` to your project as a new module (Do a clean and rebuild after that).
+To use the component in your own project, import the lib `.aar` to your project as a new module named  `otb`.Do a clean and rebuild after that.
 
 ### Dependencies
 
