@@ -57,7 +57,7 @@ To run the example project, clone the repo, import it in Android Studio (version
 
 ### Importing library
 
-To use the component in your own project, import the lib `.aar` to your project as a new module named  `otb`.Do a clean and rebuild after that.
+To use the component in your own project, import the lib `.aar` to your project as a new module named `otb`. Do a clean and rebuild after that.
 
 ### Dependencies
 
@@ -72,9 +72,9 @@ Add following depedencies to the build.gradle file of the module that will use t
 
 ### Initialization of the SDK
 
-Create a list of TrustBadgeElement and a list of Term. TrustBadgeElements can be easily created using the helper class TrustBadgeElementFactory, which provide convenient methods to create a badge.
+#### 1. Create necessary elements (example)
 
-#### Create necessary elements (example)
+Create a list of TrustBadgeElement and a list of Term. TrustBadgeElements can be easily created using the helper class TrustBadgeElementFactory, which provide convenient methods to create a badge.
 
 ```java
     List<TrustBadgeElement> trustBadgeElements = new ArrayList<TrustBadgeElement>();
@@ -108,17 +108,17 @@ Create a list of TrustBadgeElement and a list of Term. TrustBadgeElements can be
     terms.add(new Term(TermType.TEXT, "More Info Title", "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."));
 ```
 
-Initialize TrustBadgeManager singleton with added items : a list of TrustBadgeElement and a list of Terms.
+#### 2. Initialize
 
-#### Initialize
+Initialize TrustBadgeManager singleton with added items : a list of TrustBadgeElement and a list of Terms.
 
 ```java
     TrustBadgeManager.INSTANCE.initialize(getApplicationContext(), trustBadgeElements, terms);
 ```
 
-Launch the main activity named OtbActivity to access to the TrustBadge component main UI.
+#### 3. Launch activity
 
-#### Launch activity
+Launch the main activity named OtbActivity to access to the TrustBadge component main UI.
 
 ```java
     Intent intent = new Intent(MainActivity.this, OtbActivity.class);
@@ -127,9 +127,9 @@ Launch the main activity named OtbActivity to access to the TrustBadge component
 
 ### Implementation of optional features
 
-Optionally provide a listener to listen to badges with toggles
-
 #### Badge listener
+
+Optionally provide a listener to listen to badges with toggles
 
 ```java
     TrustBadgeManager.INSTANCE.addTrustBadgeElementListener(new TrustBadgeElementListener(){
@@ -139,33 +139,31 @@ Optionally provide a listener to listen to badges with toggles
         }
     });
 ```
-Optionally set a value definig if your app currently uses improvement program badge (default true, if value not provided)
 
 #### Improvement program
+
+Optionally set a value definig if your app currently uses improvement program badge (default true, if value not provided)
 
 ```java
     TrustBadgeManager.INSTANCE.setUsingImprovementProgram(isImprovementEnabled);
 ```
 ## Customization 
 
-### Customized colors
+### Customized colors (overloading file `colors.xml`)
 
 Orange trust badge use `colorAccent` to for links, toggle and text as follows in a color resource file.
 The header background color can also be redefined.
 User can change this colors by editing the `colors.xml` resource file.
 
-#### Color to define (overloading file `colors.xml`)
-
 ```xml
     <color name="colorAccent">#AA0000</color>
     <color name="otb_header_color">#00DD00</color>
 ```
-### Customized logo
+### Customized logo (overloading default drawable, file `header_logo.xml`)
 
 The header logo can be redefined by defining your own image. You should provide a drawable named `header_logo`. 
-Please be aware that an incorrect image can lead to malformed header page
+Please be aware that an incorrect image can lead to malformed header page.
 
-#### Image logo (overloading default drawable, file `header_logo.xml`)
 ```xml
     <?xml version="1.0" encoding="utf-8"?>
     <selector xmlns:android="http://schemas.android.com/apk/res/android">
@@ -173,6 +171,7 @@ Please be aware that an incorrect image can lead to malformed header page
     </selector>
 ```
 ### Customized icons and labels
+
 User should define its own labels and icon for the different badges, but default values are available to provide a decent app.
 Please be aware that string resources are localized, so overriding french values should be done in **values-fr** resource directory.
 
