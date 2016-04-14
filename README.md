@@ -55,19 +55,51 @@ To run the example project, clone the repo, import it in Android Studio (version
 
 > **Embedded frameworks require a minSdkVersion of 10**
 
-### Importing library
+### Generating and importing the `aar` library
 
-To use the component in your own project, import the lib `.aar` to your project as a new module named `otb`. Do a clean and rebuild after that.
+To use the component in your own project, you will have to generate the `aar` library.
+In order to achieve that:
+* Clone the repository in a new project.
+* Open the project with Android Studio.
+* If necessary fix the gradle scripts to suit your developement environement configuration.
+* Execute Gradle Task on module `:otb --> Build --> Assemble Release`
+* You will find the `Orange_TrustBadge-release.aar` in the `otb/build/output/aar` directory of Orange Trust Badge project.
+* Include the `aar` in the `libs` folder of your project.
 
 ### Dependencies
 
-Add following depedencies to the build.gradle file of the module that will use the Orange trust badge:
+Make sure to have the flatDir option for your `libs` folder in repositories 
 ```groovy
-        compile 'com.android.support:appcompat-v7:23.1.1'
-        compile 'com.android.support:cardview-v7:23.1.1'
-        compile 'com.android.support:recyclerview-v7:23.1.1'
-        compile project(':otb')
+allprojects {
+    repositories {
+        mavenCentral()
+        flatDir {
+            dirs 'libs'
+        }
+    }
+}
+``` 
+Add following depedency to the build.gradle file of the module that will use the Orange trust badge:
+```groovy
+dependencies {
+    //OTB
+    compile(name: 'Orange_TrustBadge-release', ext: 'aar')
+}
 ```   
+### Alternative methods
+
+You can also:
+* either directly copy the otb module in your project,
+* or import it as a new `aar` module.
+
+In both cases you will have to add it to your dependecies as follow:
+```groovy
+dependencies {
+    //OTB
+    compile project(':otb') //if you named the new module `otb`
+}
+```  
+
 ## Usage
 
 ### Initialization of the SDK
