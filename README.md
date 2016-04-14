@@ -79,7 +79,7 @@ allprojects {
     }
 }
 ``` 
-Add following depedency to the build.gradle file of the module that will use the Orange trust badge:
+Add following dependency to the build.gradle file of the module that will use the Orange trust badge:
 ```groovy
 dependencies {
     //OTB
@@ -95,6 +95,10 @@ You can also:
 In both cases you will have to add it to your dependecies as follow:
 ```groovy
 dependencies {
+    //android Support
+    compile 'com.android.support:appcompat-v7:23.3.0'
+    compile 'com.android.support:cardview-v7:23.3.0'
+    compile 'com.android.support:recyclerview-v7:23.3.0'
     //OTB
     compile project(':otb') //if you named the new module `otb`
 }
