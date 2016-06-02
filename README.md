@@ -55,18 +55,13 @@ To run the example project, clone the repo, import it in Android Studio (version
 
 > **Embedded frameworks require a minSdkVersion of 10**
 
-### Generating and importing the `aar` library
+### 1. Download the compiled library
 
-To use the component in your own project, you will have to generate the `aar` library.
-In order to achieve that:
-* Clone the repository in a new project.
-* Open the project with Android Studio.
-* If necessary fix the gradle scripts to suit your developement environement configuration.
-* Execute Gradle Task on module `:otb --> Build --> Assemble Release`
-* You will find the `Orange_TrustBadge-release.aar` in the `otb/build/output/aar` directory of Orange Trust Badge project.
-* Include the `aar` in the `libs` folder of your project.
+To use the component in your own project, the fastest way is to download the latest `aar` release library in the release page:
+https://github.com/Orange-OpenSource/orange-trust-badge-android/releases
+You will then have to include the `aar` in the `libs` folder of your project
 
-### Dependencies
+### 2. Update dependencies
 
 Make sure to have the flatDir option for your `libs` folder in repositories 
 ```groovy
@@ -86,13 +81,14 @@ dependencies {
     compile(name: 'Orange_TrustBadge-release', ext: 'aar')
 }
 ```   
-### Alternative methods
+
+#### Alternative methods
 
 You can also:
-* either directly copy the otb module in your project,
-* or import it as a new `aar` module.
+* either directly copy, from the source code, the otb module in your project,
+* or import it as a new `aar` module using the Android Studio New Module menu.
 
-In both cases you will have to add it to your dependecies as follow:
+In both cases you will have to add it to your dependecies as follow (supposing you named the new module `otb`):
 ```groovy
 dependencies {
     //android Support
