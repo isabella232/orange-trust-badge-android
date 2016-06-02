@@ -74,11 +74,11 @@ allprojects {
     }
 }
 ``` 
-Add following dependency to the build.gradle file of the module that will use the Orange trust badge:
+Add following dependency to the build.gradle file of the module that will use the Orange trust badge (adapt the name to the version you downloaded if necessary):
 ```groovy
 dependencies {
     //OTB
-    compile(name: 'Orange_TrustBadge-release', ext: 'aar')
+    compile(name: 'Orange_trust_badge-release-v1.1.0', ext: 'aar')
 }
 ```   
 
