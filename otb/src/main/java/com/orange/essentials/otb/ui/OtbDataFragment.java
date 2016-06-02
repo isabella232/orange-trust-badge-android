@@ -48,8 +48,6 @@ import com.orange.essentials.otb.model.type.UserPermissionStatus;
 import com.orange.essentials.otb.ui.utils.ViewHelper;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * <p/>
@@ -62,14 +60,12 @@ public class OtbDataFragment extends Fragment {
     public static final String FRAG_TAG = "OtbDataFragment";
     private static final String TAG = "OtbDataFragment";
     private boolean ignoreCheckedChange = false;
-    private Map<String, SwitchCompat> switches = new HashMap<>();
     private LinearLayout mMainll, mOtherll;
     private View mNoOtherLayout;
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        switches = new HashMap<>();
         View view = inflater.inflate(R.layout.otb_data, container, false);
         TextView headerTv = (TextView) view.findViewById(R.id.otb_header_tv_text);
         headerTv.setText(R.string.otb_home_data_content);
@@ -136,7 +132,6 @@ public class OtbDataFragment extends Fragment {
         ArrayList<TrustBadgeElement> datas = TrustBadgeManager.INSTANCE.getElementsForDataCollected();
         mMainll.removeAllViews();
         mOtherll.removeAllViews();
-        switches.clear();
         boolean isOtherTitleAdded = false;
         for (final TrustBadgeElement data : datas) {
             View usageView = View.inflate(getContext(), R.layout.otb_data_usage_item, null);
@@ -156,7 +151,6 @@ public class OtbDataFragment extends Fragment {
                     switchCompat.setEnabled(true);
                     switchCompat.setChecked(data.getUserPermissionStatus() == UserPermissionStatus.GRANTED);
                 }
-                switches.put(data.getGroupType().toString(), switchCompat);
 
                 switchCompat.setOnCheckedChangeListener(
                         new CompoundButton.OnCheckedChangeListener() {
@@ -167,7 +161,7 @@ public class OtbDataFragment extends Fragment {
                                     return;
                                 }
                                 TrustBadgeManager.INSTANCE.getEventTagger().tagElement(EventType.TRUSTBADGE_ELEMENT_TOGGLED, data);
-                                TrustBadgeManager.INSTANCE.badgeChanged(data.getGroupType(), isChecked, (AppCompatActivity) getActivity());
+                                TrustBadgeManager.INSTANCE.badgeChanged(data, isChecked, (AppCompatActivity) getActivity());
                             }
                         }
                 );

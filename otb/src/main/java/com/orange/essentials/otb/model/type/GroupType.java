@@ -105,7 +105,12 @@ public enum GroupType {
      * Not A permission
      * OTB Displayed group permission :  social networks
      */
-    SOCIAL_INFO(false, null);
+    SOCIAL_INFO(false, null),
+    /**
+     * Not A permission
+     * OTB Displayed group permission :  others (app specific)
+     */
+    OTHER(false, null);
 
 
     private boolean mSystemPermission;

@@ -10,6 +10,11 @@
 
     <string name="content_description_logo">Application icon</string>
 
+    <string name="custom_badge_1_title">Custom badge 1</string>
+    <string name="custom_badge_1_label">This is the description for custom badge 1</string>
+    <string name="custom_badge_2_title">Custom badge 2</string>
+    <string name="custom_badge_2_label">This is the description for custom badge 2</string>
+
     <!-- Desactivation_dialog -->
     <string name="otb_desactivation_dialog_title_warning">Disable usage data sending</string>
     <string name="otb_desactivation_dialog_message_warning">The collection of usage data is anonymous and essential to improve our services. Are you sure that you want to disable usage data sending ?</string>

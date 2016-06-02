@@ -27,8 +27,11 @@ import com.orange.essentials.otb.model.type.GroupType;
 
 /**
  * This interface should be implemented by the calling app to listen to badge changes (when a trust badge is toggable)
+ *
  * Created by veeb7280 on 2/3/16.
+ * @deprecated use rather the interface BadgeListener, as this interface can't handle multiple groupType listening
  */
+@Deprecated
 public interface TrustBadgeElementListener {
 
     /**

@@ -33,12 +33,14 @@ import android.view.View;
 
 import com.orange.essentials.demo.otb.dialog.OtbImprovementDialogFragment;
 import com.orange.essentials.otb.OtbActivity;
-import com.orange.essentials.otb.manager.TrustBadgeElementListener;
+import com.orange.essentials.otb.manager.BadgeListener;
 import com.orange.essentials.otb.manager.TrustBadgeManager;
+import com.orange.essentials.otb.model.TrustBadgeElement;
 import com.orange.essentials.otb.model.type.GroupType;
+import com.orange.essentials.otb.model.type.UserPermissionStatus;
 
 
-public class MainActivity extends AppCompatActivity implements TrustBadgeElementListener {
+public class MainActivity extends AppCompatActivity implements BadgeListener {
 
     public static final String TAG = "MainActivity";
     public static final String PREF_IMPROVEMENT = "improvement";
@@ -57,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements TrustBadgeElement
 
         CustomBadgeFactory customBadgeFactory = new CustomBadgeFactory(getApplicationContext());
         TrustBadgeManager.INSTANCE.initialize(getApplicationContext(), customBadgeFactory.getTrustBadgeElements(), customBadgeFactory.getTerms());
-        TrustBadgeManager.INSTANCE.addTrustBadgeElementListener(this);
+        TrustBadgeManager.INSTANCE.addBadgeListener(this);
         TrustBadgeManager.INSTANCE.setUsingImprovementProgram(improvement);
 
         Intent intent = new Intent(MainActivity.this, OtbActivity.class);
@@ -65,17 +67,23 @@ public class MainActivity extends AppCompatActivity implements TrustBadgeElement
     }
 
     @Override
-    public void onBadgeChange(GroupType groupType, boolean value, AppCompatActivity callingActivity) {
-        Log.d(TAG, "onBadgeChange groupType=" + groupType + " value=" + value);
-        if (GroupType.IMPROVEMENT_PROGRAM.equals(groupType)) {
-            if (!value) {
-                showDialog(callingActivity);
+    public void onBadgeChange(TrustBadgeElement trustBadgeElement, boolean value, AppCompatActivity callingActivity) {
+        Log.d(TAG, "onBadgeChange trustBadgeElement =" + trustBadgeElement + " value=" + value);
+        if (null != trustBadgeElement) {
+            if (GroupType.IMPROVEMENT_PROGRAM.equals(trustBadgeElement.getGroupType())) {
+                if (!value) {
+                    showDialog(callingActivity);
+                } else {
+                    //This is an example of what could be done
+                    SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+                    SharedPreferences.Editor editor = sp.edit();
+                    editor.putBoolean(PREF_IMPROVEMENT, value);
+                    editor.apply();
+                }
+
             } else {
-                //This is an example of what could be done
-                SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-                SharedPreferences.Editor editor = sp.edit();
-                editor.putBoolean(PREF_IMPROVEMENT, value);
-                editor.apply();
+                //Change the UserPermissionStatus as it has been switched by user
+                trustBadgeElement.setUserPermissionStatus(value ? UserPermissionStatus.GRANTED : UserPermissionStatus.NOT_GRANTED);
             }
         }
     }

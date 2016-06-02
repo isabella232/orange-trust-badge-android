@@ -30,7 +30,7 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import com.orange.essentials.otb.event.EventType;
-import com.orange.essentials.otb.manager.TrustBadgeElementListener;
+import com.orange.essentials.otb.manager.BadgeListener;
 import com.orange.essentials.otb.manager.TrustBadgeManager;
 import com.orange.essentials.otb.model.Term;
 import com.orange.essentials.otb.model.TrustBadgeElement;
@@ -49,7 +49,7 @@ import java.util.List;
  * Main activity for the lib
  */
 
-public class OtbActivity extends AppCompatActivity implements OtbContainerFragment.OtbFragmentListener, TrustBadgeElementListener {
+public class OtbActivity extends AppCompatActivity implements OtbContainerFragment.OtbFragmentListener, BadgeListener {
 
     private static final String TAG = "OtbActivity";
     private static final String BADGES_KEY = "BadgesKey";
@@ -88,7 +88,7 @@ public class OtbActivity extends AppCompatActivity implements OtbContainerFragme
             }
         }
 
-        TrustBadgeManager.INSTANCE.addTrustBadgeElementListener(this);
+        TrustBadgeManager.INSTANCE.addBadgeListener(this);
     }
 
     private void initFragments() {
@@ -176,18 +176,20 @@ public class OtbActivity extends AppCompatActivity implements OtbContainerFragme
     }
 
     @Override
-    public void onBadgeChange(GroupType groupType, boolean value, AppCompatActivity callingActivity) {
-        Log.d(TAG, "onChange groupType=" + groupType + " value=" + value);
-        if (groupType.equals(GroupType.IMPROVEMENT_PROGRAM)) {
-            TrustBadgeManager.INSTANCE.setUsingImprovementProgram(value);
-            Fragment frag = null;
-            if (useMasterDetail()) {
-                frag = getSupportFragmentManager().findFragmentById(R.id.lightfragment_detail);
-            } else {
-                frag = getSupportFragmentManager().findFragmentById(R.id.lightfragment_container);
-            }
-            if (frag instanceof OtbDataFragment) {
-                ((OtbDataFragment) frag).refreshPermission();
+    public void onBadgeChange(TrustBadgeElement trustBadgeElement, boolean value, AppCompatActivity callingActivity) {
+        Log.d(TAG, "onChange trustBadgeElement=" + trustBadgeElement + " value=" + value);
+        if( null != trustBadgeElement ) {
+            if (GroupType.IMPROVEMENT_PROGRAM.equals(trustBadgeElement.getGroupType())) {
+                TrustBadgeManager.INSTANCE.setUsingImprovementProgram(value);
+                Fragment frag = null;
+                if (useMasterDetail()) {
+                    frag = getSupportFragmentManager().findFragmentById(R.id.lightfragment_detail);
+                } else {
+                    frag = getSupportFragmentManager().findFragmentById(R.id.lightfragment_container);
+                }
+                if (frag instanceof OtbDataFragment) {
+                    ((OtbDataFragment) frag).refreshPermission();
+                }
             }
         }
         //No action defined for other badges

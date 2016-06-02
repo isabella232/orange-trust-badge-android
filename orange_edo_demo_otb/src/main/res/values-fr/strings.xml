@@ -6,6 +6,11 @@
     <!--<string name="description_text">Orange TrustBadge Essential Component allows user to be aware about collected data by Orange, user\'s allowed permissions and kid\'s policies.</string>-->
     <!--<string name="demo_version">1.0</string>-->
 
+    <string name="custom_badge_1_title">Permission spécifique 1</string>
+    <string name="custom_badge_1_label">Ceci est la description de la Permission spécifique 1</string>
+    <string name="custom_badge_2_title">Permission spécifique 2</string>
+    <string name="custom_badge_2_label">Ceci est la description de la Permission spécifique 2</string>
+
     <string name="content_description_logo">Icone application</string>
 
     <!-- Desactivation_dialog -->

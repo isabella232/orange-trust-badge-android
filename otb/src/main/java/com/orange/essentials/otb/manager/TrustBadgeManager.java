@@ -75,6 +75,10 @@ public enum TrustBadgeManager {
      * Stores all the listeners who should act when a toggable badge element value is switched
      */
     private List<TrustBadgeElementListener> mTrustBadgeElementListeners = new ArrayList<>();
+    /**
+     * Stores all the listeners who should act when a toggable badge element value is switched
+     */
+    private List<BadgeListener> mBadgeListeners = new ArrayList<>();
 
     /**
      * List of terms and conditions that should be displayed in "terms and conditions" section
@@ -342,8 +346,33 @@ public enum TrustBadgeManager {
         }
     }
 
+
     public List<TrustBadgeElementListener> getTrustBadgeElementListeners() {
         return mTrustBadgeElementListeners;
+    }
+
+    public void badgeChanged(TrustBadgeElement trustBadgeElement, boolean toggled, AppCompatActivity callingActivity) {
+        if (null != mBadgeListeners) {
+            for (int i = 0; i < mBadgeListeners.size(); i++) {
+                mBadgeListeners.get(i).onBadgeChange(trustBadgeElement, toggled, callingActivity);
+            }
+        }
+    }
+
+    public List<BadgeListener> getBadgeListeners() {
+        return mBadgeListeners;
+    }
+
+    public void addBadgeListener(BadgeListener badgeListener) {
+        if (null != mBadgeListeners && !mBadgeListeners.contains(badgeListener)) {
+            mBadgeListeners.add(badgeListener);
+        }
+    }
+
+    public void clearBadgeListener() {
+        if (null != mBadgeListeners) {
+            mBadgeListeners.clear();
+        }
     }
 
     public void badgeChanged(GroupType groupType, boolean toggled, AppCompatActivity callingActivity) {
