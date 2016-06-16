@@ -30,7 +30,6 @@ import com.orange.essentials.otb.model.type.ElementType;
 import com.orange.essentials.otb.model.type.GroupType;
 import com.orange.essentials.otb.model.type.RatingType;
 import com.orange.essentials.otb.model.type.TermType;
-import com.orange.essentials.otb.model.type.UserPermissionStatus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,22 +58,13 @@ public class CustomBadgeFactory {
                 mTrustBadgeElements.add(TrustBadgeElementFactory.build(mContext, GroupType.CONTACTS, ElementType.MAIN));
                 mTrustBadgeElements.add(TrustBadgeElementFactory.build(mContext, GroupType.IMPROVEMENT_PROGRAM, ElementType.MAIN, AppUsesPermission.TRUE));
 
-
+                //custom element in MAIN list
                 TrustBadgeElement customBadge1 = TrustBadgeElementFactory.build(mContext, GroupType.OTHER, ElementType.MAIN, R.string.custom_badge_1_title,R.string.custom_badge_1_label);
                 customBadge1.setEnabledIconId(R.drawable.ic_contacts_black_32dp);
                 customBadge1.setDisabledIconId(R.drawable.ic_contacts_black_32dp);
                 customBadge1.setToggable(true);
                 customBadge1.setAppUsesPermission(AppUsesPermission.TRUE);
-                customBadge1.setUserPermissionStatus(UserPermissionStatus.GRANTED);
                 mTrustBadgeElements.add(customBadge1);
-
-                TrustBadgeElement customBadge2 = TrustBadgeElementFactory.build(mContext, GroupType.OTHER, ElementType.MAIN, R.string.custom_badge_2_title,R.string.custom_badge_2_label);
-                customBadge2.setEnabledIconId(R.drawable.ic_contacts_black_32dp);
-                customBadge2.setDisabledIconId(R.drawable.ic_contacts_black_32dp);
-                customBadge2.setToggable(true);
-                customBadge2.setAppUsesPermission(AppUsesPermission.TRUE);
-                customBadge2.setUserPermissionStatus(UserPermissionStatus.NOT_GRANTED);
-                mTrustBadgeElements.add(customBadge2);
 
                 /** NOT MANDATORY : OTHERS BADGES */
                 mTrustBadgeElements.add(TrustBadgeElementFactory.build(mContext, GroupType.CAMERA, ElementType.OTHERS));
@@ -84,11 +74,26 @@ public class CustomBadgeFactory {
                 mTrustBadgeElements.add(TrustBadgeElementFactory.build(mContext, GroupType.PHONE, ElementType.OTHERS));
                 mTrustBadgeElements.add(TrustBadgeElementFactory.build(mContext, GroupType.SENSORS, ElementType.OTHERS));
 
+                //custom element in OTHERS list
+                TrustBadgeElement customBadge2 = TrustBadgeElementFactory.build(mContext, GroupType.OTHER, ElementType.OTHERS, R.string.custom_badge_2_title, R.string.custom_badge_2_label);
+                customBadge2.setEnabledIconId(R.drawable.ic_contacts_black_32dp);
+                customBadge2.setDisabledIconId(R.drawable.ic_contacts_black_32dp);
+                customBadge2.setToggable(true);
+                customBadge2.setAppUsesPermission(AppUsesPermission.TRUE);
+                mTrustBadgeElements.add(customBadge2);
+
                 /** MANDATORY : USAGE BADGES */
                 mTrustBadgeElements.add(TrustBadgeElementFactory.build(mContext, RatingType.TWELVE));
                 mTrustBadgeElements.add(TrustBadgeElementFactory.build(mContext, GroupType.BILLING, ElementType.USAGE));
                 mTrustBadgeElements.add(TrustBadgeElementFactory.build(mContext, GroupType.ADVERTISE, ElementType.USAGE));
                 mTrustBadgeElements.add(TrustBadgeElementFactory.build(mContext, GroupType.SOCIAL_INFO, ElementType.USAGE));
+
+                // Custom Element in usage badge
+                TrustBadgeElement customBadge3 = TrustBadgeElementFactory.build(mContext, GroupType.OTHER, ElementType.USAGE, R.string.custom_badge_3_title, R.string.custom_badge_3_label);
+                customBadge3.setEnabledIconId(R.drawable.ic_contacts_black_32dp);
+                customBadge3.setDisabledIconId(R.drawable.ic_contacts_black_32dp);
+                customBadge3.setAppUsesPermission(AppUsesPermission.TRUE);
+                mTrustBadgeElements.add(customBadge3);
             }
         }
         return mTrustBadgeElements;

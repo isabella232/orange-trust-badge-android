@@ -54,13 +54,24 @@ public class MainActivity extends AppCompatActivity implements BadgeListener {
 
     public void startDemOTB(View v) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean improvement = sp.getBoolean(PREF_IMPROVEMENT, false);
-        Log.d(TAG, "Improvement Program?" + improvement);
 
         CustomBadgeFactory customBadgeFactory = new CustomBadgeFactory(getApplicationContext());
         TrustBadgeManager.INSTANCE.initialize(getApplicationContext(), customBadgeFactory.getTrustBadgeElements(), customBadgeFactory.getTerms());
         TrustBadgeManager.INSTANCE.addBadgeListener(this);
+
+        //retrieving toggle status from Shared Preference
+        //in this case we threat differently the improvement program since we have a dialog on the disable case
+        boolean improvement = sp.getBoolean(PREF_IMPROVEMENT, true);
+        Log.d(TAG, "Improvement Program?" + improvement);
         TrustBadgeManager.INSTANCE.setUsingImprovementProgram(improvement);
+        // than we do the same for all the other elements which are toggable
+        for (TrustBadgeElement element : TrustBadgeManager.INSTANCE.getTrustBadgeElements()) {
+            if (element.isToggable() && element.getGroupType() != GroupType.IMPROVEMENT_PROGRAM) {
+                boolean granted = sp.getBoolean(element.getNameKey(), true);
+                if (granted) element.setUserPermissionStatus(UserPermissionStatus.GRANTED);
+                else element.setUserPermissionStatus(UserPermissionStatus.NOT_GRANTED);
+            }
+        }
 
         Intent intent = new Intent(MainActivity.this, OtbActivity.class);
         this.startActivity(intent);
@@ -70,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements BadgeListener {
     public void onBadgeChange(TrustBadgeElement trustBadgeElement, boolean value, AppCompatActivity callingActivity) {
         Log.d(TAG, "onBadgeChange trustBadgeElement =" + trustBadgeElement + " value=" + value);
         if (null != trustBadgeElement) {
+            // in this example we threat differently the improvement program
             if (GroupType.IMPROVEMENT_PROGRAM.equals(trustBadgeElement.getGroupType())) {
                 if (!value) {
                     showDialog(callingActivity);
@@ -80,8 +92,12 @@ public class MainActivity extends AppCompatActivity implements BadgeListener {
                     editor.putBoolean(PREF_IMPROVEMENT, value);
                     editor.apply();
                 }
-
+                //else for all other toggable elements
             } else {
+                SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+                SharedPreferences.Editor editor = sp.edit();
+                editor.putBoolean(trustBadgeElement.getNameKey(), value);
+                editor.apply();
                 //Change the UserPermissionStatus as it has been switched by user
                 trustBadgeElement.setUserPermissionStatus(value ? UserPermissionStatus.GRANTED : UserPermissionStatus.NOT_GRANTED);
             }

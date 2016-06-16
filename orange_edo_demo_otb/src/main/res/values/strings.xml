@@ -14,6 +14,8 @@
     <string name="custom_badge_1_label">This is the description for custom badge 1</string>
     <string name="custom_badge_2_title">Custom badge 2</string>
     <string name="custom_badge_2_label">This is the description for custom badge 2</string>
+    <string name="custom_badge_3_title">Custom badge 3</string>
+    <string name="custom_badge_3_label">This is the description for custom badge 3</string>
 
     <!-- Desactivation_dialog -->
     <string name="otb_desactivation_dialog_title_warning">Disable usage data sending</string>
