@@ -162,6 +162,7 @@ public class OtbDataFragment extends Fragment {
                                 }
                                 TrustBadgeManager.INSTANCE.getEventTagger().tagElement(EventType.TRUSTBADGE_ELEMENT_TOGGLED, data);
                                 TrustBadgeManager.INSTANCE.badgeChanged(data, isChecked, (AppCompatActivity) getActivity());
+                                TrustBadgeManager.INSTANCE.badgeChanged(data.getGroupType(), isChecked, (AppCompatActivity) getActivity());
                             }
                         }
                 );

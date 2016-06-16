@@ -98,8 +98,6 @@ public class MainActivity extends AppCompatActivity implements BadgeListener {
                 SharedPreferences.Editor editor = sp.edit();
                 editor.putBoolean(trustBadgeElement.getNameKey(), value);
                 editor.apply();
-                //Change the UserPermissionStatus as it has been switched by user
-                trustBadgeElement.setUserPermissionStatus(value ? UserPermissionStatus.GRANTED : UserPermissionStatus.NOT_GRANTED);
             }
         }
     }

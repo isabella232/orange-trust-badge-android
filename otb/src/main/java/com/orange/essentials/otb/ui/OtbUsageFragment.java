@@ -26,10 +26,12 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -37,6 +39,8 @@ import com.orange.essentials.otb.R;
 import com.orange.essentials.otb.event.EventType;
 import com.orange.essentials.otb.manager.TrustBadgeManager;
 import com.orange.essentials.otb.model.TrustBadgeElement;
+import com.orange.essentials.otb.model.type.AppUsesPermission;
+import com.orange.essentials.otb.model.type.UserPermissionStatus;
 import com.orange.essentials.otb.ui.utils.ViewHelper;
 
 import java.util.ArrayList;
@@ -51,8 +55,10 @@ import java.util.ArrayList;
  */
 public class OtbUsageFragment extends Fragment {
 
-    private static final String TAG = "OtbUsageFragment";
     public static final String FRAG_TAG = "OtbUsageFragment";
+    private static final String TAG = "OtbUsageFragment";
+    private boolean ignoreCheckedChange = false;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -66,14 +72,47 @@ public class OtbUsageFragment extends Fragment {
 
         ArrayList<TrustBadgeElement> usages = TrustBadgeManager.INSTANCE.getElementsForUsage();
         Log.v(TAG, "usages elements: " + usages.size());
-        for (TrustBadgeElement usage : usages) {
+        for (final TrustBadgeElement usage : usages) {
             View usageView = View.inflate(getContext(), R.layout.otb_data_usage_item, null);
             ViewHelper.INSTANCE.buildView(usageView, usage, getContext());
             Log.v(TAG, "add usage view");
             view.addView(usageView);
+
+            if (usage.isToggable()) {
+                final SwitchCompat switchCompat = (SwitchCompat) usageView.findViewById(R.id.otb_data_usage_item_sc_switch);
+                switchCompat.setVisibility(View.VISIBLE);
+                switchCompat.setContentDescription(getToggleContentDescription(usage.getNameKey(), switchCompat.isChecked()));
+                if (usage.getAppUsesPermission() == AppUsesPermission.TRUE) {
+                    switchCompat.setEnabled(true);
+                    switchCompat.setChecked(usage.getUserPermissionStatus() == UserPermissionStatus.GRANTED);
+                }
+
+                switchCompat.setOnCheckedChangeListener(
+                        new CompoundButton.OnCheckedChangeListener() {
+                            @Override
+                            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                                switchCompat.setContentDescription(getToggleContentDescription(usage.getNameKey(), isChecked));
+                                if (ignoreCheckedChange) {
+                                    return;
+                                }
+                                TrustBadgeManager.INSTANCE.getEventTagger().tagElement(EventType.TRUSTBADGE_ELEMENT_TOGGLED, usage);
+                                TrustBadgeManager.INSTANCE.badgeChanged(usage, isChecked, (AppCompatActivity) getActivity());
+                                TrustBadgeManager.INSTANCE.badgeChanged(usage.getGroupType(), isChecked, (AppCompatActivity) getActivity());
+                            }
+                        }
+                );
+            }
+
         }
 
         return scrollView;
+    }
+
+    private String getToggleContentDescription(String name, boolean value) {
+        return name + " " + (
+                value ?
+                        getContext().getString(R.string.otb_accessibility_item_is_used_description) :
+                        getContext().getString(R.string.otb_accessibility_item_not_used_description));
     }
 
     @Override
