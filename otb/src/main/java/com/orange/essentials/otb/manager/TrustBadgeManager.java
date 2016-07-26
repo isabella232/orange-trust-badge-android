@@ -334,12 +334,14 @@ public enum TrustBadgeManager {
         }
     }
 
+    @Deprecated
     public void addTrustBadgeElementListener(TrustBadgeElementListener trustBadgeElementListener) {
         if (null != mTrustBadgeElementListeners && !mTrustBadgeElementListeners.contains(trustBadgeElementListener)) {
             mTrustBadgeElementListeners.add(trustBadgeElementListener);
         }
     }
 
+    @Deprecated
     public void clearTrustBadgeElementListener() {
         if (null != mTrustBadgeElementListeners) {
             mTrustBadgeElementListeners.clear();
@@ -347,6 +349,7 @@ public enum TrustBadgeManager {
     }
 
 
+    @Deprecated
     public List<TrustBadgeElementListener> getTrustBadgeElementListeners() {
         return mTrustBadgeElementListeners;
     }
