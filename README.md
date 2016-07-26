@@ -49,7 +49,7 @@ If you find any bugs, please submit a bug report through Github and/or a pull re
 ## Example project
 
 An example of integration is provided in OrangeTrustBadgeDemo project.
-You can download the demo app [here](https://github.com/Orange-OpenSource/orange-trust-badge-android/tree/master/outputs/trust_badge_demo-1.1.1.apk).
+You can download the demo app [in the outputs folder](https://github.com/Orange-OpenSource/orange-trust-badge-android/tree/master/outputs/).
 To run the example project, clone the repo, import it in Android Studio (versions above v1.0).
 
 ## Installation
