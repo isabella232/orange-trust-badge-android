@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply from: '../constants.gradle'
 configurations.all {
     resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
 }
@@ -15,8 +16,8 @@ android {
         minSdkVersion 10
         targetSdkVersion 24
         versionCode 15
-        versionName '1.1.1'
-        archivesBaseName = "TrustBadge_Demo"
+        versionName version_name
+        archivesBaseName = "Demo_trust_badge"
     }
 
     buildTypes {
@@ -37,8 +38,8 @@ android {
     }
 
     dependencies {
-        compile 'com.android.support:appcompat-v7:24.1.0'
-        compile 'com.android.support:support-v4:24.1.0'
+        compile "com.android.support:appcompat-v7:${project.ext.support_version}"
+        compile "com.android.support:support-v4:${project.ext.support_version}"
     }
 }
 

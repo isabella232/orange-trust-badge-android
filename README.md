@@ -49,7 +49,7 @@ If you find any bugs, please submit a bug report through Github and/or a pull re
 ## Example project
 
 An example of integration is provided in OrangeTrustBadgeDemo project.
-You can download the demo app [in the outputs folder](https://github.com/Orange-OpenSource/orange-trust-badge-android/tree/master/outputs/).
+You can download the last version of the demo app in the release page: https://github.com/Orange-OpenSource/orange-trust-badge-android/releases
 To run the example project, clone the repo, import it in Android Studio (versions above v1.0).
 
 ## Installation
@@ -79,7 +79,7 @@ Add following dependency to the build.gradle file of the module that will use th
 ```groovy
 dependencies {
     //OTB
-    compile(name: 'Orange_trust_badge-1.1.1-release', ext: 'aar')
+    compile(name: 'Orange_trust_badge-1.1.2-release', ext: 'aar')
 }
 ```   
 

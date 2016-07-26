@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Orange trust badge</string>
-    <string name="app_title">Orange trust badge</string>
+    <string name="app_name">Trust badge</string>
+    <string name="app_title">Trust badge demo</string>
     <string name="button_text">Start the demo</string>
-    <string name="description_text">With Orange trust badge, or Badge de confiance, give transparent information and user control on personal data and help users to identify if your application has any sensitive features.</string>
+    <string name="description_text">With trust badge, or Badge de confiance, give transparent information and user control on personal data and help users to identify if your application has any sensitive features.</string>
     <string name="text_more_info_text">More information on:\nhttps://developer.orange.com</string>
     <string name="demo_version">Version 1.0</string>
 
