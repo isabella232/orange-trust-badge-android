@@ -93,6 +93,7 @@ public class CustomBadgeFactory {
                 customBadge3.setEnabledIconId(R.drawable.ic_contacts_black_32dp);
                 customBadge3.setDisabledIconId(R.drawable.ic_contacts_black_32dp);
                 customBadge3.setAppUsesPermission(AppUsesPermission.TRUE);
+                customBadge3.setToggable(true);
                 mTrustBadgeElements.add(customBadge3);
             }
         }

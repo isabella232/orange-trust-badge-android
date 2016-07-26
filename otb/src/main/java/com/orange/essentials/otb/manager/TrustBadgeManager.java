@@ -357,6 +357,8 @@ public enum TrustBadgeManager {
                 mBadgeListeners.get(i).onBadgeChange(trustBadgeElement, toggled, callingActivity);
             }
         }
+        //Change the UserPermissionStatus as it has been switched by user
+        trustBadgeElement.setUserPermissionStatus(toggled ? UserPermissionStatus.GRANTED : UserPermissionStatus.NOT_GRANTED);
     }
 
     public List<BadgeListener> getBadgeListeners() {
@@ -375,6 +377,11 @@ public enum TrustBadgeManager {
         }
     }
 
+    /**
+     * @deprecated use rather the interface BadgeListener, called by
+     * badgeChanged(TrustBadgeElement trustBadgeElement, boolean toggled, AppCompatActivity callingActivity)
+     */
+    @Deprecated
     public void badgeChanged(GroupType groupType, boolean toggled, AppCompatActivity callingActivity) {
         if (null != mTrustBadgeElementListeners) {
             for (int i = 0; i < mTrustBadgeElementListeners.size(); i++) {

@@ -60,6 +60,7 @@ public class OtbImprovementDialogFragment extends DialogFragment {
             public void onClick(View v) {
                 Log.d(TAG, "onClick Cancel");
                 TrustBadgeManager.INSTANCE.badgeChanged(TrustBadgeManager.INSTANCE.getSpecificPermission(GroupType.IMPROVEMENT_PROGRAM), true, (AppCompatActivity) getActivity());
+                TrustBadgeManager.INSTANCE.badgeChanged(GroupType.IMPROVEMENT_PROGRAM, true, (AppCompatActivity) getActivity());
                 dismiss();
             }
         });
