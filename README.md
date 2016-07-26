@@ -49,6 +49,7 @@ If you find any bugs, please submit a bug report through Github and/or a pull re
 ## Example project
 
 An example of integration is provided in OrangeTrustBadgeDemo project.
+You can download the demo app [here](https://github.com/Orange-OpenSource/orange-trust-badge-android/tree/master/outputs/trust_badge_demo-1.1.1.apk).
 To run the example project, clone the repo, import it in Android Studio (versions above v1.0).
 
 ## Installation
@@ -78,7 +79,7 @@ Add following dependency to the build.gradle file of the module that will use th
 ```groovy
 dependencies {
     //OTB
-    compile(name: 'Orange_trust_badge-1.1.0-release', ext: 'aar')
+    compile(name: 'Orange_trust_badge-1.1.1-release', ext: 'aar')
 }
 ```   
 
@@ -92,9 +93,9 @@ In both cases you will have to add it to your dependencies as follow (supposing 
 ```groovy
 dependencies {
     //android Support
-    compile 'com.android.support:appcompat-v7:23.3.0'
-    compile 'com.android.support:cardview-v7:23.3.0'
-    compile 'com.android.support:recyclerview-v7:23.3.0'
+    compile 'com.android.support:appcompat-v7:24.1.0'
+    compile 'com.android.support:cardview-v7:24.1.0'
+    compile 'com.android.support:recyclerview-v7:24.1.0'
     //OTB
     compile project(':otb') //if you named the new module `otb`
 }
