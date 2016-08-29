@@ -57,6 +57,8 @@ public class MainActivity extends AppCompatActivity implements BadgeListener {
 
         CustomBadgeFactory customBadgeFactory = new CustomBadgeFactory(getApplicationContext());
         TrustBadgeManager.INSTANCE.initialize(getApplicationContext(), customBadgeFactory.getTrustBadgeElements(), customBadgeFactory.getTerms());
+        //this line clean badge listeners to avoid multiple calls for the same badgeEvent
+        TrustBadgeManager.INSTANCE.clearBadgeListener();
         TrustBadgeManager.INSTANCE.addBadgeListener(this);
 
         //retrieving toggle status from Shared Preference

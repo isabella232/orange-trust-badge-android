@@ -93,9 +93,9 @@ In both cases you will have to add it to your dependencies as follow (supposing 
 ```groovy
 dependencies {
     //android Support
-    compile 'com.android.support:appcompat-v7:24.1.0'
-    compile 'com.android.support:cardview-v7:24.1.0'
-    compile 'com.android.support:recyclerview-v7:24.1.0'
+    compile 'com.android.support:appcompat-v7:24.2.0'
+    compile 'com.android.support:cardview-v7:24.2.0'
+    compile 'com.android.support:recyclerview-v7:24.2.0'
     //OTB
     compile project(':otb') //if you named the new module `otb`
 }
@@ -161,9 +161,12 @@ Create a list of TrustBadgeElement and a list of Term. TrustBadgeElements can be
 #### 2. Initialize
 
 Initialize TrustBadgeManager singleton with added items : a list of TrustBadgeElement and a list of Terms.
+Normally, on a standard implementation, you should also clean previous badge listeners.
 
 ```java
     TrustBadgeManager.INSTANCE.initialize(getApplicationContext(), trustBadgeElements, terms);
+    //this line clean badge listeners to avoid multiple calls for the same badgeEvent
+    TrustBadgeManager.INSTANCE.clearBadgeListener();
 ```
 
 #### 3. Launch activity
