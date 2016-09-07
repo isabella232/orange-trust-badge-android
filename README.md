@@ -80,6 +80,10 @@ Add following dependency to the build.gradle file of the module that will use th
 dependencies {
     //OTB
     compile(name: 'Orange_trust_badge-1.1.2-release', ext: 'aar')
+    //android Support
+    compile 'com.android.support:appcompat-v7:24.2.0'
+    compile 'com.android.support:cardview-v7:24.2.0'
+    compile 'com.android.support:recyclerview-v7:24.2.0'
 }
 ```   
 
