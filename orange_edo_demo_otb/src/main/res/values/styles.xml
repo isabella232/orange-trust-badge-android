@@ -17,8 +17,8 @@
     </style>
 
     <style name="AppTheme.MyOtbTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!--<item name="colorPrimary">@color/otb_black</item>-->
-        <!--<item name="colorPrimaryDark">@color/otb_black</item>-->
+        <item name="colorPrimary">@color/otb_black</item>
+        <item name="colorPrimaryDark">@color/otb_black</item>
     </style>
 
 </resources>
