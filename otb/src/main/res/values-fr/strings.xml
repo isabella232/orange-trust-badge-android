@@ -10,10 +10,10 @@
 
     <!-- Landing page-->
     <string name="otb_home_title">Badge de confiance</string>
-    <string name="otb_home_header_title">Retrouvez ici toutes les informations sur les données personnelles que votre application utilise. Utilisez ainsi votre application en toute confiance !</string>
+    <string name="otb_home_header_title">Retrouvez ici toutes les informations sur les données personnelles que votre application utilise.</string>
     <string name="otb_home_data_title">Mes données</string>
     <string name="otb_home_data_content">Quelles sont les données personnelles utilisées et pour quelles raisons ? </string>
-    <string name="otb_home_usage_title">Mes usages</string>
+    <string name="otb_home_usage_title">Autres informations</string>
     <string name="otb_home_usage_content">Les contenus et fonctionnalités de cette application</string>
     <string name="otb_home_usage_pegi_age">&#xA0;ans +</string>
     <string name="otb_home_terms_title">Nos engagements</string>
