@@ -41,8 +41,10 @@
             layout="@layout/otb_home_data_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/otb_landing_padding_7dp"
             android:layout_marginLeft="@dimen/otb_landing_padding_8dp"
             android:layout_marginRight="@dimen/otb_landing_padding_7dp"
+            android:layout_marginStart="@dimen/otb_landing_padding_8dp"
             android:layout_marginTop="@dimen/otb_landing_padding_6dp"/>
 
         <include
@@ -50,8 +52,10 @@
             layout="@layout/otb_home_data_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/otb_landing_padding_7dp"
             android:layout_marginLeft="@dimen/otb_landing_padding_8dp"
-            android:layout_marginRight="@dimen/otb_landing_padding_7dp"/>
+            android:layout_marginRight="@dimen/otb_landing_padding_7dp"
+            android:layout_marginStart="@dimen/otb_landing_padding_8dp" />
 
         <include
             android:id="@+id/otb_home_terms_card"
@@ -59,7 +63,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/otb_landing_padding_8dp"
+            android:layout_marginEnd="@dimen/otb_landing_padding_7dp"
             android:layout_marginLeft="@dimen/otb_landing_padding_8dp"
-            android:layout_marginRight="@dimen/otb_landing_padding_7dp"/>
+            android:layout_marginRight="@dimen/otb_landing_padding_7dp"
+            android:layout_marginStart="@dimen/otb_landing_padding_8dp" />
     </LinearLayout>
 </ScrollView>

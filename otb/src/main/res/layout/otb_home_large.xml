@@ -40,7 +40,6 @@
         android:paddingLeft="@dimen/otb_landing_padding_20dp"
         android:paddingRight="@dimen/otb_landing_padding_20dp"
         android:paddingTop="@dimen/otb_landing_padding_24dp"
-        android:singleLine="false"
         android:text="@string/otb_home_title"/>
 
 

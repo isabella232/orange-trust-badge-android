@@ -181,7 +181,7 @@ public class OtbActivity extends AppCompatActivity implements OtbContainerFragme
         if( null != trustBadgeElement ) {
             if (GroupType.IMPROVEMENT_PROGRAM.equals(trustBadgeElement.getGroupType())) {
                 TrustBadgeManager.INSTANCE.setUsingImprovementProgram(value);
-                Fragment frag = null;
+                Fragment frag;
                 if (useMasterDetail()) {
                     frag = getSupportFragmentManager().findFragmentById(R.id.lightfragment_detail);
                 } else {

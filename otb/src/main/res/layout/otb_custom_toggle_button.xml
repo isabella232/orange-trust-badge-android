@@ -31,7 +31,10 @@
     android:layout_height="wrap_content"
     android:gravity="center_vertical|center_horizontal"
     android:orientation="vertical"
+    android:paddingEnd="@dimen/otb_key_data_padding_24dp"
+    android:paddingLeft="0dp"
     android:paddingRight="@dimen/otb_key_data_padding_24dp"
+    android:paddingStart="0dp"
     android:visibility="visible">
 
     <ImageView

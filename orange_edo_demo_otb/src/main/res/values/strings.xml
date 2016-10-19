@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <string name="app_name">Trust badge</string>
     <string name="app_title">Trust badge demo</string>
@@ -20,7 +20,7 @@
     <!-- Desactivation_dialog -->
     <string name="otb_desactivation_dialog_title_warning">Disable usage data sending</string>
     <string name="otb_desactivation_dialog_message_warning">The collection of usage data is anonymous and essential to improve our services. Are you sure that you want to disable usage data sending ?</string>
-    <string name="otb_desactivation_dialog_button_cancel">CANCEL</string>
+    <string name="otb_desactivation_dialog_button_cancel" tools:ignore="ButtonCase">CANCEL</string>
     <string name="otb_desactivation_dialog_button_deactivate">DISABLE</string>
 
     <!-- terms page -->

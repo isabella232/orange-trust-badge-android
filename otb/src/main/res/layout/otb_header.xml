@@ -24,23 +24,27 @@
 -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:background="@color/otb_header_color"
-              android:orientation="horizontal"
-              android:paddingLeft="@dimen/otb_landing_padding_20dp"
-              android:paddingRight="@dimen/otb_landing_padding_8dp">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/otb_header_color"
+    android:orientation="horizontal"
+    android:paddingEnd="@dimen/otb_landing_padding_8dp"
+    android:paddingLeft="@dimen/otb_landing_padding_20dp"
+    android:paddingRight="@dimen/otb_landing_padding_8dp"
+    android:paddingStart="@dimen/otb_landing_padding_20dp">
 
     <TextView
         android:id="@+id/otb_header_tv_text"
         style="@style/otb_main_subtitle"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/otb_landing_padding_24dp"
         android:layout_weight="1"
+        android:paddingEnd="@dimen/otb_key_data_padding_48dp"
+        android:paddingLeft="0dp"
         android:paddingRight="@dimen/otb_key_data_padding_48dp"
+        android:paddingStart="0dp"
         android:paddingTop="@dimen/otb_landing_padding_24dp"
-        android:singleLine="false"
         android:text="@string/otb_home_terms_content"/>
 
     <ImageView

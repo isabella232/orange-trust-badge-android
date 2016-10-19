@@ -68,8 +68,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="@dimen/otb_key_data_padding_5dp"
+            android:paddingEnd="@dimen/otb_key_data_padding_16dp"
             android:paddingLeft="@dimen/otb_landing_padding_16dp"
             android:paddingRight="@dimen/otb_key_data_padding_16dp"
+            android:paddingStart="@dimen/otb_landing_padding_16dp"
             android:paddingTop="@dimen/otb_key_data_padding_5dp"
             android:text="@string/otb_data_child_separator_title"/>
 
@@ -85,8 +87,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
+            android:paddingEnd="@dimen/otb_key_data_padding_16dp"
             android:paddingLeft="@dimen/otb_landing_padding_16dp"
             android:paddingRight="@dimen/otb_key_data_padding_16dp"
+            android:paddingStart="@dimen/otb_landing_padding_16dp"
             android:paddingTop="@dimen/otb_landing_padding_16dp"
             android:text="@string/otb_data_no_other_permissions"
             android:visibility="gone"/>

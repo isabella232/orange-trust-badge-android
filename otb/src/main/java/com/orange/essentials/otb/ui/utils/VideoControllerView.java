@@ -70,7 +70,11 @@ import java.util.Locale;
  */
 public class VideoControllerView extends FrameLayout {
     private static final String TAG = "VideoControllerView";
-
+    private static final int sDefaultTimeout = 3000;
+    private static final int FADE_OUT = 1;
+    private static final int SHOW_PROGRESS = 2;
+    StringBuilder mFormatBuilder;
+    Formatter mFormatter;
     private MediaPlayerControl mPlayer;
     private Context mContext;
     private ViewGroup mAnchor;
@@ -79,15 +83,10 @@ public class VideoControllerView extends FrameLayout {
     private TextView mEndTime, mCurrentTime;
     private boolean mShowing;
     private boolean mDragging;
-    private static final int sDefaultTimeout = 3000;
-    private static final int FADE_OUT = 1;
-    private static final int SHOW_PROGRESS = 2;
     private boolean mUseFastForward;
     private boolean mFromXml;
     private boolean mListenersSet;
     private View.OnClickListener mNextListener, mPrevListener;
-    StringBuilder mFormatBuilder;
-    Formatter mFormatter;
     private ImageButton mPauseButton;
     private ImageButton mFfwdButton;
     private ImageButton mRewButton;
@@ -95,6 +94,101 @@ public class VideoControllerView extends FrameLayout {
     private ImageButton mPrevButton;
     //    private ImageButton mFullscreenButton;
     private Handler mHandler = new MessageHandler(this);
+    private View.OnClickListener mPauseListener = new View.OnClickListener() {
+        public void onClick(View v) {
+            doPauseResume();
+            show(sDefaultTimeout);
+        }
+    };
+    private View.OnClickListener mFullscreenListener = new View.OnClickListener() {
+        public void onClick(View v) {
+            doToggleFullscreen();
+            show(sDefaultTimeout);
+        }
+    };
+    // There are two scenarios that can trigger the seekbar listener to trigger:
+    //
+    // The first is the user using the touchpad to adjust the posititon of the
+    // seekbar's thumb. In this case onStartTrackingTouch is called followed by
+    // a number of onProgressChanged notifications, concluded by onStopTrackingTouch.
+    // We're setting the field "mDragging" to true for the duration of the dragging
+    // session to avoid jumps in the position in case of ongoing playback.
+    //
+    // The second scenario involves the user operating the scroll ball, in this
+    // case there WON'T BE onStartTrackingTouch/onStopTrackingTouch notifications,
+    // we will simply apply the updated position without suspending regular updates.
+    private OnSeekBarChangeListener mSeekListener = new OnSeekBarChangeListener() {
+        public void onStartTrackingTouch(SeekBar bar) {
+            show(3600000);
+
+            mDragging = true;
+
+            // By removing these pending progress messages we make sure
+            // that a) we won't update the progress while the user adjusts
+            // the seekbar and b) once the user is done dragging the thumb
+            // we will post one of these messages to the queue again and
+            // this ensures that there will be exactly one message queued up.
+            mHandler.removeMessages(SHOW_PROGRESS);
+        }
+
+        public void onProgressChanged(SeekBar bar, int progress, boolean fromuser) {
+            if (mPlayer == null) {
+                return;
+            }
+
+            if (!fromuser) {
+                // We're not interested in programmatically generated changes to
+                // the progress bar's position.
+                return;
+            }
+
+            long duration = mPlayer.getDuration();
+            long newposition = (duration * progress) / 1000L;
+            mPlayer.seekTo((int) newposition);
+            if (mCurrentTime != null)
+                mCurrentTime.setText(stringForTime((int) newposition));
+        }
+
+        public void onStopTrackingTouch(SeekBar bar) {
+            mDragging = false;
+            setProgress();
+            updatePausePlay();
+            show(sDefaultTimeout);
+
+            // Ensure that progress is properly updated in the future,
+            // the call to show() does not guarantee this because it is a
+            // no-op if we are already showing.
+            mHandler.sendEmptyMessage(SHOW_PROGRESS);
+        }
+    };
+    private View.OnClickListener mRewListener = new View.OnClickListener() {
+        public void onClick(View v) {
+            if (mPlayer == null) {
+                return;
+            }
+
+            int pos = mPlayer.getCurrentPosition();
+            pos -= 5000; // milliseconds
+            mPlayer.seekTo(pos);
+            setProgress();
+
+            show(sDefaultTimeout);
+        }
+    };
+    private View.OnClickListener mFfwdListener = new View.OnClickListener() {
+        public void onClick(View v) {
+            if (mPlayer == null) {
+                return;
+            }
+
+            int pos = mPlayer.getCurrentPosition();
+            pos += 15000; // milliseconds
+            mPlayer.seekTo(pos);
+            setProgress();
+
+            show(sDefaultTimeout);
+        }
+    };
 
     public VideoControllerView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -206,7 +300,7 @@ public class VideoControllerView extends FrameLayout {
             mPrevButton.setVisibility(View.GONE);
         }
 
-        mProgress = (ProgressBar) v.findViewById(R.id.mediacontroller_progress);
+        mProgress = (SeekBar) v.findViewById(R.id.mediacontroller_progress);
         if (mProgress != null) {
             if (mProgress instanceof SeekBar) {
                 SeekBar seeker = (SeekBar) mProgress;
@@ -364,6 +458,18 @@ public class VideoControllerView extends FrameLayout {
         return true;
     }
 
+//    public void updateFullScreen() {
+//        if (mRoot == null || mFullscreenButton == null || mPlayer == null) {
+//            return;
+//        }
+//
+//        if (mPlayer.isFullScreen()) {
+//            mFullscreenButton.setImageResource(R.drawable.otb_ic_media_fullscreen_shrink);
+//        } else {
+//            mFullscreenButton.setImageResource(R.drawable.otb_ic_media_fullscreen_stretch);
+//        }
+//    }
+
     @Override
     public boolean onTrackballEvent(MotionEvent ev) {
         show(sDefaultTimeout);
@@ -421,20 +527,6 @@ public class VideoControllerView extends FrameLayout {
         return super.dispatchKeyEvent(event);
     }
 
-    private View.OnClickListener mPauseListener = new View.OnClickListener() {
-        public void onClick(View v) {
-            doPauseResume();
-            show(sDefaultTimeout);
-        }
-    };
-
-    private View.OnClickListener mFullscreenListener = new View.OnClickListener() {
-        public void onClick(View v) {
-            doToggleFullscreen();
-            show(sDefaultTimeout);
-        }
-    };
-
     public void updatePausePlay() {
         if (mRoot == null || mPauseButton == null || mPlayer == null) {
             return;
@@ -446,18 +538,6 @@ public class VideoControllerView extends FrameLayout {
             mPauseButton.setImageResource(R.drawable.otb_ic_media_play);
         }
     }
-
-//    public void updateFullScreen() {
-//        if (mRoot == null || mFullscreenButton == null || mPlayer == null) {
-//            return;
-//        }
-//
-//        if (mPlayer.isFullScreen()) {
-//            mFullscreenButton.setImageResource(R.drawable.otb_ic_media_fullscreen_shrink);
-//        } else {
-//            mFullscreenButton.setImageResource(R.drawable.otb_ic_media_fullscreen_stretch);
-//        }
-//    }
 
     private void doPauseResume() {
         if (mPlayer == null) {
@@ -479,62 +559,6 @@ public class VideoControllerView extends FrameLayout {
 
         mPlayer.toggleFullScreen();
     }
-
-    // There are two scenarios that can trigger the seekbar listener to trigger:
-    //
-    // The first is the user using the touchpad to adjust the posititon of the
-    // seekbar's thumb. In this case onStartTrackingTouch is called followed by
-    // a number of onProgressChanged notifications, concluded by onStopTrackingTouch.
-    // We're setting the field "mDragging" to true for the duration of the dragging
-    // session to avoid jumps in the position in case of ongoing playback.
-    //
-    // The second scenario involves the user operating the scroll ball, in this
-    // case there WON'T BE onStartTrackingTouch/onStopTrackingTouch notifications,
-    // we will simply apply the updated position without suspending regular updates.
-    private OnSeekBarChangeListener mSeekListener = new OnSeekBarChangeListener() {
-        public void onStartTrackingTouch(SeekBar bar) {
-            show(3600000);
-
-            mDragging = true;
-
-            // By removing these pending progress messages we make sure
-            // that a) we won't update the progress while the user adjusts
-            // the seekbar and b) once the user is done dragging the thumb
-            // we will post one of these messages to the queue again and
-            // this ensures that there will be exactly one message queued up.
-            mHandler.removeMessages(SHOW_PROGRESS);
-        }
-
-        public void onProgressChanged(SeekBar bar, int progress, boolean fromuser) {
-            if (mPlayer == null) {
-                return;
-            }
-
-            if (!fromuser) {
-                // We're not interested in programmatically generated changes to
-                // the progress bar's position.
-                return;
-            }
-
-            long duration = mPlayer.getDuration();
-            long newposition = (duration * progress) / 1000L;
-            mPlayer.seekTo((int) newposition);
-            if (mCurrentTime != null)
-                mCurrentTime.setText(stringForTime((int) newposition));
-        }
-
-        public void onStopTrackingTouch(SeekBar bar) {
-            mDragging = false;
-            setProgress();
-            updatePausePlay();
-            show(sDefaultTimeout);
-
-            // Ensure that progress is properly updated in the future,
-            // the call to show() does not guarantee this because it is a
-            // no-op if we are already showing.
-            mHandler.sendEmptyMessage(SHOW_PROGRESS);
-        }
-    };
 
     @Override
     public void setEnabled(boolean enabled) {
@@ -559,36 +583,6 @@ public class VideoControllerView extends FrameLayout {
         disableUnsupportedButtons();
         super.setEnabled(enabled);
     }
-
-    private View.OnClickListener mRewListener = new View.OnClickListener() {
-        public void onClick(View v) {
-            if (mPlayer == null) {
-                return;
-            }
-
-            int pos = mPlayer.getCurrentPosition();
-            pos -= 5000; // milliseconds
-            mPlayer.seekTo(pos);
-            setProgress();
-
-            show(sDefaultTimeout);
-        }
-    };
-
-    private View.OnClickListener mFfwdListener = new View.OnClickListener() {
-        public void onClick(View v) {
-            if (mPlayer == null) {
-                return;
-            }
-
-            int pos = mPlayer.getCurrentPosition();
-            pos += 15000; // milliseconds
-            mPlayer.seekTo(pos);
-            setProgress();
-
-            show(sDefaultTimeout);
-        }
-    };
 
     private void installPrevNextListeners() {
         if (mNextButton != null) {
@@ -649,7 +643,7 @@ public class VideoControllerView extends FrameLayout {
         private final WeakReference<VideoControllerView> mView;
 
         MessageHandler(VideoControllerView view) {
-            mView = new WeakReference<VideoControllerView>(view);
+            mView = new WeakReference<>(view);
         }
 
         @Override
