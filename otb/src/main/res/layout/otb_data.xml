@@ -59,7 +59,7 @@
             android:layout_height="wrap_content"
             android:paddingBottom="@dimen/otb_landing_padding_8dp"
             android:paddingTop="@dimen/otb_landing_padding_24dp"
-            android:src="@drawable/divider"
+            android:src="@drawable/otb_divider"
             tools:ignore="ContentDescription"/>
 
         <TextView
@@ -97,7 +97,7 @@
             android:background="@color/otb_white"
             android:paddingBottom="@dimen/otb_landing_padding_8dp"
             android:paddingTop="@dimen/otb_landing_padding_24dp"
-            android:src="@drawable/divider"
+            android:src="@drawable/otb_divider"
             tools:ignore="ContentDescription"/>
 
         <TextView
@@ -115,7 +115,7 @@
             android:layout_marginLeft="@dimen/otb_landing_padding_16dp"
             android:layout_marginRight="@dimen/otb_landing_padding_16dp"
             android:layout_marginTop="@dimen/otb_landing_padding_16dp"
-            android:background="@drawable/background_corner_border">
+            android:background="@drawable/otb_background_corner_border">
 
             <Button
                 android:id="@+id/otb_data_bt_parameter"

@@ -60,7 +60,7 @@
             android:layout_height="wrap_content"
             android:paddingBottom="@dimen/otb_landing_padding_16dp"
             android:paddingTop="@dimen/otb_landing_padding_16dp"
-            android:src="@drawable/divider"/>
+            android:src="@drawable/otb_divider" />
 
         <TextView
             android:id="@+id/otb_home_terms_card_tv_more_detail"

@@ -24,9 +24,9 @@
 -->
 
 <LinearLayout
-    android:id="@+id/otb_custom_toggle_button_ll_container"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/otb_custom_toggle_button_ll_container"
     android:layout_width="40dp"
     android:layout_height="wrap_content"
     android:gravity="center_vertical|center_horizontal"
@@ -38,7 +38,7 @@
         android:id="@+id/otb_custom_toggle_button_iv_id"
         android:layout_width="32dp"
         android:layout_height="32dp"
-        tools:src="@drawable/ic_orange_id_black_32dp"/>
+        tools:src="@drawable/otb_ic_orange_id_black_32dp" />
 
     <TextView
         android:id="@+id/otb_custom_toggle_button_tv_id"

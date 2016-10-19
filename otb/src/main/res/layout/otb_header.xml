@@ -46,6 +46,6 @@
     <ImageView
         android:layout_width="88dp"
         android:layout_height="130dp"
-        android:src="@drawable/header_logo"/>
+        android:src="@drawable/otb_header_logo" />
 
 </LinearLayout>

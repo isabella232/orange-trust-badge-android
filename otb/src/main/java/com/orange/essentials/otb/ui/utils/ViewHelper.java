@@ -80,7 +80,7 @@ public enum ViewHelper {
             }
         }
 
-        childIndicator.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_expand_more));
+        childIndicator.setImageDrawable(context.getResources().getDrawable(R.drawable.otb_ic_expand_more));
         final String tagMoreValue = "more";
         final String tagLessValue = "less";
 
@@ -92,12 +92,12 @@ public enum ViewHelper {
             public void onClick(View v) {
                 TrustBadgeManager.INSTANCE.getEventTagger().tagElement(EventType.TRUSTBADGE_ELEMENT_TAPPED, element);
                 if (childIndicator.getTag().equals(tagMoreValue)) {
-                    childIndicator.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_expand_less));
+                    childIndicator.setImageDrawable(context.getResources().getDrawable(R.drawable.otb_ic_expand_less));
                     childIndicator.setTag(tagLessValue);
                     expand(descriptionTv, view);
                     titleTv.setContentDescription(titleTv.getText() + "  " + context.getString(R.string.otb_accessibility_item_close_row_description));
                 } else {
-                    childIndicator.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_expand_more));
+                    childIndicator.setImageDrawable(context.getResources().getDrawable(R.drawable.otb_ic_expand_more));
                     childIndicator.setTag(tagMoreValue);
                     collapse(descriptionTv);
                     titleTv.setContentDescription(titleTv.getText() + "  " + context.getString(R.string.otb_accessibility_item_open_row_description));

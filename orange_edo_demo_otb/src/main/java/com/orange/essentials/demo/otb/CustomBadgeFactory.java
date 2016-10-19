@@ -60,8 +60,8 @@ public class CustomBadgeFactory {
 
                 //custom element in MAIN list
                 TrustBadgeElement customBadge1 = TrustBadgeElementFactory.build(mContext, GroupType.OTHER, ElementType.MAIN, R.string.custom_badge_1_title,R.string.custom_badge_1_label);
-                customBadge1.setEnabledIconId(R.drawable.ic_contacts_black_32dp);
-                customBadge1.setDisabledIconId(R.drawable.ic_contacts_black_32dp);
+                customBadge1.setEnabledIconId(R.drawable.otb_ic_contacts_black_32dp);
+                customBadge1.setDisabledIconId(R.drawable.otb_ic_contacts_black_32dp);
                 customBadge1.setToggable(true);
                 customBadge1.setAppUsesPermission(AppUsesPermission.TRUE);
                 mTrustBadgeElements.add(customBadge1);
@@ -76,8 +76,8 @@ public class CustomBadgeFactory {
 
                 //custom element in OTHERS list
                 TrustBadgeElement customBadge2 = TrustBadgeElementFactory.build(mContext, GroupType.OTHER, ElementType.OTHERS, R.string.custom_badge_2_title, R.string.custom_badge_2_label);
-                customBadge2.setEnabledIconId(R.drawable.ic_contacts_black_32dp);
-                customBadge2.setDisabledIconId(R.drawable.ic_contacts_black_32dp);
+                customBadge2.setEnabledIconId(R.drawable.otb_ic_contacts_black_32dp);
+                customBadge2.setDisabledIconId(R.drawable.otb_ic_contacts_black_32dp);
                 customBadge2.setToggable(true);
                 customBadge2.setAppUsesPermission(AppUsesPermission.TRUE);
                 mTrustBadgeElements.add(customBadge2);
@@ -90,8 +90,8 @@ public class CustomBadgeFactory {
 
                 // Custom Element in usage badge
                 TrustBadgeElement customBadge3 = TrustBadgeElementFactory.build(mContext, GroupType.OTHER, ElementType.USAGE, R.string.custom_badge_3_title, R.string.custom_badge_3_label);
-                customBadge3.setEnabledIconId(R.drawable.ic_contacts_black_32dp);
-                customBadge3.setDisabledIconId(R.drawable.ic_contacts_black_32dp);
+                customBadge3.setEnabledIconId(R.drawable.otb_ic_contacts_black_32dp);
+                customBadge3.setDisabledIconId(R.drawable.otb_ic_contacts_black_32dp);
                 customBadge3.setAppUsesPermission(AppUsesPermission.TRUE);
                 customBadge3.setToggable(true);
                 mTrustBadgeElements.add(customBadge3);

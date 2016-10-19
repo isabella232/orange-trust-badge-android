@@ -42,7 +42,7 @@
             android:id="@+id/otb_data_usage_item_iv_icon"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/ic_camera_black_24dp"/>
+            android:src="@drawable/otb_ic_camera_black_24dp" />
 
         <TextView
             android:id="@+id/otb_data_usage_item_tv_title"
@@ -81,7 +81,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/otb_landing_padding_8dp"
             android:layout_marginRight="@dimen/otb_key_data_padding_16dp"
-            android:src="@drawable/ic_expand_more"/>
+            android:src="@drawable/otb_ic_expand_more" />
 
     </LinearLayout>
 

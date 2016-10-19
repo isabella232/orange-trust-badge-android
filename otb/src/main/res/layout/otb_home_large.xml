@@ -58,7 +58,7 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/divider"/>
+        android:src="@drawable/otb_divider" />
 
     <TextView
         android:id="@+id/otb_home_usage_card"
@@ -74,7 +74,7 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/divider"/>
+        android:src="@drawable/otb_divider" />
 
     <TextView
         android:id="@+id/otb_home_terms_card"
@@ -90,6 +90,6 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/divider"/>
+        android:src="@drawable/otb_divider" />
 
 </LinearLayout>

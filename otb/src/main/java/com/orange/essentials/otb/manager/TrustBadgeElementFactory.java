@@ -229,20 +229,20 @@ public class TrustBadgeElementFactory {
         int iconId;
         switch (ratingType) {
             case THREE:
-                iconId = R.drawable.ic_rating_3_large;
+                iconId = R.drawable.otb_ic_rating_3_large;
                 break;
             case SEVEN:
-                iconId = R.drawable.ic_rating_7_large;
+                iconId = R.drawable.otb_ic_rating_7_large;
                 break;
             case SIXTEEN:
-                iconId = R.drawable.ic_rating_16_large;
+                iconId = R.drawable.otb_ic_rating_16_large;
                 break;
             case EIGHTEEN:
-                iconId = R.drawable.ic_rating_18_large;
+                iconId = R.drawable.otb_ic_rating_18_large;
                 break;
             case TWELVE:
             default:
-                iconId = R.drawable.ic_rating_12_large;
+                iconId = R.drawable.otb_ic_rating_12_large;
                 break;
         }
         return iconId;
@@ -253,48 +253,48 @@ public class TrustBadgeElementFactory {
 
         switch (groupType) {
             case IDENTITY:
-                iconId = R.drawable.ic_orange_id_black_32dp;
+                iconId = R.drawable.otb_ic_orange_id_black_32dp;
                 break;
             case LOCATION:
-                iconId = R.drawable.ic_geolocation_black_32dp;
+                iconId = R.drawable.otb_ic_geolocation_black_32dp;
                 break;
             case STORAGE:
-                iconId = R.drawable.ic_media_black_32dp;
+                iconId = R.drawable.otb_ic_media_black_32dp;
                 break;
             case IMPROVEMENT_PROGRAM:
-                iconId = R.drawable.ic_improvement_black_32dp;
+                iconId = R.drawable.otb_ic_improvement_black_32dp;
                 break;
             case CONTACTS:
-                iconId = R.drawable.ic_contacts_black_32dp;
+                iconId = R.drawable.otb_ic_contacts_black_32dp;
                 break;
             case CAMERA:
-                iconId = R.drawable.ic_camera_black_24dp;
+                iconId = R.drawable.otb_ic_camera_black_24dp;
                 break;
             case AGENDA:
-                iconId = R.drawable.ic_calendar_black_24dp;
+                iconId = R.drawable.otb_ic_calendar_black_24dp;
                 break;
             case SMS:
-                iconId = R.drawable.ic_sms_black_24dp;
+                iconId = R.drawable.otb_ic_sms_black_24dp;
                 break;
             case MICROPHONE:
-                iconId = R.drawable.ic_mic_black_24dp;
+                iconId = R.drawable.otb_ic_mic_black_24dp;
                 break;
             case PHONE:
-                iconId = R.drawable.ic_local_phone_black_24dp;
+                iconId = R.drawable.otb_ic_local_phone_black_24dp;
                 break;
             case SENSORS:
-                iconId = R.drawable.ic_sensors;
+                iconId = R.drawable.otb_ic_sensors;
                 break;
             case BILLING:
-                iconId = R.drawable.ic_shopping_black_32dp;
+                iconId = R.drawable.otb_ic_shopping_black_32dp;
                 break;
             case ADVERTISE:
-                iconId = R.drawable.ic_advertising_black_32dp;
+                iconId = R.drawable.otb_ic_advertising_black_32dp;
                 break;
             case PEGI:
                 break;
             case SOCIAL_INFO:
-                iconId = R.drawable.ic_social_black_32dp;
+                iconId = R.drawable.otb_ic_social_black_32dp;
                 break;
             default:
                 break;
