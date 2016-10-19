@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.orange.essentials.demo.otb"
     android:versionName="1.0">
 
@@ -33,6 +33,11 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.orange.essentials.otb.OtbActivity"
+            android:configChanges="orientation|screenSize"
+            android:theme="@style/AppTheme.MyOtbTheme"
+            tools:replace="android:theme" />
     </application>
 
 </manifest>
