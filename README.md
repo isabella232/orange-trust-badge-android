@@ -79,11 +79,11 @@ Add following dependency to the build.gradle file of the module that will use th
 ```groovy
 dependencies {
     //OTB
-    compile(name: 'Orange_trust_badge-1.1.2-release', ext: 'aar')
+    compile(name: 'Orange_trust_badge-1.2.0-release', ext: 'aar')
     //android Support
-    compile 'com.android.support:appcompat-v7:24.2.0'
-    compile 'com.android.support:cardview-v7:24.2.0'
-    compile 'com.android.support:recyclerview-v7:24.2.0'
+    compile 'com.android.support:appcompat-v7:24.2.1'
+    compile 'com.android.support:cardview-v7:24.2.1'
+    compile 'com.android.support:recyclerview-v7:24.2.1'
 }
 ```   
 
@@ -97,9 +97,9 @@ In both cases you will have to add it to your dependencies as follow (supposing 
 ```groovy
 dependencies {
     //android Support
-    compile 'com.android.support:appcompat-v7:24.2.0'
-    compile 'com.android.support:cardview-v7:24.2.0'
-    compile 'com.android.support:recyclerview-v7:24.2.0'
+    compile 'com.android.support:appcompat-v7:24.2.1'
+    compile 'com.android.support:cardview-v7:24.2.1'
+    compile 'com.android.support:recyclerview-v7:24.2.1'
     //OTB
     compile project(':otb') //if you named the new module `otb`
 }
@@ -231,6 +231,27 @@ Please be aware that an incorrect image can lead to malformed header page.
 
 User should define its own labels and icon for the different badges, but default values are available to provide a decent app.
 Please be aware that string resources are localized, so overriding french values should be done in **values-fr** resource directory.
+
+### Customized otb activity theme
+
+You can override the otb activity theme directly in your manifest (see demo app for an exemple)
+
+In your manifest:
+```xml
+    <activity
+        android:name="com.orange.essentials.otb.OtbActivity"
+        android:configChanges="orientation|screenSize"
+        android:theme="@style/AppTheme.MyOtbTheme"
+        tools:replace="android:theme" />
+```
+
+Then, in your styles.xml file you can for exemple override the toolbar colors by overriding primary and primaryDark color:
+```xml
+    <style name="AppTheme.MyOtbTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/otb_black</item>
+        <item name="colorPrimaryDark">@color/otb_black</item>
+    </style>
+```
 
 ## Release note
 
