@@ -216,9 +216,9 @@ User can change this colors by editing the `colors.xml` resource file.
     <color name="colorAccent">#AA0000</color>
     <color name="otb_header_color">#00DD00</color>
 ```
-### Customized logo (overloading default drawable, file `header_logo.xml`)
+### Customized logo (overloading default drawable, file `otb_header_logo.xml`)
 
-The header logo can be redefined by defining your own image. You should provide a drawable named `header_logo`. 
+The header logo can be redefined by defining your own image. You should provide a drawable named `otb_header_logo.xml`. 
 Please be aware that an incorrect image can lead to malformed header page.
 
 ```xml
