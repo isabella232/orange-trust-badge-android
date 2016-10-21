@@ -57,21 +57,24 @@ public class MainActivity extends AppCompatActivity implements BadgeListener {
 
         CustomBadgeFactory customBadgeFactory = new CustomBadgeFactory(getApplicationContext());
         TrustBadgeManager.INSTANCE.initialize(getApplicationContext(), customBadgeFactory.getTrustBadgeElements(), customBadgeFactory.getTerms());
-        //this line clean badge listeners to avoid multiple calls for the same badgeEvent
-        TrustBadgeManager.INSTANCE.clearBadgeListener();
-        TrustBadgeManager.INSTANCE.addBadgeListener(this);
+
+        //We can add a badge listener. Make sure to do not have multiple copy of the same listener
+        //You can also clear existing listener using: TrustBadgeManager.INSTANCE.clearBadgeListener();
+        if (!TrustBadgeManager.INSTANCE.getBadgeListeners().contains(this)) {
+            TrustBadgeManager.INSTANCE.addBadgeListener(this);
+        }
 
         //retrieving toggle status from Shared Preference
         //in this case we threat differently the improvement program since we have a dialog on the disable case
         boolean improvement = sp.getBoolean(PREF_IMPROVEMENT, true);
         Log.d(TAG, "Improvement Program?" + improvement);
         TrustBadgeManager.INSTANCE.setUsingImprovementProgram(improvement);
+
         // than we do the same for all the other elements which are toggable
         for (TrustBadgeElement element : TrustBadgeManager.INSTANCE.getTrustBadgeElements()) {
             if (element.isToggable() && element.getGroupType() != GroupType.IMPROVEMENT_PROGRAM) {
                 boolean granted = sp.getBoolean(element.getNameKey(), true);
-                if (granted) element.setUserPermissionStatus(UserPermissionStatus.GRANTED);
-                else element.setUserPermissionStatus(UserPermissionStatus.NOT_GRANTED);
+                element.setUserPermissionStatus(granted ? UserPermissionStatus.GRANTED : UserPermissionStatus.NOT_GRANTED);
             }
         }
 

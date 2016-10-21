@@ -169,8 +169,6 @@ Normally, on a standard implementation, you should also clean previous badge lis
 
 ```java
     TrustBadgeManager.INSTANCE.initialize(getApplicationContext(), trustBadgeElements, terms);
-    //this line clean badge listeners to avoid multiple calls for the same badgeEvent
-    TrustBadgeManager.INSTANCE.clearBadgeListener();
 ```
 
 #### 3. Launch activity
@@ -184,11 +182,51 @@ Launch the main activity named OtbActivity to access to the TrustBadge component
 
 ### Implementation of optional features
 
-#### Badge listener
+#### Custom badge element
 
-Optionally provide a listener to listen to badges with toggles
+Optionally you can have custom badge elements.
+
+Add an element to your badge Elements List :
 
 ```java
+    /** How to create a custom badge and/or set it as a toggable */
+    TrustBadgeElement customBadge = TrustBadgeElementFactory.build(mContext, GroupType.OTHER, ElementType.MAIN, R.string.custom_badge_2_title,R.string.custom_badge_2_label);
+    customBadge.setEnabledIconId(R.drawable.otb_ic_contacts_black_32dp);
+    customBadge.setDisabledIconId(R.drawable.otb_ic_contacts_black_32dp);
+    customBadge.setToggable(true);
+    customBadge.setAppUsesPermission(AppUsesPermission.TRUE);
+    customBadge.setUserPermissionStatus(UserPermissionStatus.NOT_GRANTED);
+    trustBadgeElements.add(customBadge);
+```
+
+When you initialize the badge, if you have added Toggle switches, provide initialization if you want persistent state.
+If you saved the value in the shared preferences:
+
+```java
+    for (TrustBadgeElement element : TrustBadgeManager.INSTANCE.getTrustBadgeElements()) {
+        //check if element is toggable and if is not improvement program (we managed it differently in our example)
+        if (element.isToggable() && element.getGroupType() != GroupType.IMPROVEMENT_PROGRAM) {
+            boolean granted = sp.getBoolean(element.getNameKey(), true);
+            element.setUserPermissionStatus(granted?UserPermissionStatus.GRANTED:UserPermissionStatus.NOT_GRANTED);
+        }
+    }
+```
+
+#### Badge listener
+
+Optionally provide a listener to listen to badges with toggles (such as improvement program).
+One BadgeListener is enough to listen for all the toggles in your implementation: By checking the `element.getNameKey()` and/or the `element.getGroupType()` you can have different behaviors.
+
+* NOTE: You need to make sure to do not have multiple copy of the same listener
+
+```java
+
+    //We can add a badge listener. Make sure to do not have multiple copy of the same listener
+    //You can also clear existing listener using: TrustBadgeManager.INSTANCE.clearBadgeListener();
+    if (!TrustBadgeManager.INSTANCE.getBadgeListeners().contains(this)) {
+        TrustBadgeManager.INSTANCE.addBadgeListener(this);
+    }
+
     TrustBadgeManager.INSTANCE.addTrustBadgeElementListener(new TrustBadgeElementListener(){
         @Override
         public void onBadgeChange(GroupType groupType, boolean value, AppCompatActivity callingActivity) {
@@ -196,6 +234,9 @@ Optionally provide a listener to listen to badges with toggles
         }
     });
 ```
+
+Please Note: addTrustBadgeElementListener has been deprecated in version G01R00C01 to allow managing custom toggable badges.
+
 
 #### Improvement program
 
