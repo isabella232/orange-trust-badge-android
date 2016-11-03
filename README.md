@@ -86,6 +86,29 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:24.2.1'
 }
 ```   
+### 3. Manage languages
+
+The SDK includes default text in english and add a translation in french in the french localized directory values-fr.
+If you do not have french language in your app, and want to keep only engligh, exclude french resources using:
+```groovy
+android {
+    ...
+    defaultConfig {
+        ...
+        resConfigs "en"
+    }
+}
+``` 
+If you want to use another language than english as default language, please provide translation in that language for all strings in the `values/strings.xml` file. Then build only the locales you support (overriding is necessary because the default is always kept in the package). For example, if I support Italian and Spanish, provide translation for one of the two as default language and than add this to your Gradle configuration file:
+```groovy
+android {
+    ...
+    defaultConfig {
+        ...
+        resConfigs "it", "es"
+    }
+}
+``` 
 
 #### Alternative methods
 
