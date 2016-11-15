@@ -30,6 +30,7 @@ import com.orange.essentials.otb.model.type.ElementType;
 import com.orange.essentials.otb.model.type.GroupType;
 import com.orange.essentials.otb.model.type.RatingType;
 import com.orange.essentials.otb.model.type.TermType;
+import com.orange.essentials.otb.model.type.UserPermissionStatus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,14 +53,23 @@ public class CustomBadgeFactory {
             if (null != mContext) {
                 mTrustBadgeElements = new ArrayList<>();
                 /** MANDATORY : MAIN BADGE */
+
                 mTrustBadgeElements.add(TrustBadgeElementFactory.build(mContext, GroupType.IDENTITY, ElementType.MAIN, AppUsesPermission.TRUE));
-                mTrustBadgeElements.add(TrustBadgeElementFactory.build(mContext, GroupType.LOCATION, ElementType.MAIN));
+
+                //Define your own system app permission status
+                //No scan for app permission is done in that case
+                TrustBadgeElement elt = TrustBadgeElementFactory.build(mContext, GroupType.LOCATION, ElementType.MAIN);
+                elt.setShouldBeAutoConfigured(false);
+                elt.setAppUsesPermission(AppUsesPermission.TRUE);
+                elt.setUserPermissionStatus(UserPermissionStatus.GRANTED);
+                mTrustBadgeElements.add(elt);
+
                 mTrustBadgeElements.add(TrustBadgeElementFactory.build(mContext, GroupType.STORAGE, ElementType.MAIN));
                 mTrustBadgeElements.add(TrustBadgeElementFactory.build(mContext, GroupType.CONTACTS, ElementType.MAIN));
                 mTrustBadgeElements.add(TrustBadgeElementFactory.build(mContext, GroupType.IMPROVEMENT_PROGRAM, ElementType.MAIN, AppUsesPermission.TRUE));
 
                 //custom element in MAIN list
-                TrustBadgeElement customBadge1 = TrustBadgeElementFactory.build(mContext, GroupType.OTHER, ElementType.MAIN, R.string.custom_badge_1_title,R.string.custom_badge_1_label);
+                TrustBadgeElement customBadge1 = TrustBadgeElementFactory.build(mContext, GroupType.OTHER, ElementType.MAIN, R.string.custom_badge_1_title, R.string.custom_badge_1_label);
                 customBadge1.setEnabledIconId(R.drawable.otb_ic_contacts_black_32dp);
                 customBadge1.setDisabledIconId(R.drawable.otb_ic_contacts_black_32dp);
                 customBadge1.setToggable(true);

@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.orange.essentials.demo.otb"
-    android:versionName="1.0">
+<manifest package="com.orange.essentials.demo.otb"
+          xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
+          android:versionName="1.0">
 
     <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
     <uses-permission android:name="android.permission.READ_CALENDAR"/>
@@ -37,7 +36,7 @@
             android:name="com.orange.essentials.otb.OtbActivity"
             android:configChanges="orientation|screenSize"
             android:theme="@style/AppTheme.MyOtbTheme"
-            tools:replace="android:theme" />
+            tools:replace="android:theme"/>
     </application>
 
 </manifest>

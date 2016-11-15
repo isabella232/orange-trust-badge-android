@@ -103,10 +103,16 @@ public enum TrustBadgeManager {
      * @return Host application name from AndroidManifest.xml
      */
     private String extractApplicationName(@NonNull Context context) {
+        String appName = context.getPackageName();
         Log.d(TAG, "extractApplicationName");
-        int stringId = context.getApplicationInfo().labelRes;
+        //TODO Replace with
+        //.loadLabel(context.getPackageManager())
+        CharSequence csName = context.getApplicationInfo().loadLabel(context.getPackageManager());
+        if (null != csName) {
+            appName = csName.toString();
+        }
         Log.d(TAG, "extractApplicationName");
-        return context.getString(stringId);
+        return appName;
     }
 
     /**
@@ -240,12 +246,14 @@ public enum TrustBadgeManager {
         PermissionManager.INSTANCE.initPermissionList(context);
         for (int i = 0; i < mTrustBadgeElements.size(); i++) {
             TrustBadgeElement trustBadgeElement = mTrustBadgeElements.get(i);
-            GroupType type = trustBadgeElement.getGroupType();
-            if (type.isSystemPermission()) {
-                trustBadgeElement.setUserPermissionStatus(PermissionManager.INSTANCE.doesUserAlreadyAcceptPermission(context, trustBadgeElement.getGroupType()));
-            }
-            if (type.equals(GroupType.IMPROVEMENT_PROGRAM)) {
-                trustBadgeElement.setUserPermissionStatus(mUsingImprovementProgram ? UserPermissionStatus.GRANTED : UserPermissionStatus.NOT_GRANTED);
+            if (trustBadgeElement.isShouldBeAutoConfigured()) {
+                GroupType type = trustBadgeElement.getGroupType();
+                if (type.isSystemPermission()) {
+                    trustBadgeElement.setUserPermissionStatus(PermissionManager.INSTANCE.doesUserAlreadyAcceptPermission(context, trustBadgeElement.getGroupType()));
+                }
+                if (type.equals(GroupType.IMPROVEMENT_PROGRAM)) {
+                    trustBadgeElement.setUserPermissionStatus(mUsingImprovementProgram ? UserPermissionStatus.GRANTED : UserPermissionStatus.NOT_GRANTED);
+                }
             }
 
             Log.d(TAG, "refresh = " + trustBadgeElement);

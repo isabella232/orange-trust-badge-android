@@ -95,22 +95,23 @@ public class TrustBadgeElement implements Serializable {
      */
     private boolean mToggable;
 
-    /************************
-     * PUBLIC METHODS ****************************************************
+    /***
+     * mShouldBeAutoConfigured : should your element be configured automatically if system permission
      */
+    private boolean mShouldBeAutoConfigured;
 
     /**
      * Constructor with minimal values.
      * User should provide necessary complementary informations by using setters :
      * iconid (enabled/disabled), name, description, toggable bage, AppUsesPermission, and UserPermissionStatus
-     * @param groupType the groupType for this badge
+     *
+     * @param groupType   the groupType for this badge
      * @param elementType the elementType of this badge
      */
     public TrustBadgeElement(GroupType groupType,
-                             ElementType elementType){
+                             ElementType elementType) {
         this(groupType, elementType, groupType.name(), groupType.name(), AppUsesPermission.TRUE, UserPermissionStatus.GRANTED, 0, 0, false);
     }
-
 
     /**
      * Creates a TrustBadgeElement with default non toggable status
@@ -166,6 +167,14 @@ public class TrustBadgeElement implements Serializable {
         this.mEnabledIconId = enabledIconId;
         this.mDisabledIconId = disabledIconId;
         this.mToggable = toggable;
+    }
+
+    public boolean isShouldBeAutoConfigured() {
+        return mShouldBeAutoConfigured;
+    }
+
+    public void setShouldBeAutoConfigured(boolean shouldBeAutoConfigured) {
+        this.mShouldBeAutoConfigured = shouldBeAutoConfigured;
     }
 
     public boolean isToggable() {
