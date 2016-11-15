@@ -13,7 +13,7 @@
     <string name="otb_home_header_title">Use in full confidence this application</string>
     <string name="otb_home_data_title">My data</string>
     <string name="otb_home_data_content">Personal data that this application uses and why</string>
-    <string name="otb_home_usage_title">My usages</string>
+    <string name="otb_home_usage_title">Usages</string>
     <string name="otb_home_usage_content">Contents and features of this application</string>
     <string name="otb_home_usage_pegi_age">&#xA0;year +</string>
     <string name="otb_home_terms_title">Our commitments</string>
