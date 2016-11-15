@@ -79,7 +79,7 @@ Add following dependency to the build.gradle file of the module that will use th
 ```groovy
 dependencies {
     //OTB
-    compile(name: 'Orange_trust_badge-1.2.0-release', ext: 'aar')
+    compile(name: 'Orange_trust_badge-1.3.0-release', ext: 'aar')
     //android Support
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.android.support:cardview-v7:24.2.1'
@@ -140,7 +140,15 @@ Create a list of TrustBadgeElement and a list of Term. TrustBadgeElements can be
     List<TrustBadgeElement> trustBadgeElements = new ArrayList<TrustBadgeElement>();
     /** MAIN BADGES - They Will appear on the main dashboard */
     trustBadgeElements.add(TrustBadgeElementFactory.build(mContext, GroupType.IDENTITY, ElementType.MAIN, AppUsesPermission.TRUE));
-    trustBadgeElements.add(TrustBadgeElementFactory.build(mContext, GroupType.LOCATION, ElementType.MAIN));
+    
+    //Define your own system app permission status
+    //No scan for app permission is done in that case
+    TrustBadgeElement elt = TrustBadgeElementFactory.build(mContext, GroupType.LOCATION, ElementType.MAIN);
+    elt.setShouldBeAutoConfigured(false);
+    elt.setAppUsesPermission(AppUsesPermission.TRUE);
+    elt.setUserPermissionStatus(UserPermissionStatus.GRANTED);
+    mTrustBadgeElements.add(elt);
+    
     trustBadgeElements.add(TrustBadgeElementFactory.build(mContext, GroupType.STORAGE, ElementType.MAIN));
     trustBadgeElements.add(TrustBadgeElementFactory.build(mContext, GroupType.CONTACTS, ElementType.MAIN));
     trustBadgeElements.add(TrustBadgeElementFactory.build(mContext, GroupType.IMPROVEMENT_PROGRAM, ElementType.MAIN, AppUsesPermission.TRUE));
@@ -268,6 +276,20 @@ Optionally set a value defining if your app currently uses improvement program b
 ```java
     TrustBadgeManager.INSTANCE.setUsingImprovementProgram(isImprovementEnabled);
 ```
+
+#### Prevent permission to be autoconfigured by system permission
+
+Orange trust badge SDK configures automatically permission with the declaration made in manifest and user acceptation. If you want to bypass this behavior, you can set the "isShouldAutoConfigured" parameter of "TrustBadgeElement" to false.
+
+```java
+TrustBadgeElement elt = TrustBadgeElementFactory.build(mContext, GroupType.LOCATION, ElementType.MAIN);
+elt.setShouldBeAutoConfigured(false);
+elt.setAppUsesPermission(AppUsesPermission.TRUE);
+elt.setUserPermissionStatus(UserPermissionStatus.GRANTED);
+mTrustBadgeElements.add(elt);
+```
+
+
 ## Customization 
 
 ### Customized colors (overloading file `colors.xml`)
