@@ -93,7 +93,7 @@ public class CustomBadgeFactory {
                 mTrustBadgeElements.add(customBadge2);
 
                 /** MANDATORY : USAGE BADGES */
-                mTrustBadgeElements.add(TrustBadgeElementFactory.build(mContext, RatingType.TWELVE));
+                mTrustBadgeElements.add(TrustBadgeElementFactory.build(mContext, RatingType.THREE));
                 mTrustBadgeElements.add(TrustBadgeElementFactory.build(mContext, GroupType.BILLING, ElementType.USAGE));
                 mTrustBadgeElements.add(TrustBadgeElementFactory.build(mContext, GroupType.ADVERTISE, ElementType.USAGE));
                 mTrustBadgeElements.add(TrustBadgeElementFactory.build(mContext, GroupType.SOCIAL_INFO, ElementType.USAGE));
