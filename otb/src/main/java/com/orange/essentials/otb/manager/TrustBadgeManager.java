@@ -105,8 +105,6 @@ public enum TrustBadgeManager {
     private String extractApplicationName(@NonNull Context context) {
         String appName = context.getPackageName();
         Log.d(TAG, "extractApplicationName");
-        //TODO Replace with
-        //.loadLabel(context.getPackageManager())
         CharSequence csName = context.getApplicationInfo().loadLabel(context.getPackageManager());
         if (null != csName) {
             appName = csName.toString();
