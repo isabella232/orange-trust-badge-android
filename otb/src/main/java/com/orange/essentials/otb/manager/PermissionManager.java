@@ -156,6 +156,7 @@ public enum PermissionManager {
         } catch (PackageManager.NameNotFoundException e) {
             Log.e(TAG, "findInAppPermission, package manager not found", e);
         }
+        Log.d(TAG, "finInAppPermission for groupType " + groupType + " returns " + result);
         return result;
     }
 

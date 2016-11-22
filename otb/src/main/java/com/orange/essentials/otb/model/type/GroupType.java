@@ -127,8 +127,9 @@ public enum GroupType {
     public boolean matchPermission(String permissionName) {
         boolean belongs = false;
         if (permissionName != null) {
-            belongs = permissionName.contains(this.toString());
-            if (!belongs && mPermissionNames != null) {
+            if( mPermissionNames == null ) {
+                belongs = permissionName.contains(this.toString());
+            } else {
                 for (String name : mPermissionNames) {
                     if (belongs = (permissionName.contains(name))) {
                         break;
