@@ -264,6 +264,33 @@ public enum TrustBadgeManager {
     }
 
     /**
+     * Method returns true if at least one badge is of type DATA or OTHER
+     *
+     * @return a boolean indicating if data badges are available
+     */
+    public boolean hasData() {
+        return getElementsForDataCollected() != null && getElementsForDataCollected().size() > 0;
+    }
+
+    /**
+     * Method returns true if at least one badge is of type USAGE
+     *
+     * @return a boolean indicating if usage badges are available
+     */
+    public boolean hasUsage() {
+        return getElementsForUsage() != null && getElementsForUsage().size() > 0;
+    }
+
+    /**
+     * Method returns true if at least one term is available
+     *
+     * @return a boolean indicating if a term is available
+     */
+    public boolean hasTerms() {
+        return getTerms() != null && getTerms().size() > 0;
+    }
+
+    /**
      * getPegiAge : Retrieve permission pegi age rating
      *
      * @param trustBadgeElement : th badge to retrieve pegi age value text

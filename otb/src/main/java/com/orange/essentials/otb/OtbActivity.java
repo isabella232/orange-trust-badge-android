@@ -105,10 +105,28 @@ public class OtbActivity extends AppCompatActivity implements OtbContainerFragme
 
         // Landscape mode
         if (useMasterDetail()) {
-            Log.d(TAG, "Landscape mode - add data fragment");
-            OtbDataFragment frag = new OtbDataFragment();
+            Log.d(TAG, "Landscape mode - add child fragment");
+            Fragment frag = null;
+            String tag = null;
+            if (TrustBadgeManager.INSTANCE.hasData()) {
+                Log.d(TAG, "Landscape mode - add data fragment");
+                frag = new OtbDataFragment();
+                tag = OtbDataFragment.FRAG_TAG;
+            } else if (TrustBadgeManager.INSTANCE.hasUsage()) {
+                Log.d(TAG, "Landscape mode - add usage fragment");
+                frag = new OtbUsageFragment();
+                tag = OtbUsageFragment.FRAG_TAG;
+            } else if (TrustBadgeManager.INSTANCE.hasTerms()) {
+                Log.d(TAG, "Landscape mode - add terms fragment");
+                frag = new OtbTermsFragment();
+                tag = OtbTermsFragment.FRAG_TAG;
+            } else {
+                Log.d(TAG, "Landscape mode - No item found, add data fragment by default");
+                frag = new OtbDataFragment();
+                tag = OtbDataFragment.FRAG_TAG;
+            }
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.lightfragment_detail, frag, OtbDataFragment.FRAG_TAG)
+                    .add(R.id.lightfragment_detail, frag, tag)
                     .commit();
 
         }
@@ -178,7 +196,7 @@ public class OtbActivity extends AppCompatActivity implements OtbContainerFragme
     @Override
     public void onBadgeChange(TrustBadgeElement trustBadgeElement, boolean value, AppCompatActivity callingActivity) {
         Log.d(TAG, "onChange trustBadgeElement=" + trustBadgeElement + " value=" + value);
-        if( null != trustBadgeElement ) {
+        if (null != trustBadgeElement) {
             if (GroupType.IMPROVEMENT_PROGRAM.equals(trustBadgeElement.getGroupType())) {
                 TrustBadgeManager.INSTANCE.setUsingImprovementProgram(value);
                 Fragment frag;

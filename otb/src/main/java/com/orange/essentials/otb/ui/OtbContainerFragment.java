@@ -180,14 +180,21 @@ public class OtbContainerFragment extends android.support.v4.app.Fragment {
         Log.d(TAG, "buildCards");
         LinearLayout dataLayout = null;
         LinearLayout usageLayout = null;
-        View container = this.getActivity().findViewById(R.id.otb_home_data_card);
-        if (null != container) {
-            dataLayout = (LinearLayout) container.findViewById(R.id.otb_home_data_card_ll_container);
+        View containerData = this.getActivity().findViewById(R.id.otb_home_data_card);
+        if (null != containerData) {
+            containerData.setVisibility(TrustBadgeManager.INSTANCE.hasData() ? View.VISIBLE : View.GONE);
+            dataLayout = (LinearLayout) containerData.findViewById(R.id.otb_home_data_card_ll_container);
         }
-        container = this.getActivity().findViewById(R.id.otb_home_usage_card);
-        if (null != container) {
-            usageLayout = (LinearLayout) container.findViewById(R.id.otb_home_data_card_ll_container);
+        View containerUsage = this.getActivity().findViewById(R.id.otb_home_usage_card);
+        if (null != containerUsage) {
+            containerUsage.setVisibility(TrustBadgeManager.INSTANCE.hasUsage() ? View.VISIBLE : View.GONE);
+            usageLayout = (LinearLayout) containerUsage.findViewById(R.id.otb_home_data_card_ll_container);
         }
+        View containerTerms = this.getActivity().findViewById(R.id.otb_home_terms_card);
+        if (null != containerTerms) {
+            containerTerms.setVisibility(TrustBadgeManager.INSTANCE.hasTerms() ? View.VISIBLE : View.GONE);
+        }
+
         if (dataLayout != null && usageLayout != null) {
             dataLayout.removeAllViews();
             usageLayout.removeAllViews();
