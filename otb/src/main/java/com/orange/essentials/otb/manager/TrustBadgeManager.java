@@ -269,7 +269,9 @@ public enum TrustBadgeManager {
      * @return a boolean indicating if data badges are available
      */
     public boolean hasData() {
-        return getElementsForDataCollected() != null && getElementsForDataCollected().size() > 0;
+        boolean data = getElementsForDataCollected() != null && getElementsForDataCollected().size() > 0;
+        Log.d(TAG, "hasData : " + data);
+        return data;
     }
 
     /**
@@ -278,7 +280,9 @@ public enum TrustBadgeManager {
      * @return a boolean indicating if usage badges are available
      */
     public boolean hasUsage() {
-        return getElementsForUsage() != null && getElementsForUsage().size() > 0;
+        boolean usage = getElementsForUsage() != null && getElementsForUsage().size() > 0;
+        Log.d(TAG, "hasUsage : " + usage);
+        return usage;
     }
 
     /**
@@ -287,7 +291,9 @@ public enum TrustBadgeManager {
      * @return a boolean indicating if a term is available
      */
     public boolean hasTerms() {
-        return getTerms() != null && getTerms().size() > 0;
+        boolean terms = getTerms() != null && getTerms().size() > 0;
+        Log.d(TAG, "hasTerms : " + terms);
+        return terms;
     }
 
     /**
