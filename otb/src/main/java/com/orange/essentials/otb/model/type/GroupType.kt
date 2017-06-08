@@ -19,15 +19,15 @@
  * Version:     1.0
  * Created:     2016-03-15 by Aurore Penault, Vincent Boesch, and Giovanni Battista Accetta
  */
-package com.orange.essentials.otb.model.type;
+package com.orange.essentials.otb.model.type
 
 /**
  * PermissionGroupName managed in OTB
  * System PermissionGroupName have to match real Android permission group name
  * ex :
  */
-public enum GroupType {
-    /** Mandatory Group permissions : Check on M Permission group on 06/11/2015 */
+enum class GroupType private constructor(val isSystemPermission: Boolean, private val mPermissionNames: Array<String>?) {
+    /** Mandatory Group permissions : Check on M Permission group on 06/11/2015  */
     /**
      * Not A permission
      * OTB Displayed group permission : Identity
@@ -37,12 +37,12 @@ public enum GroupType {
      * android.permission-group.LOCATION
      * OTB Displayed group permission : Location
      */
-    LOCATION(true, new String[]{"ACCESS_FINE_LOCATION", "ACCESS_COARSE_LOCATION"}),
+    LOCATION(true, arrayOf("ACCESS_FINE_LOCATION", "ACCESS_COARSE_LOCATION")),
     /**
      * android.permission-group.STORAGE
      * OTB Displayed group permission : STORAGE (Medias)
      */
-    STORAGE(true, new String[]{"READ_EXTERNAL_STORAGE", "WRITE_EXTERNAL_STORAGE"}),
+    STORAGE(true, arrayOf("READ_EXTERNAL_STORAGE", "WRITE_EXTERNAL_STORAGE")),
     /**
      * Not A permission
      * OTB Displayed group permission : IMPROVEMENT_PROGRAM (Collecte de données)
@@ -52,40 +52,40 @@ public enum GroupType {
      * android.permission-group.CONTACTS
      * OTB Displayed group permission : Contact
      */
-    CONTACTS(true, new String[]{"READ_CONTACTS", "WRITE_CONTACTS", "GET_ACCOUNTS"}),
+    CONTACTS(true, arrayOf("READ_CONTACTS", "WRITE_CONTACTS", "GET_ACCOUNTS")),
 
-    /** Other group permissions */
+    /** Other group permissions  */
 
     /**
      * android.permission-group.CAMERA
      * OTB Displayed group permission : Camera (App photo)
      */
-    CAMERA(true, new String[]{"CAMERA"}),
+    CAMERA(true, arrayOf("CAMERA")),
     /**
      * android.permission-group.PERSONAL_INFO
      * OTB Displayed group permission :  Agenda
      */
-    AGENDA(true, new String[]{"READ_CALENDAR", "WRITE_CALENDAR"}),
+    AGENDA(true, arrayOf("READ_CALENDAR", "WRITE_CALENDAR")),
     /**
      * android.permission-group.MESSAGES
      * OTB Displayed group permission :  SMS
      */
-    SMS(true, new String[]{"SEND_SMS", "RECEIVE_SMS", "READ_SMS", "RECEIVE_WAP_PUSH", "RECEIVE_MMS"}),
+    SMS(true, arrayOf("SEND_SMS", "RECEIVE_SMS", "READ_SMS", "RECEIVE_WAP_PUSH", "RECEIVE_MMS")),
     /**
      * android.permission-group.RECORD_AUDIO
      * OTB Displayed group permission :  Microphone
      */
-    MICROPHONE(true, new String[]{"RECORD_AUDIO"}),
+    MICROPHONE(true, arrayOf("RECORD_AUDIO")),
     /**
      * android.permission-group.PHONE_CALLS
      * OTB Displayed group permission :  Phone (telephone)
      */
-    PHONE(true, new String[]{"READ_PHONE_STATE", "CALL_PHONE", "READ_CALL_LOG", "WRITE_CALL_LOG", "ADD_VOICEMAIL", "USE_SIP", "PROCESS_OUTGOING_CALLS"}),
+    PHONE(true, arrayOf("READ_PHONE_STATE", "CALL_PHONE", "READ_CALL_LOG", "WRITE_CALL_LOG", "ADD_VOICEMAIL", "USE_SIP", "PROCESS_OUTGOING_CALLS")),
     /**
      * android.permission-group.BODY_SENSORS
      * OTB Displayed group permission :  sensors (appels téléphoniques)
      */
-    SENSORS(true, new String[]{"BODY_SENSORS"}),
+    SENSORS(true, arrayOf("BODY_SENSORS")),
     /**
      * Not a permission
      * OTB Displayed group permission :  billing (achats in app)
@@ -112,31 +112,20 @@ public enum GroupType {
      */
     OTHER(false, null);
 
-
-    private boolean mSystemPermission;
-    private String[] mPermissionNames;
-    GroupType(boolean systemPermission, String[] systemPermissionNames) {
-        mSystemPermission = systemPermission;
-        mPermissionNames = systemPermissionNames;
-    }
-
-    public boolean isSystemPermission() {
-        return mSystemPermission;
-    }
-
-    public boolean matchPermission(String permissionName) {
-        boolean belongs = false;
+    fun matchPermission(permissionName: String?): Boolean {
+        var belongs = false
         if (permissionName != null) {
-            if( mPermissionNames == null ) {
-                belongs = permissionName.contains(this.toString());
+            if (mPermissionNames == null) {
+                belongs = permissionName.contains(this.toString())
             } else {
-                for (String name : mPermissionNames) {
-                    if (belongs = (permissionName.contains(name))) {
-                        break;
+                for (name in mPermissionNames) {
+                    if (permissionName.contains(name)) {
+                        belongs = true
+                        break
                     }
                 }
             }
         }
-        return belongs;
+        return belongs
     }
 }

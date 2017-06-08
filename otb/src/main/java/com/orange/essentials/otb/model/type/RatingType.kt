@@ -19,22 +19,30 @@
  * Version:     1.0
  * Created:     2016-03-15 by Aurore Penault, Vincent Boesch, and Giovanni Battista Accetta
  */
-package com.orange.essentials.otb.model.type;
+package com.orange.essentials.otb.model.type
 
 /**
- * List of possible status app usage.
+ * List of possible PEGI status.
  */
-public enum AppUsesPermission {
+enum class RatingType private constructor(val age: Int) {
     /**
-     * Host app use this permission
+     * Host app age rating 3 and above
      */
-    TRUE,
+    THREE(3),
     /**
-     * Host app does not use this permission
+     * Host app age rating 7 and above
      */
-    FALSE,
+    SEVEN(7),
     /**
-     * NOT to be take in account
+     * Host app age rating 12 and above
      */
-    NOT_SIGNIFICANT,
+    TWELVE(12),
+    /**
+     * Host app age rating 16 and above
+     */
+    SIXTEEN(16),
+    /**
+     * Host app age rating 18 and above
+     */
+    EIGHTEEN(18)
 }

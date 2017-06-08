@@ -19,23 +19,22 @@
  * Version:     1.0
  * Created:     2016-03-15 by Aurore Penault, Vincent Boesch, and Giovanni Battista Accetta
  */
-package com.orange.essentials.otb.model.type;
+package com.orange.essentials.otb.model.type
 
 /**
- * <p/>
- * File name:   TermType
- * Version:     0.1.0 (see AndroidManifest.xml)
- * Created:     27/01/2016
- * Created by:  VAPU8214 (Aurore Penault)
+ * List of possible information group
  */
-public enum TermType {
-
+enum class ElementType {
     /**
-     * A bloc displaying textual terms of use
+     * Information for MAIN permissions..
      */
-    TEXT,
+    MAIN,
     /**
-     * A block displaying a video in terms of use
+     * Information group for other permissions.
      */
-    VIDEO,
+    OTHERS,
+    /**
+     * Information group usage types and rating.
+     */
+    USAGE
 }

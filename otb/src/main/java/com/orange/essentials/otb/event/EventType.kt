@@ -19,13 +19,13 @@
  * Version:     1.0
  * Created:     2016-03-15 by Aurore Penault, Vincent Boesch, and Giovanni Battista Accetta
  */
-package com.orange.essentials.otb.event;
+package com.orange.essentials.otb.event
 
 /**
  * Created by veeb7280 on 05/02/2016.
  * This enum represents the possible events that can be triggered in the lib
  */
-public enum EventType {
+enum class EventType {
     /// Event triggered when entering in Permissions Page
     TRUSTBADGE_PERMISSION_ENTER,
 
@@ -45,5 +45,5 @@ public enum EventType {
     TRUSTBADGE_ELEMENT_TOGGLED,
 
     /// Event triggered when going into Android settings
-    TRUSTBADGE_GO_TO_SETTINGS,
+    TRUSTBADGE_GO_TO_SETTINGS
 }

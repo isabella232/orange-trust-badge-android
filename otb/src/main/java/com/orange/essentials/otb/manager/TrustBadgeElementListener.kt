@@ -19,22 +19,25 @@
  * Version:     1.0
  * Created:     2016-03-15 by Aurore Penault, Vincent Boesch, and Giovanni Battista Accetta
  */
-package com.orange.essentials.otb.model.type;
+package com.orange.essentials.otb.manager
+
+import android.support.v7.app.AppCompatActivity
+
+import com.orange.essentials.otb.model.type.GroupType
 
 /**
- * List of possible information group
+ * This interface should be implemented by the calling app to listen to badge changes (when a trust badge is toggable)
+
+ * Created by veeb7280 on 2/3/16.
  */
-public enum ElementType {
+@Deprecated("use rather the interface BadgeListener, as this interface can't handle multiple groupType listening")
+interface TrustBadgeElementListener {
+
     /**
-     * Information for MAIN permissions..
+     * This method will be called whenever a toggable badge will be switched
+     * @param groupType
+     * *
+     * @param value
      */
-    MAIN,
-    /**
-     * Information group for other permissions.
-     */
-    OTHERS,
-    /**
-     * Information group usage types and rating.
-     */
-    USAGE,
+    fun onBadgeChange(groupType: GroupType, value: Boolean, callingActivity: AppCompatActivity)
 }

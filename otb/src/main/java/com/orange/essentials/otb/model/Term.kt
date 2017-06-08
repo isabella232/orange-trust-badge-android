@@ -19,27 +19,33 @@
  * Version:     1.0
  * Created:     2016-03-15 by Aurore Penault, Vincent Boesch, and Giovanni Battista Accetta
  */
-package com.orange.essentials.otb.model.type;
+package com.orange.essentials.otb.model
+
+import com.orange.essentials.otb.model.type.TermType
+
+import java.io.Serializable
 
 /**
- * List of possible status information group.
+ *
+ *
+ * File name:   Term
+ * Version:     0.1.0 (see AndroidManifest.xml)
+ * Created:     27/01/2016
+ * Created by:  VAPU8214 (Aurore Penault)
+ *
+ *
+ * A term is a block displayed in "Terms" section
  */
-public enum UserPermissionStatus {
-    /**
-     * Not YET Granted by user
-     * MANDATORY status can't be NOT_YET_GRANTED
-     */
-    /** NOT_YET_GRANTED,*/
-    /**
-     * Granted by user
-     */
-    GRANTED,
-    /**
-     * Declined by user
-     */
-    NOT_GRANTED,
-    /**
-     * Mandatory for application use
-     */
-    MANDATORY,
-}
+data class Term(
+        /**
+         * Type of a term
+         */
+        var termType: TermType?,
+        /**
+         * Localized resource id for term's title
+         */
+        var titleId: Int,
+        /**
+         * Localized resource id for term's content
+         */
+        var contentId: Int) : Serializable

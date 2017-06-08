@@ -19,16 +19,23 @@
  * Version:     1.0
  * Created:     2016-03-15 by Aurore Penault, Vincent Boesch, and Giovanni Battista Accetta
  */
-package com.orange.essentials.otb.event;
-
-import com.orange.essentials.otb.model.TrustBadgeElement;
+package com.orange.essentials.otb.model.type
 
 /**
- * Created by veeb7280 on 04/02/2016.
- * Application should implement this interface to tag event with its own system
+ *
+ *
+ * File name:   TermType
+ * Version:     0.1.0 (see AndroidManifest.xml)
+ * Created:     27/01/2016
+ * Created by:  VAPU8214 (Aurore Penault)
  */
-public interface EventTagger {
-    void tag(EventType eventType);
-
-    void tagElement(EventType eventType, TrustBadgeElement element);
+enum class TermType {
+    /**
+     * A bloc displaying textual terms of use
+     */
+    TEXT,
+    /**
+     * A block displaying a video in terms of use
+     */
+    VIDEO
 }

@@ -4,8 +4,8 @@ configurations.all {
     resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
 }
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.0"
+    compileSdkVersion 27
+    buildToolsVersion "27.0.3"
 
     lintOptions{
         abortOnError false
@@ -13,9 +13,9 @@ android {
 
     defaultConfig {
         applicationId "com.orange.essentials.demo.otb"
-        minSdkVersion 10
-        targetSdkVersion 25
-        versionCode 15
+        minSdkVersion 14
+        targetSdkVersion 27
+        versionCode 16
         versionName version_name
         archivesBaseName = "Demo_trust_badge"
     }
@@ -24,16 +24,6 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
-        }
-    }
-
-    applicationVariants.all { variant ->
-        variant.outputs.each { output ->
-            def outputFile = output.outputFile
-            if (outputFile != null && outputFile.name.endsWith('.apk')) {
-                def fileName = 'trust_badge_demo' + '-' + versionName + '.apk';
-                output.outputFile = new File(parent.projectDir.path + '/outputs/', fileName)
-            }
         }
     }
 
