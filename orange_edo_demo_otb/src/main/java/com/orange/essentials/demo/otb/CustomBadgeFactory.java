@@ -28,8 +28,6 @@ import com.orange.essentials.otb.model.TrustBadgeElement;
 import com.orange.essentials.otb.model.type.AppUsesPermission;
 import com.orange.essentials.otb.model.type.ElementType;
 import com.orange.essentials.otb.model.type.GroupType;
-import com.orange.essentials.otb.model.type.RatingType;
-import com.orange.essentials.otb.model.type.TermType;
 import com.orange.essentials.otb.model.type.UserPermissionStatus;
 
 import java.util.ArrayList;
@@ -41,84 +39,53 @@ import java.util.List;
 public class CustomBadgeFactory {
 
     private transient Context mContext;
-    private List<TrustBadgeElement> mTrustBadgeElements = null;
-    private List<Term> mTerms = null;
 
     public CustomBadgeFactory(Context context) {
         this.mContext = context;
     }
 
     public List<TrustBadgeElement> getTrustBadgeElements() {
-        if (null == mTrustBadgeElements) {
-            if (null != mContext) {
-                mTrustBadgeElements = new ArrayList<>();
-                /** MANDATORY : MAIN BADGE */
+        List<TrustBadgeElement> mTrustBadgeElements = null;
+        if (null != mContext) {
+            mTrustBadgeElements = new ArrayList<>();
 
-                mTrustBadgeElements.add(TrustBadgeElementFactory.INSTANCE.build(mContext, GroupType.IDENTITY, ElementType.MAIN, AppUsesPermission.TRUE));
+            mTrustBadgeElements.addAll(TrustBadgeElementFactory.getDefaultPermissionElements(mContext));
 
-                //Define your own system app permission status
-                //No scan for app permission is done in that case
-                TrustBadgeElement elt = TrustBadgeElementFactory.INSTANCE.build(mContext, GroupType.LOCATION, ElementType.MAIN);
-                elt.setShouldBeAutoConfigured(false);
-                elt.setAppUsesPermission(AppUsesPermission.TRUE);
-                elt.setUserPermissionStatus(UserPermissionStatus.GRANTED);
-                mTrustBadgeElements.add(elt);
+            /* System permissions */
+//                trustBadgeElements.add(TrustBadgeElementFactory.build(mContext, GroupType.LOCATION, ElementType.PERMISSIONS));
+//                trustBadgeElements.add(TrustBadgeElementFactory.build(mContext, GroupType.CONTACTS, ElementType.PERMISSIONS));
+//                trustBadgeElements.add(TrustBadgeElementFactory.build(mContext, GroupType.STORAGE, ElementType.PERMISSIONS));
+//                trustBadgeElements.add(TrustBadgeElementFactory.build(mContext, GroupType.CALENDAR, ElementType.PERMISSIONS));
+//                trustBadgeElements.add(TrustBadgeElementFactory.build(mContext, GroupType.PHONE, ElementType.PERMISSIONS));
+//                trustBadgeElements.add(TrustBadgeElementFactory.build(mContext, GroupType.SMS, ElementType.PERMISSIONS));
+//                trustBadgeElements.add(TrustBadgeElementFactory.build(mContext, GroupType.CAMERA, ElementType.PERMISSIONS));
+//                trustBadgeElements.add(TrustBadgeElementFactory.build(mContext, GroupType.MICROPHONE, ElementType.PERMISSIONS));
+//                trustBadgeElements.add(TrustBadgeElementFactory.build(mContext, GroupType.SENSORS, ElementType.PERMISSIONS));
+//
+            /* App data elements */
+            mTrustBadgeElements.addAll(TrustBadgeElementFactory.getDefaultAppDataElements(mContext));
 
-                mTrustBadgeElements.add(TrustBadgeElementFactory.INSTANCE.build(mContext, GroupType.STORAGE, ElementType.MAIN));
-                mTrustBadgeElements.add(TrustBadgeElementFactory.INSTANCE.build(mContext, GroupType.CONTACTS, ElementType.MAIN));
-                mTrustBadgeElements.add(TrustBadgeElementFactory.INSTANCE.build(mContext, GroupType.IMPROVEMENT_PROGRAM, ElementType.MAIN, AppUsesPermission.TRUE));
+//                mTrustBadgeElements.add(TrustBadgeElementFactory.build(mContext, GroupType.NOTIFICATIONS, ElementType.APP_DATA, AppUsesPermission.TRUE, false));
+//                mTrustBadgeElements.add(TrustBadgeElementFactory.build(mContext, GroupType.ACCOUNT_CREDENTIALS, ElementType.APP_DATA, AppUsesPermission.TRUE, false));
+//                mTrustBadgeElements.add(TrustBadgeElementFactory.build(mContext, GroupType.ACCOUNT_INFO, ElementType.APP_DATA, AppUsesPermission.FALSE, false));
+//                mTrustBadgeElements.add(TrustBadgeElementFactory.build(mContext, GroupType.IMPROVEMENT_PROGRAM, ElementType.APP_DATA, AppUsesPermission.TRUE, true));
+//                mTrustBadgeElements.add(TrustBadgeElementFactory.build(mContext, GroupType.ADVERTISE, ElementType.APP_DATA, AppUsesPermission.FALSE, false));
+//                //Optional elements
+//                mTrustBadgeElements.add(TrustBadgeElementFactory.build(mContext, GroupType.HISTORY, ElementType.APP_DATA, AppUsesPermission.FALSE, false));
 
-                //custom element in MAIN list
-                TrustBadgeElement customBadge1 = TrustBadgeElementFactory.INSTANCE.build(mContext, GroupType.OTHER, ElementType.MAIN, R.string.custom_badge_1_title, R.string.custom_badge_1_label);
-                customBadge1.setEnabledIconId(R.drawable.otb_ic_contacts_black_32dp);
-                customBadge1.setDisabledIconId(R.drawable.otb_ic_contacts_black_32dp);
-                customBadge1.setToggable(true);
-                customBadge1.setAppUsesPermission(AppUsesPermission.TRUE);
-                mTrustBadgeElements.add(customBadge1);
+            //a first custom badge in the Main list (set to be a toggle switch)
+            TrustBadgeElement customBadge1 = TrustBadgeElementFactory.build(mContext, GroupType.CUSTOM_DATA, ElementType.APP_DATA, R.string.custom_badge_1_title, R.string.custom_badge_1_label);
+            customBadge1.setIconId(R.drawable.otb_ic_contacts);
+            customBadge1.setToggable(true);
+            customBadge1.setAppUsesPermission(AppUsesPermission.TRUE);
+            customBadge1.setUserPermissionStatus(UserPermissionStatus.GRANTED);
+            mTrustBadgeElements.add(customBadge1);
 
-                /** NOT MANDATORY : OTHERS BADGES */
-                mTrustBadgeElements.add(TrustBadgeElementFactory.INSTANCE.build(mContext, GroupType.CAMERA, ElementType.OTHERS));
-                mTrustBadgeElements.add(TrustBadgeElementFactory.INSTANCE.build(mContext, GroupType.AGENDA, ElementType.OTHERS));
-                mTrustBadgeElements.add(TrustBadgeElementFactory.INSTANCE.build(mContext, GroupType.SMS, ElementType.OTHERS));
-                mTrustBadgeElements.add(TrustBadgeElementFactory.INSTANCE.build(mContext, GroupType.MICROPHONE, ElementType.OTHERS));
-                mTrustBadgeElements.add(TrustBadgeElementFactory.INSTANCE.build(mContext, GroupType.PHONE, ElementType.OTHERS));
-                mTrustBadgeElements.add(TrustBadgeElementFactory.INSTANCE.build(mContext, GroupType.SENSORS, ElementType.OTHERS));
-
-                //custom element in OTHERS list
-                TrustBadgeElement customBadge2 = TrustBadgeElementFactory.INSTANCE.build(mContext, GroupType.OTHER, ElementType.OTHERS, R.string.custom_badge_2_title, R.string.custom_badge_2_label);
-                customBadge2.setEnabledIconId(R.drawable.otb_ic_contacts_black_32dp);
-                customBadge2.setDisabledIconId(R.drawable.otb_ic_contacts_black_32dp);
-                customBadge2.setToggable(true);
-                customBadge2.setAppUsesPermission(AppUsesPermission.TRUE);
-                mTrustBadgeElements.add(customBadge2);
-
-                /** MANDATORY : USAGE BADGES */
-                mTrustBadgeElements.add(TrustBadgeElementFactory.INSTANCE.build(mContext, RatingType.THREE));
-                mTrustBadgeElements.add(TrustBadgeElementFactory.INSTANCE.build(mContext, GroupType.BILLING, ElementType.USAGE));
-                mTrustBadgeElements.add(TrustBadgeElementFactory.INSTANCE.build(mContext, GroupType.ADVERTISE, ElementType.USAGE));
-                mTrustBadgeElements.add(TrustBadgeElementFactory.INSTANCE.build(mContext, GroupType.SOCIAL_INFO, ElementType.USAGE));
-
-                // Custom Element in usage badge
-                TrustBadgeElement customBadge3 = TrustBadgeElementFactory.INSTANCE.build(mContext, GroupType.OTHER, ElementType.USAGE, R.string.custom_badge_3_title, R.string.custom_badge_3_label);
-                customBadge3.setEnabledIconId(R.drawable.otb_ic_contacts_black_32dp);
-                customBadge3.setDisabledIconId(R.drawable.otb_ic_contacts_black_32dp);
-                customBadge3.setAppUsesPermission(AppUsesPermission.TRUE);
-                customBadge3.setToggable(true);
-                mTrustBadgeElements.add(customBadge3);
-            }
         }
         return mTrustBadgeElements;
     }
 
     public List<Term> getTerms() {
-        if (null == mTerms) {
-            mTerms = new ArrayList<>();
-            //Add video => This term will only work if device OS > 2.3
-            mTerms.add(new Term(TermType.VIDEO, R.string.otb_terms_video_title, R.string.otb_terms_video_content));
-            mTerms.add(new Term(TermType.TEXT, R.string.otb_terms_usage_title, R.string.otb_terms_usage_content));
-            mTerms.add(new Term(TermType.TEXT, R.string.otb_terms_help_title, R.string.otb_terms_help_content));
-            mTerms.add(new Term(TermType.TEXT, R.string.otb_terms_more_info_title, R.string.otb_terms_more_info_content));
-        }
-        return mTerms;
+        return TrustBadgeElementFactory.getDefaultTermElements(mContext);
     }
 }

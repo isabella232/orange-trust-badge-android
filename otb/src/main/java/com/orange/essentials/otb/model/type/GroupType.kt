@@ -26,54 +26,31 @@ package com.orange.essentials.otb.model.type
  * System PermissionGroupName have to match real Android permission group name
  * ex :
  */
-enum class GroupType private constructor(val isSystemPermission: Boolean, private val mPermissionNames: Array<String>?) {
-    /** Mandatory Group permissions : Check on M Permission group on 06/11/2015  */
+enum class GroupType constructor(val isSystemPermission: Boolean, private val mPermissionNames: Array<String>?) {
+    /** System Permissions : Permission group on 06/11/2015  */
     /**
-     * Not A permission
-     * OTB Displayed group permission : Identity
+     * android.permission-group.PERSONAL_INFO
+     * OTB Displayed group permission :  Calendar (Agenda)
      */
-    IDENTITY(false, null),
-    /**
-     * android.permission-group.LOCATION
-     * OTB Displayed group permission : Location
-     */
-    LOCATION(true, arrayOf("ACCESS_FINE_LOCATION", "ACCESS_COARSE_LOCATION")),
-    /**
-     * android.permission-group.STORAGE
-     * OTB Displayed group permission : STORAGE (Medias)
-     */
-    STORAGE(true, arrayOf("READ_EXTERNAL_STORAGE", "WRITE_EXTERNAL_STORAGE")),
-    /**
-     * Not A permission
-     * OTB Displayed group permission : IMPROVEMENT_PROGRAM (Collecte de données)
-     */
-    IMPROVEMENT_PROGRAM(false, null),
-    /**
-     * android.permission-group.CONTACTS
-     * OTB Displayed group permission : Contact
-     */
-    CONTACTS(true, arrayOf("READ_CONTACTS", "WRITE_CONTACTS", "GET_ACCOUNTS")),
-
-    /** Other group permissions  */
-
+    CALENDAR(true, arrayOf("READ_CALENDAR", "WRITE_CALENDAR")),
     /**
      * android.permission-group.CAMERA
-     * OTB Displayed group permission : Camera (App photo)
+     * OTB Displayed group permission : Camera (Appareil photo)
      */
     CAMERA(true, arrayOf("CAMERA")),
     /**
-     * android.permission-group.PERSONAL_INFO
-     * OTB Displayed group permission :  Agenda
+     * android.permission-group.CONTACTS
+     * OTB Displayed group permission : Contacts (Contacts)
      */
-    AGENDA(true, arrayOf("READ_CALENDAR", "WRITE_CALENDAR")),
+    CONTACTS(true, arrayOf("READ_CONTACTS", "WRITE_CONTACTS", "GET_ACCOUNTS")),
     /**
-     * android.permission-group.MESSAGES
-     * OTB Displayed group permission :  SMS
+     * android.permission-group.LOCATION
+     * OTB Displayed group permission : Location (Position)
      */
-    SMS(true, arrayOf("SEND_SMS", "RECEIVE_SMS", "READ_SMS", "RECEIVE_WAP_PUSH", "RECEIVE_MMS")),
+    LOCATION(true, arrayOf("ACCESS_FINE_LOCATION", "ACCESS_COARSE_LOCATION")),
     /**
      * android.permission-group.RECORD_AUDIO
-     * OTB Displayed group permission :  Microphone
+     * OTB Displayed group permission :  Micro
      */
     MICROPHONE(true, arrayOf("RECORD_AUDIO")),
     /**
@@ -87,30 +64,53 @@ enum class GroupType private constructor(val isSystemPermission: Boolean, privat
      */
     SENSORS(true, arrayOf("BODY_SENSORS")),
     /**
-     * Not a permission
-     * OTB Displayed group permission :  billing (achats in app)
+     * android.permission-group.MESSAGES
+     * OTB Displayed group permission :  SMS
      */
-    BILLING(false, null),
+    SMS(true, arrayOf("SEND_SMS", "RECEIVE_SMS", "READ_SMS", "RECEIVE_WAP_PUSH", "RECEIVE_MMS")),
+    /**
+     * android.permission-group.STORAGE
+     * OTB Displayed group permission : STORAGE (Medias)
+     */
+    STORAGE(true, arrayOf("READ_EXTERNAL_STORAGE", "WRITE_EXTERNAL_STORAGE")),
+
+    /** Application data permissions  */
+
+    /**
+     * Not a permission
+     * OTB Displayed group permission :  Notifications (notifications)
+     */
+    NOTIFICATIONS(false, null),
     /**
      * Not A permission
-     * OTB Displayed group permission :  advertise (publicité)
+     * OTB Displayed group permission : Account credentials (identifiants)
+     */
+    ACCOUNT_CREDENTIALS(false, null),
+    /**
+     * Not A permission
+     * OTB Displayed group permission :  Account informations (Infos de comptes)
+     */
+    ACCOUNT_INFO(false, null),
+    /**
+     * Not A permission
+     * OTB Displayed group permission : IMPROVEMENT_PROGRAM (Programme d'améliorations)
+     */
+    IMPROVEMENT_PROGRAM(false, null),
+    /**
+     * Not A permission
+     * OTB Displayed group permission :  Advertise (publicité)
      */
     ADVERTISE(false, null),
     /**
      * Not A permission
-     * OTB Displayed group permission :  pegi
+     * OTB Displayed group permission :  History (Historique et préférences)
      */
-    PEGI(false, null),
-    /**
-     * Not A permission
-     * OTB Displayed group permission :  social networks
-     */
-    SOCIAL_INFO(false, null),
+    HISTORY(false, null),
     /**
      * Not A permission
      * OTB Displayed group permission :  others (app specific)
      */
-    OTHER(false, null);
+    CUSTOM_DATA(false, null);
 
     fun matchPermission(permissionName: String?): Boolean {
         var belongs = false

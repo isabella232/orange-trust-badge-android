@@ -31,9 +31,9 @@
     android:layout_height="wrap_content"
     android:gravity="center_vertical|center_horizontal"
     android:orientation="vertical"
-    android:paddingEnd="@dimen/otb_key_data_padding_24dp"
+    android:paddingEnd="@dimen/otb_24dp"
     android:paddingLeft="0dp"
-    android:paddingRight="@dimen/otb_key_data_padding_24dp"
+    android:paddingRight="@dimen/otb_24dp"
     android:paddingStart="0dp"
     android:visibility="visible">
 
@@ -48,7 +48,7 @@
         style="@style/otb_main_subtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/otb_landing_padding_5dp"
+        android:paddingTop="@dimen/otb_5dp"
         tools:text="Oui"/>
 
 </LinearLayout>

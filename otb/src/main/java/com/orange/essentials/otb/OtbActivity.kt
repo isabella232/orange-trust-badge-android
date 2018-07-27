@@ -33,31 +33,24 @@ import com.orange.essentials.otb.manager.TrustBadgeManager
 import com.orange.essentials.otb.model.Term
 import com.orange.essentials.otb.model.TrustBadgeElement
 import com.orange.essentials.otb.model.type.GroupType
+import com.orange.essentials.otb.ui.OtbAppDataFragment
 import com.orange.essentials.otb.ui.OtbContainerFragment
-import com.orange.essentials.otb.ui.OtbDataFragment
+import com.orange.essentials.otb.ui.OtbPermissionsFragment
 import com.orange.essentials.otb.ui.OtbTermsFragment
-import com.orange.essentials.otb.ui.OtbUsageFragment
 import java.io.Serializable
-
 
 /**
  * OtbActivity
  * Main activity for the lib
  */
-
-class OtbActivity : AppCompatActivity(), OtbContainerFragment.OtbFragmentListener, BadgeListener {
-
-    public override fun onCreate(savedInstanceState: Bundle?) {
+open class OtbActivity : AppCompatActivity(), OtbContainerFragment.OtbFragmentListener, BadgeListener {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.otb_activity)
-
         /** Manage toolbar  */
-        if (supportActionBar != null) {
-            supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-            supportActionBar!!.setTitle(R.string.otb_app_name)
-        }
-
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setTitle(R.string.otb_app_name)
         /** Calling the fragment  */
         if (savedInstanceState == null) {
             isMasterDetail = useMasterDetail()
@@ -69,7 +62,7 @@ class OtbActivity : AppCompatActivity(), OtbContainerFragment.OtbFragmentListene
                 Log.v(TAG, "popBackstack")
                 //restore from scratch
                 val fm = supportFragmentManager
-                for (i in 0..fm.backStackEntryCount - 1) {
+                for (i in 0 until fm.backStackEntryCount) {
                     fm.popBackStack()
                 }
                 initFragments()
@@ -91,28 +84,32 @@ class OtbActivity : AppCompatActivity(), OtbContainerFragment.OtbFragmentListene
                     .attach(otbContainerFrag)
                     .commit()
         }
-
         // Landscape mode
         if (useMasterDetail()) {
             Log.d(TAG, "Landscape mode - add child fragment")
-            var frag: Fragment? = null
-            var tag: String? = null
-            if (TrustBadgeManager.INSTANCE.hasData()) {
-                Log.d(TAG, "Landscape mode - add data fragment")
-                frag = OtbDataFragment()
-                tag = OtbDataFragment.FRAG_TAG
-            } else if (TrustBadgeManager.INSTANCE.hasUsage()) {
-                Log.d(TAG, "Landscape mode - add usage fragment")
-                frag = OtbUsageFragment()
-                tag = OtbUsageFragment.FRAG_TAG
-            } else if (TrustBadgeManager.INSTANCE.hasTerms()) {
-                Log.d(TAG, "Landscape mode - add terms fragment")
-                frag = OtbTermsFragment()
-                tag = OtbTermsFragment.FRAG_TAG
-            } else {
-                Log.d(TAG, "Landscape mode - No item found, add data fragment by default")
-                frag = OtbDataFragment()
-                tag = OtbDataFragment.FRAG_TAG
+            val frag: Fragment?
+            val tag: String?
+            when {
+                TrustBadgeManager.INSTANCE.hasPermissions() -> {
+                    Log.d(TAG, "Landscape mode - add data fragment")
+                    frag = OtbPermissionsFragment()
+                    tag = OtbPermissionsFragment.FRAG_TAG
+                }
+                TrustBadgeManager.INSTANCE.hasAppData() -> {
+                    Log.d(TAG, "Landscape mode - add usage fragment")
+                    frag = OtbAppDataFragment()
+                    tag = OtbAppDataFragment.FRAG_TAG
+                }
+                TrustBadgeManager.INSTANCE.hasTerms() -> {
+                    Log.d(TAG, "Landscape mode - add terms fragment")
+                    frag = OtbTermsFragment()
+                    tag = OtbTermsFragment.FRAG_TAG
+                }
+                else -> {
+                    Log.d(TAG, "Landscape mode - No item found, add data fragment by default")
+                    frag = OtbPermissionsFragment()
+                    tag = OtbPermissionsFragment.FRAG_TAG
+                }
             }
             supportFragmentManager.beginTransaction()
                     .add(R.id.lightfragment_detail, frag, tag)
@@ -122,34 +119,28 @@ class OtbActivity : AppCompatActivity(), OtbContainerFragment.OtbFragmentListene
     }
 
     // region OtbContainerFragment.ContainerFragmentListener
-
-    override fun onDataClick() {
-        Log.d(TAG, "onDataClick")
-        displayDetail(OtbDataFragment(), OtbDataFragment.FRAG_TAG)
-    }
-
-    override fun onUsageClick() {
-        Log.d(TAG, "onUsageClick")
-        displayDetail(OtbUsageFragment(), OtbUsageFragment.FRAG_TAG)
-    }
-
-    override fun onTermsClick() {
-        Log.d(TAG, "onTermsClick")
-        displayDetail(OtbTermsFragment(), OtbTermsFragment.FRAG_TAG)
+    override fun onCardClick(index: Int) {
+        Log.d(TAG, "onCardClick, index $index")
+        when (index) {
+            OtbContainerFragment.DATA_SELECTED -> displayDetail(OtbPermissionsFragment(), OtbPermissionsFragment.FRAG_TAG)
+            OtbContainerFragment.USAGE_SELECTED -> displayDetail(OtbAppDataFragment(), OtbAppDataFragment.FRAG_TAG)
+            OtbContainerFragment.TERM_SELECTED -> displayDetail(OtbTermsFragment(), OtbTermsFragment.FRAG_TAG)
+            else -> displayDetail(TrustBadgeManager.INSTANCE.customDataFragments[index - 3].fragment, TrustBadgeManager.INSTANCE.customDataFragments[index - 3].fragment.tag.toString())
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == android.R.id.home) {
-            // app icon in action bar clicked; goto parent activity.
-            val fm = supportFragmentManager
-            if (fm.backStackEntryCount > 0) {
-                fm.popBackStack()
-            } else {
-                finish()
+        return when {
+            (item.itemId == android.R.id.home) -> {
+                val fm = supportFragmentManager
+                if (fm.backStackEntryCount > 0) {
+                    fm.popBackStack()
+                } else {
+                    finish()
+                }
+                true
             }
-            return true
-        } else {
-            return super.onOptionsItemSelected(item)
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
@@ -159,8 +150,6 @@ class OtbActivity : AppCompatActivity(), OtbContainerFragment.OtbFragmentListene
     }
 
     // endregion
-
-
     // region Private methods
     private fun useMasterDetail(): Boolean {
         return findViewById<View>(R.id.lightfragment_detail) != null
@@ -179,23 +168,33 @@ class OtbActivity : AppCompatActivity(), OtbContainerFragment.OtbFragmentListene
 
     override fun onBadgeChange(trustBadgeElement: TrustBadgeElement, value: Boolean, callingActivity: AppCompatActivity) {
         Log.d(TAG, "onChange trustBadgeElement=$trustBadgeElement value=$value")
-        if (GroupType.IMPROVEMENT_PROGRAM == trustBadgeElement.groupType) {
-            TrustBadgeManager.INSTANCE.isUsingImprovementProgram = value
-            val frag: Fragment
-            if (useMasterDetail()) {
-                frag = callingActivity.supportFragmentManager.findFragmentById(R.id.lightfragment_detail)
-            } else {
-                frag = callingActivity.supportFragmentManager.findFragmentById(R.id.lightfragment_container)
+        when (trustBadgeElement.groupType) {
+            GroupType.IMPROVEMENT_PROGRAM -> {
+                refreshAll(callingActivity)
             }
-            if (frag is OtbDataFragment) {
-                frag.refreshPermission()
+            GroupType.CUSTOM_DATA -> {
+                refreshAll(callingActivity)
+            }
+            else -> {
             }
         }
-        //No action defined for other badges
     }
+
+    private fun refreshAll(callingActivity: AppCompatActivity) {
+        val frag = if (useMasterDetail()) {
+            callingActivity.supportFragmentManager.findFragmentById(R.id.lightfragment_detail)
+        } else {
+            callingActivity.supportFragmentManager.findFragmentById(R.id.lightfragment_container)
+        }
+        if (frag is OtbPermissionsFragment) {
+            frag.refreshPermissions()
+        }
+        if (frag is OtbAppDataFragment) {
+            frag.refreshAppData()
+        }
+    }
+
     // endregion
-
-
     override fun onSaveInstanceState(outState: Bundle) {
         Log.d(TAG, "Saving Factory")
         super.onSaveInstanceState(outState)
@@ -209,8 +208,9 @@ class OtbActivity : AppCompatActivity(), OtbContainerFragment.OtbFragmentListene
         restoreFactory(savedInstanceState)
     }
 
+    @Suppress("UNCHECKED_CAST")
     private fun restoreFactory(savedInstanceState: Bundle?) {
-        if (null != savedInstanceState && null != savedInstanceState.getSerializable(BADGES_KEY)) {
+        savedInstanceState?.getSerializable(BADGES_KEY)?.let {
             Log.d(TAG, "Restoring factory from instanceState")
             val badges = savedInstanceState.getSerializable(BADGES_KEY) as MutableList<TrustBadgeElement>
             val terms = savedInstanceState.getSerializable(TERMS_KEY) as List<Term>
@@ -219,11 +219,9 @@ class OtbActivity : AppCompatActivity(), OtbContainerFragment.OtbFragmentListene
     }
 
     companion object {
-
-        private val TAG = "OtbActivity"
-        private val BADGES_KEY = "BadgesKey"
-        private val TERMS_KEY = "TermsKey"
-
-        private var isMasterDetail: Boolean = false
+        private const val TAG = "OtbActivity"
+        private const val BADGES_KEY = "BadgesKey"
+        private const val TERMS_KEY = "TermsKey"
+        var isMasterDetail: Boolean = false
     }
 }

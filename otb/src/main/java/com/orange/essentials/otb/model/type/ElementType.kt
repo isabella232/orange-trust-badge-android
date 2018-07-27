@@ -26,15 +26,11 @@ package com.orange.essentials.otb.model.type
  */
 enum class ElementType {
     /**
-     * Information for MAIN permissions..
+     * Information for permissions..
      */
-    MAIN,
-    /**
-     * Information group for other permissions.
-     */
-    OTHERS,
+    PERMISSIONS,
     /**
      * Information group usage types and rating.
      */
-    USAGE
+    APP_DATA
 }

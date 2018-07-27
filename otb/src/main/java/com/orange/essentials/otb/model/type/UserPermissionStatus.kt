@@ -26,11 +26,6 @@ package com.orange.essentials.otb.model.type
  */
 enum class UserPermissionStatus {
     /**
-     * Not YET Granted by user
-     * MANDATORY status can't be NOT_YET_GRANTED
-     */
-    /** NOT_YET_GRANTED, */
-    /**
      * Granted by user
      */
     GRANTED,

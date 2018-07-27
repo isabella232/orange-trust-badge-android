@@ -21,8 +21,8 @@
  */
 package com.orange.essentials.otb.ui
 
-import android.content.Context
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.LayoutInflater
@@ -31,38 +31,45 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import com.orange.essentials.otb.OtbActivity
 import com.orange.essentials.otb.R
 import com.orange.essentials.otb.manager.TrustBadgeManager
+import com.orange.essentials.otb.model.TrustBadgeElement
 import com.orange.essentials.otb.model.type.AppUsesPermission
 import com.orange.essentials.otb.model.type.ElementType
-import com.orange.essentials.otb.model.type.GroupType
 import com.orange.essentials.otb.model.type.UserPermissionStatus
 
 /**
  * Main fragment to display otb
  */
 class OtbContainerFragment : android.support.v4.app.Fragment() {
-    private val TAG = "OtbContainerFragment"
-    private val KEY_MAIN_SELECTED = "key_main_selected"
-    private val DATA_SELECTED = 0
-    private val USAGE_SELECTED = 1
-    private val TERM_SELECTED = 2
+    private val keyMainSelected = "key_main_selected"
     private var mListener: OtbFragmentListener? = null
     private var mFragmentSelected = DATA_SELECTED
+    private var layoutContainer: LinearLayout? = null
+    private var hasPermissionMoreIcon = false
+    private var hasAppDataMoreIcon = false
+    private var hasAtLeastOnePermissionGranted = false
+    private var hasAtLeastOneAppDataGranted = false
+    private var dynamicPermissionGrantedText = ""
+    private var dynamicAppDataGrantedText = ""
+    private var nbPermissions = 0
+    private var nbAppData = 0
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putInt(KEY_MAIN_SELECTED, mFragmentSelected)
+        outState.putInt(keyMainSelected, mFragmentSelected)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater!!.inflate(R.layout.otb_home, container, false)
-        val headerTv = view.findViewById<TextView>(R.id.otb_header_tv_text)
-        headerTv.setText(R.string.otb_home_header_title)
+        val view = inflater.inflate(R.layout.otb_home, container, false)
+        val headerAppNameTv = view.findViewById<TextView>(R.id.otb_header_tv_appName)
+        headerAppNameTv.text = TrustBadgeManager.INSTANCE.applicationName
+
         return view
     }
 
     override fun onResume() {
-        Log.d(TAG, "Resuming Fragment")
+        Log.d(tag, "Resuming Fragment")
         super.onResume()
         /** Manage ActionBar title */
         val actionBar = (activity as AppCompatActivity).supportActionBar
@@ -78,25 +85,19 @@ class OtbContainerFragment : android.support.v4.app.Fragment() {
         /** data  */
         setTitleAndLabel(R.id.otb_home_data_card,
                 R.id.otb_home_data_card_tv_title,
-                R.id.otb_home_data_card_tv_content,
-                R.string.otb_home_data_title,
-                R.string.otb_home_data_content,
+                R.string.otb_home_permissions_title,
                 R.string.otb_accessibility_title_description
         )
         /** Usage  */
         setTitleAndLabel(R.id.otb_home_usage_card,
                 R.id.otb_home_data_card_tv_title,
-                R.id.otb_home_data_card_tv_content,
-                R.string.otb_home_usage_title,
-                R.string.otb_home_usage_content,
+                R.string.otb_home_app_data_title,
                 R.string.otb_accessibility_title_description
         )
         /** terms  */
         setTitleAndLabel(R.id.otb_home_terms_card,
                 R.id.otb_home_terms_card_tv_commitment_title,
-                0,
                 R.string.otb_home_terms_title,
-                0,
                 R.string.otb_accessibility_title_description
         )
     }
@@ -105,7 +106,7 @@ class OtbContainerFragment : android.support.v4.app.Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         if (savedInstanceState != null) {
-            initListeners(savedInstanceState.getInt(KEY_MAIN_SELECTED))
+            initListeners(savedInstanceState.getInt(keyMainSelected))
         } else {
             initListeners(DATA_SELECTED)
         }
@@ -126,88 +127,226 @@ class OtbContainerFragment : android.support.v4.app.Fragment() {
     /**
      * Convenient method used to fill information title, label and accessbility string
      */
-    private fun setTitleAndLabel(viewId: Int, titleId: Int, contentId: Int, titleRes: Int, contentRes: Int, accessibilityRes: Int) {
+    private fun setTitleAndLabel(viewId: Int, titleId: Int, titleRes: Int, accessibilityRes: Int) {
         var dataTitle: TextView?
-        var dataDetail: TextView?
-        val container = this.getActivity()!!.findViewById<View>(viewId)
-        dataTitle = container.findViewById<TextView>(titleId)
-        dataDetail = container.findViewById<TextView>(contentId)
+        val container = activity!!.findViewById<View>(viewId)
+        dataTitle = container.findViewById(titleId)
         if (dataTitle == null) {
-            dataTitle = getActivity()!!.findViewById<TextView>(viewId)
+            dataTitle = activity!!.findViewById(viewId)
         }
         dataTitle?.setText(titleRes)
-        dataTitle?.setContentDescription(getString(accessibilityRes) + "  " + getString(titleRes))
-        dataDetail?.setText(contentRes)
+        dataTitle?.contentDescription = getString(accessibilityRes) + "  " + getString(titleRes)
     }
 
     /**
      * Add the policy buttons ont appropriate layout
      */
     private fun buildCards() {
-        Log.d(TAG, "buildCards")
-        var dataLayout: LinearLayout? = null
-        var usageLayout: LinearLayout? = null
-        val containerData = this.getActivity()!!.findViewById<View?>(R.id.otb_home_data_card)
-        containerData?.setVisibility(if (TrustBadgeManager.INSTANCE.hasData()) View.VISIBLE else View.GONE)
-        dataLayout = containerData?.findViewById<LinearLayout?>(R.id.otb_home_data_card_ll_container)
-        val containerUsage = this.getActivity()!!.findViewById<View?>(R.id.otb_home_usage_card)
-        containerUsage?.setVisibility(if (TrustBadgeManager.INSTANCE.hasUsage()) View.VISIBLE else View.GONE)
-        usageLayout = containerUsage?.findViewById<LinearLayout?>(R.id.otb_home_data_card_ll_container)
-        val containerTerms = this.getActivity()!!.findViewById<View?>(R.id.otb_home_terms_card)
+        Log.d(tag, "buildCards")
+        layoutContainer = activity!!.findViewById(R.id.otb_home_ll_container)
+        val permissionLayout: LinearLayout?
+        val appDataLayout: LinearLayout?
+        val permissionContainer = activity!!.findViewById<View?>(R.id.otb_home_data_card)
+        permissionLayout = permissionContainer?.findViewById<LinearLayout?>(R.id.otb_home_data_card_ll_container)
+        val dynamicPermissionTv = permissionContainer?.findViewById<TextView>(R.id.otb_home_data_card_tv_content)
+        val appDataContainer = activity!!.findViewById<View?>(R.id.otb_home_usage_card)
+        appDataLayout = appDataContainer?.findViewById<LinearLayout?>(R.id.otb_home_data_card_ll_container)
+        val dynamicAppDataTv = appDataContainer?.findViewById<TextView>(R.id.otb_home_data_card_tv_content)
+        val termsContainer = activity!!.findViewById<View?>(R.id.otb_home_terms_card)
 
-        containerTerms?.setVisibility(if (TrustBadgeManager.INSTANCE.hasTerms()) View.VISIBLE else View.GONE)
+        termsContainer?.visibility = if (TrustBadgeManager.INSTANCE.hasTerms()) View.VISIBLE else View.GONE
 
-        dataLayout?.removeAllViews()
-        usageLayout?.removeAllViews()
+        permissionLayout?.removeAllViews()
+        appDataLayout?.removeAllViews()
         val trustBadgeElements = TrustBadgeManager.INSTANCE.trustBadgeElements
-        if (trustBadgeElements != null) {
-            for (trustBadgeElement in trustBadgeElements) {
-                Log.d(TAG, trustBadgeElement.toString())
-
-                if (trustBadgeElement.elementType == ElementType.MAIN || trustBadgeElement.elementType == ElementType.USAGE) {
-                    val inflater = context!!.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-                    val view = inflater.inflate(R.layout.otb_custom_toggle_button, null)
+        hasMoreIcons(trustBadgeElements)
+        if (nbPermissions == 0) {
+            dynamicPermissionTv?.text = getString(R.string.otb_home_permission_no_data)
+            permissionLayout?.visibility = View.GONE
+        } else if (!hasAtLeastOnePermissionGranted) {
+            dynamicPermissionTv?.text = getString(R.string.otb_home_permission_no_granted)
+            permissionLayout?.visibility = View.GONE
+        } else {
+            dynamicPermissionTv?.text = dynamicPermissionGrantedText
+        }
+        if (nbAppData == 0) {
+            dynamicAppDataTv?.text = getString(R.string.otb_home_app_data_no_data)
+            appDataLayout?.visibility = View.GONE
+        } else if (!hasAtLeastOneAppDataGranted) {
+            dynamicAppDataTv?.text = getString(R.string.otb_home_app_data_no_granted)
+            appDataLayout?.visibility = View.GONE
+        } else {
+            dynamicAppDataTv?.text = dynamicAppDataGrantedText
+        }
+        var indexPermission = 0
+        var indexUsage = 0
+        if (TrustBadgeManager.INSTANCE.hasPermissions()) {
+            val trustBadgeElementsPermissions = TrustBadgeManager.INSTANCE.permissionElements!!.sortedByDescending { it.userPermissionStatus == UserPermissionStatus.GRANTED }
+            for (trustBadgeElement in trustBadgeElementsPermissions) {
+                if (indexPermission < 5 && hasAtLeastOnePermissionGranted) {
+                    val view = View.inflate(context, R.layout.otb_custom_toggle_button, null)
                     val icon = view.findViewById<ImageView>(R.id.otb_custom_toggle_button_iv_id)
-                    icon.setContentDescription(trustBadgeElement.nameKey)
+                    icon.contentDescription = trustBadgeElement.nameKey
+                    var textActivated = false
                     val buttonText = view.findViewById<TextView>(R.id.otb_custom_toggle_button_tv_id)
-                    if (trustBadgeElement.groupType != GroupType.PEGI) {
-                        if ((trustBadgeElement.appUsesPermission == AppUsesPermission.TRUE) || (trustBadgeElement.appUsesPermission == AppUsesPermission.NOT_SIGNIFICANT)) {
-                            if (trustBadgeElement.userPermissionStatus == UserPermissionStatus.GRANTED || trustBadgeElement.userPermissionStatus == UserPermissionStatus.MANDATORY) {
-                                buttonText.setText(getResources().getString(R.string.otb_toggle_button_granted))
-                                buttonText.setTextColor(getResources().getColor(R.color.colorAccent))
-                                icon.setImageDrawable(getResources().getDrawable(trustBadgeElement.enabledIconId))
-                            } else {
-                                buttonText.setText(getResources().getString(R.string.otb_toggle_button_not_granted))
-                                buttonText.setTextColor(getResources().getColor(R.color.otb_black))
-                                icon.setImageDrawable(getResources().getDrawable(trustBadgeElement.disabledIconId))
-                            }
-                        } else {
-                            buttonText.setText(getResources().getString(R.string.otb_toggle_button_not_granted))
-                            icon.setImageDrawable(getResources().getDrawable(trustBadgeElement.disabledIconId))
+                    if ((trustBadgeElement.appUsesPermission == AppUsesPermission.TRUE) || (trustBadgeElement.appUsesPermission == AppUsesPermission.NOT_SIGNIFICANT)) {
+                        if (trustBadgeElement.userPermissionStatus == UserPermissionStatus.GRANTED || trustBadgeElement.userPermissionStatus == UserPermissionStatus.MANDATORY) {
+                            textActivated = true
                         }
-                    } else {
-                        icon.setImageDrawable(getResources().getDrawable(trustBadgeElement.enabledIconId))
-                        buttonText.setText(TrustBadgeManager.INSTANCE.getPegiAge(trustBadgeElement) + getString(R.string.otb_home_usage_pegi_age))
-                        buttonText.setTextColor(getResources().getColor(R.color.otb_black))
+                    }
+                    customizeElementView(indexPermission, hasPermissionMoreIcon, icon, textActivated, buttonText, trustBadgeElement)
+                    indexPermission++
+                    permissionLayout?.addView(view)
+                    view.setOnClickListener({ _ -> mListener!!.onCardClick(DATA_SELECTED) })
+                }
+            }
+        }
+        if (TrustBadgeManager.INSTANCE.hasAppData()) {
+            val trustBadgeElementsAppDatas = TrustBadgeManager.INSTANCE.appDataElements!!.sortedByDescending { it.appUsesPermission != AppUsesPermission.FALSE && it.userPermissionStatus != UserPermissionStatus.NOT_GRANTED }
+            for (trustBadgeElement in trustBadgeElementsAppDatas) {
+                Log.d(tag, trustBadgeElement.toString())
+                if (indexUsage < 5 && hasAtLeastOneAppDataGranted) {
+                    val view = View.inflate(context, R.layout.otb_custom_toggle_button, null)
+                    val icon = view.findViewById<ImageView>(R.id.otb_custom_toggle_button_iv_id)
+                    icon.contentDescription = trustBadgeElement.nameKey
+                    var textActivated = false
+                    val buttonText = view.findViewById<TextView>(R.id.otb_custom_toggle_button_tv_id)
+                    if ((trustBadgeElement.appUsesPermission == AppUsesPermission.TRUE) || (trustBadgeElement.appUsesPermission == AppUsesPermission.NOT_SIGNIFICANT)) {
+                        if (trustBadgeElement.userPermissionStatus == UserPermissionStatus.GRANTED || trustBadgeElement.userPermissionStatus == UserPermissionStatus.MANDATORY) {
+                            textActivated = true
+                        }
                     }
 
-                    if (trustBadgeElement.elementType == ElementType.MAIN) {
-                        dataLayout!!.addView(view)
-                        view.setOnClickListener(object : View.OnClickListener {
-                            public override fun onClick(v: View) {
-                                mListener!!.onDataClick()
-                            }
-                        })
+                    if (trustBadgeElement.elementType == ElementType.PERMISSIONS) {
+                        customizeElementView(indexPermission, hasPermissionMoreIcon, icon, textActivated, buttonText, trustBadgeElement)
+                        indexPermission++
+                        permissionLayout?.addView(view)
+                        view.setOnClickListener({ _ -> mListener!!.onCardClick(DATA_SELECTED) })
                     } else {
-                        usageLayout!!.addView(view)
-                        view.setOnClickListener(object : View.OnClickListener {
-                            public override fun onClick(v: View) {
-                                mListener!!.onUsageClick()
-                            }
-                        })
+                        customizeElementView(indexUsage, hasAppDataMoreIcon, icon, textActivated, buttonText, trustBadgeElement)
+                        indexUsage++
+                        appDataLayout?.addView(view)
+                        view.setOnClickListener({ _ -> mListener!!.onCardClick(USAGE_SELECTED) })
                     }
                 }
             }
+        }
+        //Add the custom cards / tv if necessary
+        if (TrustBadgeManager.INSTANCE.hasCustomCards()) {
+            var index = 3
+            for (customFragment in TrustBadgeManager.INSTANCE.customDataFragments) {
+                var v: View?
+                val finalIndex = index
+                Log.d(tag, "Adding custom fragment " + customFragment.title + ", index " + index)
+                if (OtbActivity.isMasterDetail) {
+                    v = layoutInflater.inflate(R.layout.otb_home_tv_large, layoutContainer, false)
+                    v.findViewById<TextView>(R.id.otb_home_custom_data_card).text = customFragment.title
+                    v.setOnClickListener({ view ->
+                        mFragmentSelected = finalIndex
+                        for (counter in 0..layoutContainer!!.childCount.minus(1)) {
+                            layoutContainer!!.getChildAt(counter).isSelected = false
+                        }
+                        view.isSelected = true
+                        mListener!!.onCardClick(finalIndex)
+                    })
+                } else {
+                    v = layoutInflater.inflate(R.layout.otb_home_data_card, layoutContainer, false)
+                    v.findViewById<TextView>(R.id.otb_home_data_card_tv_title).text = customFragment.title
+                    val tvContent = v.findViewById<TextView>(R.id.otb_home_data_card_tv_content)
+                    if (customFragment.content != null) {
+                        tvContent.text = customFragment.content
+                    } else {
+                        tvContent.visibility = View.GONE
+                    }
+                    v.setOnClickListener({ _ -> mListener!!.onCardClick(finalIndex) })
+                }
+                index += 1
+                layoutContainer?.addView(v)
+            }
+        }
+    }
+
+    private fun customizeElementView(index: Int, hasMoreIcon: Boolean, icon: ImageView, textActivated: Boolean, buttonText: TextView, trustBadgeElement: TrustBadgeElement) {
+        if (index == 4 && hasMoreIcon) {
+            icon.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.otb_ic_more))
+        } else {
+            if (textActivated) {
+                buttonText.text = resources.getString(R.string.otb_toggle_button_granted)
+                buttonText.setTextColor(ContextCompat.getColor(requireContext(), R.color.colorAccent))
+            } else {
+                buttonText.text = resources.getString(R.string.otb_toggle_button_not_granted)
+                buttonText.setTextColor(ContextCompat.getColor(requireContext(), R.color.otb_black))
+            }
+            icon.setImageDrawable(ContextCompat.getDrawable(requireContext(), trustBadgeElement.iconId))
+        }
+    }
+
+    private fun hasMoreIcons(trustBadgeElements: MutableList<TrustBadgeElement>) {
+        var indexPermission = 0
+        var indexAppData = 0
+        val activatedPermissions = ArrayList<String>()
+        val activatedAppData = ArrayList<String>()
+        dynamicPermissionGrantedText = ""
+        dynamicAppDataGrantedText = ""
+        for (trustBadgeElement in trustBadgeElements) {
+            if (trustBadgeElement.elementType == ElementType.PERMISSIONS) {
+                indexPermission++
+                if (indexPermission == 5) {
+                    hasPermissionMoreIcon = true
+                }
+                if ((trustBadgeElement.appUsesPermission == AppUsesPermission.TRUE) || (trustBadgeElement.appUsesPermission == AppUsesPermission.NOT_SIGNIFICANT)) {
+                    if (trustBadgeElement.userPermissionStatus == UserPermissionStatus.GRANTED || trustBadgeElement.userPermissionStatus == UserPermissionStatus.MANDATORY) {
+                        activatedPermissions.add(trustBadgeElement.nameKey)
+                        hasAtLeastOnePermissionGranted = true
+                    }
+                }
+            } else if (trustBadgeElement.elementType == ElementType.APP_DATA) {
+                indexAppData++
+                if (indexAppData == 5) {
+                    hasAppDataMoreIcon = true
+                }
+                if ((trustBadgeElement.appUsesPermission == AppUsesPermission.TRUE) || (trustBadgeElement.appUsesPermission == AppUsesPermission.NOT_SIGNIFICANT)) {
+                    if (trustBadgeElement.userPermissionStatus == UserPermissionStatus.GRANTED || trustBadgeElement.userPermissionStatus == UserPermissionStatus.MANDATORY) {
+                        activatedAppData.add(trustBadgeElement.nameKey)
+                        hasAtLeastOneAppDataGranted = true
+                    }
+                }
+            }
+        }
+        nbPermissions = indexPermission
+        nbAppData = indexAppData
+        initializeDynamicText(activatedPermissions, true)
+        initializeDynamicText(activatedAppData, false)
+    }
+
+    private fun initializeDynamicText(grantedDataList: ArrayList<String>, isPermission: Boolean) {
+        var index = 0
+        var textToInitialize = ""
+        for (perm in grantedDataList) {
+            if (index == 0) {
+                textToInitialize += perm
+            } else if (index == grantedDataList.size - 1 || index == 4) {
+                textToInitialize += getString(R.string.otb_home_dynamic_and_link)
+                if (index == 4) {
+                    textToInitialize += (grantedDataList.size - index)
+                    textToInitialize += if (grantedDataList.size == 5) {
+                        getString(R.string.otb_home_dynamic_one_more)
+                    } else {
+                        getString(R.string.otb_home_dynamic_more)
+                    }
+                    break
+                } else {
+                    textToInitialize += perm
+                }
+            } else {
+                textToInitialize += getString(R.string.otb_home_dynamic_comma_link) + perm
+            }
+            index++
+        }
+        if (isPermission) {
+            dynamicPermissionGrantedText = textToInitialize
+        } else {
+            dynamicAppDataGrantedText = textToInitialize
         }
     }
 
@@ -217,62 +356,59 @@ class OtbContainerFragment : android.support.v4.app.Fragment() {
      * @param fragmentSelected the selected fragment identifier
      */
     private fun initListeners(fragmentSelected: Int) {
-        val dataCardLayout = getActivity()!!.findViewById<View>(R.id.otb_home_data_card)
-        val usageCardLayout = getActivity()!!.findViewById<View>(R.id.otb_home_usage_card)
-        val termsCardLayout = getActivity()!!.findViewById<View>(R.id.otb_home_terms_card)
+        val dataCardLayout = activity!!.findViewById<View>(R.id.otb_home_data_card)
+        val usageCardLayout = activity!!.findViewById<View>(R.id.otb_home_usage_card)
+        val termsCardLayout = activity!!.findViewById<View>(R.id.otb_home_terms_card)
         if (dataCardLayout is TextView) {
             when (fragmentSelected) {
                 USAGE_SELECTED -> {
-                    usageCardLayout.setSelected(true)
+                    usageCardLayout.isSelected = true
                     mFragmentSelected = USAGE_SELECTED
                 }
                 TERM_SELECTED -> {
-                    termsCardLayout.setSelected(true)
+                    termsCardLayout.isSelected = true
                     mFragmentSelected = TERM_SELECTED
                 }
                 DATA_SELECTED -> {
-                    dataCardLayout.setSelected(true)
+                    dataCardLayout.isSelected = true
                     mFragmentSelected = DATA_SELECTED
                 }
                 else -> {
-                    dataCardLayout.setSelected(true)
+                    dataCardLayout.isSelected = true
                     mFragmentSelected = DATA_SELECTED
                 }
             }
         }
-        dataCardLayout.setOnClickListener(object : View.OnClickListener {
-            public override fun onClick(v: View) {
-                if (dataCardLayout is TextView) {
-                    mFragmentSelected = DATA_SELECTED
-                    dataCardLayout.setSelected(true)
-                    usageCardLayout.setSelected(false)
-                    termsCardLayout.setSelected(false)
-                }
-                mListener!!.onDataClick()
+        dataCardLayout.setOnClickListener({ _ ->
+            if (dataCardLayout is TextView) {
+                mFragmentSelected = DATA_SELECTED
+                unSelectAllViews()
+                dataCardLayout.isSelected = true
             }
+            mListener!!.onCardClick(DATA_SELECTED)
         })
-        usageCardLayout.setOnClickListener(object : View.OnClickListener {
-            public override fun onClick(v: View) {
-                if (dataCardLayout is TextView) {
-                    mFragmentSelected = USAGE_SELECTED
-                    dataCardLayout.setSelected(false)
-                    usageCardLayout.setSelected(true)
-                    termsCardLayout.setSelected(false)
-                }
-                mListener!!.onUsageClick()
+        usageCardLayout.setOnClickListener({ _ ->
+            if (dataCardLayout is TextView) {
+                mFragmentSelected = USAGE_SELECTED
+                unSelectAllViews()
+                usageCardLayout.isSelected = true
             }
+            mListener!!.onCardClick(USAGE_SELECTED)
         })
-        termsCardLayout.setOnClickListener(object : View.OnClickListener {
-            public override fun onClick(v: View) {
-                if (dataCardLayout is TextView) {
-                    mFragmentSelected = TERM_SELECTED
-                    dataCardLayout.setSelected(false)
-                    usageCardLayout.setSelected(false)
-                    termsCardLayout.setSelected(true)
-                }
-                mListener!!.onTermsClick()
+        termsCardLayout.setOnClickListener({ _ ->
+            if (dataCardLayout is TextView) {
+                mFragmentSelected = TERM_SELECTED
+                unSelectAllViews()
+                termsCardLayout.isSelected = true
             }
+            mListener!!.onCardClick(TERM_SELECTED)
         })
+    }
+
+    private fun unSelectAllViews() {
+        for (counter in 0..layoutContainer!!.childCount.minus(1)) {
+            layoutContainer!!.getChildAt(counter).isSelected = false
+        }
     }
 
     /**
@@ -280,16 +416,19 @@ class OtbContainerFragment : android.support.v4.app.Fragment() {
      * this listener notify the ContainerFragments events to host application
      */
     interface OtbFragmentListener {
-        fun onDataClick()
-        fun onUsageClick()
-        fun onTermsClick()
+        fun onCardClick(index: Int)
     }
 
     companion object {
-        val FRAG_TAG = "OtbContainerFragment"
+        const val FRAG_TAG = "OtbContainerFragment"
         fun newInstance(): OtbContainerFragment {
             return OtbContainerFragment()
         }
+
+        const val DATA_SELECTED = 0
+        const val USAGE_SELECTED = 1
+        const val TERM_SELECTED = 2
+
     }
 
 }

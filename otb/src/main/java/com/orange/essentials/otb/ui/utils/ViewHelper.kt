@@ -26,15 +26,18 @@ import android.animation.ValueAnimator
 import android.annotation.TargetApi
 import android.content.Context
 import android.os.Build
+import android.support.v4.content.ContextCompat
+import android.text.Html
+import android.text.method.LinkMovementMethod
 import android.view.View
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import com.orange.essentials.otb.R
 import com.orange.essentials.otb.event.EventType
 import com.orange.essentials.otb.manager.TrustBadgeManager
 import com.orange.essentials.otb.model.TrustBadgeElement
 import com.orange.essentials.otb.model.type.AppUsesPermission
-import com.orange.essentials.otb.model.type.GroupType
 import com.orange.essentials.otb.model.type.UserPermissionStatus
 
 /**
@@ -49,48 +52,56 @@ import com.orange.essentials.otb.model.type.UserPermissionStatus
 enum class ViewHelper {
     INSTANCE;
 
-    fun buildView(view: View, element: TrustBadgeElement, context: Context) {
-        val icon = view.findViewById<ImageView>(R.id.otb_data_usage_item_iv_icon) as ImageView
-        val titleTv = view.findViewById<TextView>(R.id.otb_data_usage_item_tv_title) as TextView
-        val statusTv = view.findViewById<TextView>(R.id.otb_data_usage_item_tv_status) as TextView
-        val childIndicator = view.findViewById<ImageView>(R.id.otb_data_usage_item_iv_child_indicator) as ImageView
-        val descriptionTv = view.findViewById<TextView>(R.id.otb_data_usage_item_tv_description) as TextView
+    fun buildView(view: View, element: TrustBadgeElement, context: Context, isPerm: Boolean) {
+        val icon = view.findViewById(R.id.otb_data_usage_item_iv_icon) as ImageView
+        val titleTv = view.findViewById(R.id.otb_data_usage_item_tv_title) as TextView
+        val statusTv = view.findViewById(R.id.otb_data_usage_item_tv_status) as TextView
+        val childIndicator = view.findViewById(R.id.otb_data_usage_item_iv_child_indicator) as ImageView
+        val descriptionTv = view.findViewById(R.id.otb_data_usage_item_tv_description) as TextView
         val itemlayout = view.findViewById<View>(R.id.otb_data_usage_item_ll)
+        val settingTv = view.findViewById<TextView>(R.id.otb_data_usage_tv_goto)
+        val expandLayout = view.findViewById<LinearLayout>(R.id.otb_data_usage_item_ll_expandableContent)
 
-        icon.setImageDrawable(context.resources.getDrawable(element.disabledIconId))
+        icon.setImageDrawable(ContextCompat.getDrawable(context, element.iconId))
         titleTv.text = element.nameKey
         //for accessibility
         titleTv.contentDescription = titleTv.text.toString() + "  " + context.getString(R.string.otb_accessibility_item_open_row_description)
 
-        if (element.groupType == GroupType.PEGI || element.isToggable && element.appUsesPermission == AppUsesPermission.TRUE) {
+        if (element.isToggable && element.appUsesPermission == AppUsesPermission.TRUE) {
             statusTv.visibility = View.GONE
         } else {
             if ((element.appUsesPermission == AppUsesPermission.TRUE || element.appUsesPermission == AppUsesPermission.NOT_SIGNIFICANT) && (element.userPermissionStatus == UserPermissionStatus.GRANTED || element.userPermissionStatus == UserPermissionStatus.MANDATORY)) {
-                statusTv.setTextColor(context.resources.getColor(R.color.colorAccent))
+                statusTv.setTextColor(ContextCompat.getColor(context, R.color.colorAccent))
                 statusTv.text = context.getString(R.string.otb_toggle_button_granted)
             } else {
-                statusTv.setTextColor(context.resources.getColor(R.color.otb_black))
+                statusTv.setTextColor(ContextCompat.getColor(context, R.color.otb_black))
                 statusTv.text = context.resources.getString(R.string.otb_toggle_button_not_granted)
             }
         }
 
-        childIndicator.setImageDrawable(context.resources.getDrawable(R.drawable.otb_ic_expand_more))
+        childIndicator.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.otb_ic_expand_more))
         val tagMoreValue = "more"
         val tagLessValue = "less"
 
         childIndicator.tag = tagMoreValue
-        descriptionTv.text = element.descriptionKey
+        descriptionTv.text = Html.fromHtml(element.descriptionKey)
+        descriptionTv.movementMethod = LinkMovementMethod.getInstance()
         val expandClick = View.OnClickListener {
             TrustBadgeManager.INSTANCE.eventTagger?.tagElement(EventType.TRUSTBADGE_ELEMENT_TAPPED, element)
             if (childIndicator.tag == tagMoreValue) {
-                childIndicator.setImageDrawable(context.resources.getDrawable(R.drawable.otb_ic_expand_less))
+                childIndicator.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.otb_ic_expand_less))
                 childIndicator.tag = tagLessValue
-                expand(descriptionTv, view)
+                if (isPerm) {
+                    settingTv.visibility = View.VISIBLE
+                } else {
+                    settingTv.visibility = View.GONE
+                }
+                expand(expandLayout, view)
                 titleTv.contentDescription = titleTv.text.toString() + "  " + context.getString(R.string.otb_accessibility_item_close_row_description)
             } else {
-                childIndicator.setImageDrawable(context.resources.getDrawable(R.drawable.otb_ic_expand_more))
+                childIndicator.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.otb_ic_expand_more))
                 childIndicator.tag = tagMoreValue
-                collapse(descriptionTv)
+                collapse(expandLayout)
                 titleTv.contentDescription = titleTv.text.toString() + "  " + context.getString(R.string.otb_accessibility_item_open_row_description)
             }
         }

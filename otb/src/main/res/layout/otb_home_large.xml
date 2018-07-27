@@ -23,72 +23,46 @@
   Created:     2016-03-15 by Aurore Penault, Vincent Boesch, and Giovanni Battista Accetta
 -->
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/otb_light_grey"
-    android:orientation="vertical">
+<LinearLayout android:id="@+id/otb_home_ll_container"
+              xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/otb_light_grey"
+              android:orientation="vertical">
 
 
-    <TextView
-        android:id="@+id/otb_header_tv_text"
-        style="@style/otb_main_subtitle"
-        android:layout_width="match_parent"
-        android:layout_height="130dp"
-        android:background="@color/otb_header_color"
-        android:paddingLeft="@dimen/otb_landing_padding_20dp"
-        android:paddingRight="@dimen/otb_landing_padding_20dp"
-        android:paddingTop="@dimen/otb_landing_padding_24dp"
-        android:text="@string/otb_home_title"/>
-
+    <include layout="@layout/otb_header" />
 
     <TextView
         android:id="@+id/otb_home_data_card"
         style="@style/otb_main_title"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/otb_key_data_padding_48dp"
+        android:layout_height="@dimen/otb_48dp"
         android:background="@drawable/otb_list_selector"
         android:gravity="center_vertical"
-        android:paddingLeft="@dimen/otb_landing_padding_16dp"
-        android:paddingRight="@dimen/otb_landing_padding_16dp"
-        android:text="@string/otb_home_data_title"/>
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/otb_divider" />
+        android:paddingLeft="@dimen/otb_16dp"
+        android:paddingRight="@dimen/otb_16dp"
+        android:text="@string/otb_home_permissions_title" />
 
     <TextView
         android:id="@+id/otb_home_usage_card"
         style="@style/otb_main_title"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/otb_key_data_padding_48dp"
+        android:layout_height="@dimen/otb_48dp"
         android:background="@drawable/otb_list_selector"
         android:gravity="center_vertical"
-        android:paddingLeft="@dimen/otb_landing_padding_16dp"
-        android:paddingRight="@dimen/otb_landing_padding_16dp"
-        android:text="@string/otb_home_usage_title"/>
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/otb_divider" />
+        android:paddingLeft="@dimen/otb_16dp"
+        android:paddingRight="@dimen/otb_16dp"
+        android:text="@string/otb_home_app_data_title" />
 
     <TextView
         android:id="@+id/otb_home_terms_card"
         style="@style/otb_main_title"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/otb_key_data_padding_48dp"
+        android:layout_height="@dimen/otb_48dp"
         android:background="@drawable/otb_list_selector"
         android:gravity="center_vertical"
-        android:paddingLeft="@dimen/otb_landing_padding_16dp"
-        android:paddingRight="@dimen/otb_landing_padding_16dp"
-        android:text="@string/otb_home_terms_title"/>
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/otb_divider" />
-
+        android:paddingLeft="@dimen/otb_16dp"
+        android:paddingRight="@dimen/otb_16dp"
+        android:text="@string/otb_home_terms_title" />
 </LinearLayout>

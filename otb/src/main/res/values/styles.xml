@@ -23,6 +23,14 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="otb_colored_button">
+        <item name="android:textColor">@color/colorAccent</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:fontFamily" tools:ignore="NewApi">Roboto-Bold</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
+    </style>
+
     <style name="otb_body_light">
         <item name="android:textColor">@color/otb_main_text</item>
         <item name="android:textSize">14sp</item>
@@ -38,6 +46,12 @@
         <item name="colorControlActivated">@color/colorAccent</item>
     </style>
 
+    <style name="otb_separator">
+        <item name="android:background">@drawable/otb_divider</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:focusable">false</item>
+    </style>
 
 
 </resources>

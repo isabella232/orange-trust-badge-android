@@ -5,17 +5,17 @@ apply from: '../constants.gradle'
 
 
 group = 'com.orange.essentials'
-version = 'G01R00C00'
+version = 'G02R00C00'
 
 android {
-    compileSdkVersion 27
-    buildToolsVersion "27.0.3"
+    compileSdkVersion 28
+    buildToolsVersion "28.0.1"
 
     defaultConfig {
         //applicationId "com.orange.essentials.otb"
         minSdkVersion 14
-        targetSdkVersion 27
-        versionCode 16
+        targetSdkVersion 28
+        versionCode 17
         versionName version_name
         setProperty("archivesBaseName", "Orange_trust_badge-$versionName")
     }
@@ -29,11 +29,11 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile "com.android.support:appcompat-v7:${project.ext.support_version}"
-    compile "com.android.support:cardview-v7:${project.ext.support_version}"
-    compile "com.android.support:recyclerview-v7:${project.ext.support_version}"
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation "com.android.support:appcompat-v7:${project.ext.support_version}"
+    implementation "com.android.support:cardview-v7:${project.ext.support_version}"
+    implementation "com.android.support:recyclerview-v7:${project.ext.support_version}"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 }
 repositories {
     mavenCentral()

@@ -30,9 +30,9 @@
     android:layout_height="wrap_content"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/otb_key_data_padding_24dp"
-    android:paddingLeft="@dimen/otb_landing_padding_16dp"
-    android:paddingRight="@dimen/otb_landing_padding_16dp">
+    android:paddingBottom="@dimen/otb_24dp"
+    android:paddingLeft="@dimen/otb_16dp"
+    android:paddingRight="@dimen/otb_16dp">
 
     <TextView
         android:id="@+id/otb_term_video_title"
@@ -40,8 +40,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:paddingBottom="@dimen/otb_landing_padding_16dp"
-        android:paddingTop="@dimen/otb_landing_padding_16dp"/>
+        android:paddingBottom="@dimen/otb_16dp"
+        android:paddingTop="@dimen/otb_16dp"/>
 
 
     <com.orange.essentials.otb.ui.utils.AutoResizingFrameLayout

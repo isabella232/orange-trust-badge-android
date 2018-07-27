@@ -5,7 +5,7 @@ configurations.all {
 }
 android {
     compileSdkVersion 27
-    buildToolsVersion "27.0.3"
+    buildToolsVersion "28.0.1"
 
     lintOptions{
         abortOnError false
@@ -14,7 +14,7 @@ android {
     defaultConfig {
         applicationId "com.orange.essentials.demo.otb"
         minSdkVersion 14
-        targetSdkVersion 27
+        targetSdkVersion 28
         versionCode 16
         versionName version_name
         archivesBaseName = "Demo_trust_badge"
@@ -28,11 +28,11 @@ android {
     }
 
     dependencies {
-        compile "com.android.support:appcompat-v7:${project.ext.support_version}"
-        compile "com.android.support:support-v4:${project.ext.support_version}"
+        implementation "com.android.support:appcompat-v7:${project.ext.support_version}"
+        implementation "com.android.support:support-v4:${project.ext.support_version}"
     }
 }
 
 dependencies {
-    compile project(':otb')
+    implementation project(':otb')
 }

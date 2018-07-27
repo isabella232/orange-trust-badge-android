@@ -17,7 +17,6 @@
 package com.orange.essentials.otb.ui.utils
 
 import android.content.Context
-import android.media.Image
 import android.os.Handler
 import android.os.Message
 import android.util.AttributeSet
@@ -61,6 +60,7 @@ import java.util.*
  *
  */
 class VideoControllerView : FrameLayout {
+
     internal var mFormatBuilder: StringBuilder? = null
     internal var mFormatter: Formatter? = null
     private var mPlayer: MediaPlayerControl? = null
@@ -74,7 +74,7 @@ class VideoControllerView : FrameLayout {
         private set
     private var mDragging: Boolean = false
     private var mUseFastForward: Boolean = false
-    private var mFromXml: Boolean = false as Boolean
+    private var mFromXml: Boolean = false
     private var mListenersSet: Boolean = false
     private var mNextListener: View.OnClickListener? = null
     private var mPrevListener: View.OnClickListener? = null
@@ -89,14 +89,14 @@ class VideoControllerView : FrameLayout {
         doPauseResume()
         show(sDefaultTimeout)
     }
-    private val mFullscreenListener = View.OnClickListener {
+    /*private val mFullscreenListener = View.OnClickListener {
         doToggleFullscreen()
         show(sDefaultTimeout)
-    }
-    // There are two scenarios that can trigger the seekbar listener to trigger:
+    }*/
+    // There are two scenarios that can trigger the seek bar listener to trigger:
     //
-    // The first is the user using the touchpad to adjust the posititon of the
-    // seekbar's thumb. In this case onStartTrackingTouch is called followed by
+    // The first is the user using the touch pad to adjust the position of the
+    // seek bar's thumb. In this case onStartTrackingTouch is called followed by
     // a number of onProgressChanged notifications, concluded by onStopTrackingTouch.
     // We're setting the field "mDragging" to true for the duration of the dragging
     // session to avoid jumps in the position in case of ongoing playback.
@@ -109,7 +109,6 @@ class VideoControllerView : FrameLayout {
             show(3600000)
 
             mDragging = true
-
             // By removing these pending progress messages we make sure
             // that a) we won't update the progress while the user adjusts
             // the seekbar and b) once the user is done dragging the thumb
@@ -128,12 +127,11 @@ class VideoControllerView : FrameLayout {
                 // the progress bar's position.
                 return
             }
-
             val duration = mPlayer!!.duration.toLong()
-            val newposition = duration * progress / 1000L
-            mPlayer!!.seekTo(newposition.toInt())
+            val newPosition = duration * progress / 1000L
+            mPlayer!!.seekTo(newPosition.toInt())
             if (mCurrentTime != null)
-                mCurrentTime!!.text = stringForTime(newposition.toInt())
+                mCurrentTime!!.text = stringForTime(newPosition.toInt())
         }
 
         override fun onStopTrackingTouch(bar: SeekBar) {
@@ -141,18 +139,16 @@ class VideoControllerView : FrameLayout {
             setProgress()
             updatePausePlay()
             show(sDefaultTimeout)
-
             // Ensure that progress is properly updated in the future,
             // the call to show() does not guarantee this because it is a
             // no-op if we are already showing.
             mHandler.sendEmptyMessage(SHOW_PROGRESS)
         }
     }
-    private val mRewListener = View.OnClickListener {
+    private val mRewindListener = View.OnClickListener {
         if (mPlayer == null) {
             return@OnClickListener
         }
-
         var pos = mPlayer!!.currentPosition
         pos -= 5000 // milliseconds
         mPlayer!!.seekTo(pos)
@@ -160,11 +156,10 @@ class VideoControllerView : FrameLayout {
 
         show(sDefaultTimeout)
     }
-    private val mFfwdListener = View.OnClickListener {
+    private val mFastForwardListener = View.OnClickListener {
         if (mPlayer == null) {
             return@OnClickListener
         }
-
         var pos = mPlayer!!.currentPosition
         pos += 15000 // milliseconds
         mPlayer!!.seekTo(pos)
@@ -190,7 +185,6 @@ class VideoControllerView : FrameLayout {
     }
 
     constructor(context: Context) : this(context, true) {
-
         Log.i(TAG, TAG)
     }
 
@@ -204,7 +198,7 @@ class VideoControllerView : FrameLayout {
     fun setMediaPlayer(player: MediaPlayerControl) {
         mPlayer = player
         updatePausePlay()
-        //        updateFullScreen();
+        // updateFullScreen();
     }
 
     /**
@@ -215,7 +209,6 @@ class VideoControllerView : FrameLayout {
      */
     fun setAnchorView(view: ViewGroup) {
         mAnchor = view
-
         val frameParams = FrameLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT
@@ -234,7 +227,7 @@ class VideoControllerView : FrameLayout {
      * *
      * @hide This doesn't work as advertised
      */
-    protected fun makeControllerView(): View {
+    private fun makeControllerView(): View {
         val inflate = mContext!!.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         mRoot = inflate.inflate(R.layout.otb_mediacontroller, null)
 
@@ -244,40 +237,37 @@ class VideoControllerView : FrameLayout {
     }
 
     private fun initControllerView(v: View) {
-        mPauseButton = v.findViewById<ImageButton>(R.id.pause)
+        mPauseButton = v.findViewById(R.id.pause)
         if (mPauseButton != null) {
             mPauseButton!!.requestFocus()
             mPauseButton!!.setOnClickListener(mPauseListener)
         }
-
         //        mFullscreenButton = (ImageButton) v.findViewById(R.id.fullscreen);
         //        if (mFullscreenButton != null) {
         //            mFullscreenButton.requestFocus();
         //            mFullscreenButton.setOnClickListener(mFullscreenListener);
         //        }
-
-        mFfwdButton = v.findViewById<ImageButton>(R.id.ffwd)
+        mFfwdButton = v.findViewById(R.id.ffwd)
         if (mFfwdButton != null) {
-            mFfwdButton!!.setOnClickListener(mFfwdListener)
+            mFfwdButton!!.setOnClickListener(mFastForwardListener)
             if (!mFromXml) {
                 mFfwdButton!!.visibility = if (mUseFastForward) View.VISIBLE else View.GONE
             }
         }
 
-        mRewButton = v.findViewById<ImageButton>(R.id.rew)
+        mRewButton = v.findViewById(R.id.rew)
         if (mRewButton != null) {
-            mRewButton!!.setOnClickListener(mRewListener)
+            mRewButton!!.setOnClickListener(mRewindListener)
             if (!mFromXml) {
                 mRewButton!!.visibility = if (mUseFastForward) View.VISIBLE else View.GONE
             }
         }
-
         // By default these are hidden. They will be enabled when setPrevNextListeners() is called
-        mNextButton = v.findViewById<ImageButton>(R.id.next)
+        mNextButton = v.findViewById(R.id.next)
         if (mNextButton != null && !mFromXml && !mListenersSet) {
             mNextButton!!.visibility = View.GONE
         }
-        mPrevButton = v.findViewById<ImageButton>(R.id.prev)
+        mPrevButton = v.findViewById(R.id.prev)
         if (mPrevButton != null && !mFromXml && !mListenersSet) {
             mPrevButton!!.visibility = View.GONE
         }
@@ -291,8 +281,8 @@ class VideoControllerView : FrameLayout {
             mProgress!!.max = 1000
         }
 
-        mEndTime = v.findViewById<TextView>(R.id.time)
-        mCurrentTime = v.findViewById<TextView>(R.id.time_current)
+        mEndTime = v.findViewById(R.id.time)
+        mCurrentTime = v.findViewById(R.id.time_current)
         mFormatBuilder = StringBuilder()
         mFormatter = Formatter(mFormatBuilder, Locale.getDefault())
 
@@ -334,14 +324,14 @@ class VideoControllerView : FrameLayout {
      * @param timeout The timeout in milliseconds. Use 0 to show
      * *                the controller until hide() is called.
      */
-    @JvmOverloads fun show(timeout: Int = sDefaultTimeout) {
+    @JvmOverloads
+    fun show(timeout: Int = sDefaultTimeout) {
         if (!isShowing && mAnchor != null) {
             setProgress()
             if (mPauseButton != null) {
                 mPauseButton!!.requestFocus()
             }
             disableUnsupportedButtons()
-
             val tlp = FrameLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -353,12 +343,10 @@ class VideoControllerView : FrameLayout {
         }
         updatePausePlay()
         //        updateFullScreen();
-
         // cause the progress bar to be updated even if mShowing
         // was already true.  This happens, for example, if we're
         // paused with the progress bar showing the user hits play.
         mHandler.sendEmptyMessage(SHOW_PROGRESS)
-
         val msg = mHandler.obtainMessage(FADE_OUT)
         if (timeout != 0) {
             mHandler.removeMessages(FADE_OUT)
@@ -386,7 +374,6 @@ class VideoControllerView : FrameLayout {
 
     private fun stringForTime(timeMs: Int): String {
         val totalSeconds = timeMs / 1000
-
         val seconds = totalSeconds % 60
         val minutes = totalSeconds / 60 % 60
         val hours = totalSeconds / 3600
@@ -403,7 +390,6 @@ class VideoControllerView : FrameLayout {
         if (mPlayer == null || mDragging) {
             return 0
         }
-
         val position = mPlayer!!.currentPosition
         val duration = mPlayer!!.duration
         if (mProgress != null) {
@@ -450,7 +436,6 @@ class VideoControllerView : FrameLayout {
         if (mPlayer == null) {
             return true
         }
-
         val keyCode = event.keyCode
         val uniqueDown = event.repeatCount == 0 && event.action == KeyEvent.ACTION_DOWN
         if (keyCode == KeyEvent.KEYCODE_HEADSETHOOK
@@ -519,13 +504,13 @@ class VideoControllerView : FrameLayout {
         updatePausePlay()
     }
 
-    private fun doToggleFullscreen() {
+    /*private fun doToggleFullscreen() {
         if (mPlayer == null) {
             return
         }
 
         mPlayer!!.toggleFullScreen()
-    }
+    }*/
 
     override fun setEnabled(enabled: Boolean) {
         if (mPauseButton != null) {
@@ -581,27 +566,16 @@ class VideoControllerView : FrameLayout {
 
     interface MediaPlayerControl {
         fun start()
-
         fun pause()
-
         val duration: Int
-
         val currentPosition: Int
-
         fun seekTo(pos: Int)
-
         val isPlaying: Boolean
-
         val bufferPercentage: Int
-
         fun canPause(): Boolean
-
         fun canSeekBackward(): Boolean
-
         fun canSeekForward(): Boolean
-
         val isFullScreen: Boolean
-
         fun toggleFullScreen()
     }
 
@@ -612,13 +586,12 @@ class VideoControllerView : FrameLayout {
             mView = WeakReference(view)
         }
 
-        override fun handleMessage(msg: Message) {
-            var msg = msg
+        override fun handleMessage(mesg: Message) {
+            var msg = mesg
             val view = mView.get()
             if (view == null || view.mPlayer == null) {
                 return
             }
-
             val pos: Int
             when (msg.what) {
                 FADE_OUT -> view.hide()
@@ -634,10 +607,10 @@ class VideoControllerView : FrameLayout {
     }
 
     companion object {
-        private val TAG = "VideoControllerView"
-        private val sDefaultTimeout = 3000
-        private val FADE_OUT = 1
-        private val SHOW_PROGRESS = 2
+        private const val TAG = "VideoControllerView"
+        private const val sDefaultTimeout = 3000
+        private const val FADE_OUT = 1
+        private const val SHOW_PROGRESS = 2
     }
 }
 /**

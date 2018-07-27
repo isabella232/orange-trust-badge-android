@@ -23,13 +23,4 @@
     <string name="otb_desactivation_dialog_button_cancel" tools:ignore="ButtonCase">CANCEL</string>
     <string name="otb_desactivation_dialog_button_deactivate">DISABLE</string>
 
-    <!-- terms page -->
-    <string name="otb_terms_video_title">Our commitments in video</string>
-    <string name="otb_terms_video_content">http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4</string>
-    <string name="otb_terms_usage_title">How we use your personal data</string>
-    <string name="otb_terms_usage_content"><![CDATA[<h2>Personal data sharing</h2><p>We are committed to ensuring the privacy of personal data used by this application. We also prohibit us to communicate with partners personal data without informing you and without offered you the opportunity to exercise your opposition right.</p><h2>Personal data use</h2><p>We use personal data to authenticate you, provide services and, if necessary, propose offers adapted to your needs. We may use personal data, previously anonymized irreversibly, for statistical analysis.</p><h2>Personal data retention</h2>We do not retain your personal data longer than necessary or longer than foreseen by the law.]]></string>
-    <string name="otb_terms_help_title">Help</string>
-    <string name="otb_terms_help_content"><![CDATA[<p>If necessary, this application provides this email address to answer your questions:</p><a href="mailto:example@example.fr">example@example.fr</a>]]></string>
-    <string name="otb_terms_more_info_title">Privacy Policy</string>
-    <string name="otb_terms_more_info_content"><![CDATA[Find also all this information in the <a href="link_to_your_privacy_policy.pdf">privacy policy</a> of this application.]]></string>
 </resources>

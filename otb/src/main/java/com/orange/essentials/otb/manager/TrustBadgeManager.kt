@@ -22,6 +22,7 @@
 package com.orange.essentials.otb.manager
 
 import android.content.Context
+import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import com.orange.essentials.otb.event.EventTagger
@@ -30,15 +31,13 @@ import com.orange.essentials.otb.model.Term
 import com.orange.essentials.otb.model.TrustBadgeElement
 import com.orange.essentials.otb.model.type.ElementType
 import com.orange.essentials.otb.model.type.GroupType
-import com.orange.essentials.otb.model.type.RatingType
 import com.orange.essentials.otb.model.type.UserPermissionStatus
 import java.util.*
 
 /**
  *
- *
  * File name:   TrustBadgeManager
- * Main singleton handling the trustbadge elements
+ * Main singleton handling the trust badge elements
  */
 enum class TrustBadgeManager {
     INSTANCE;
@@ -48,24 +47,22 @@ enum class TrustBadgeManager {
      * Host application name
      */
     var applicationName: String? = null
-        private set
     /**
      * mApplicationPackageName
      * Host application packageName
      */
     var applicationPackageName: String? = null
         private set
-
     /**
      * Provides a way to tag events
      */
-    //Provides a default eventtagger if none has been provided
+    //Provides a default event tagger if none has been provided
     var eventTagger: EventTagger? = null
         get() {
             if (null == field) {
                 eventTagger = object : EventTagger {
                     override fun tag(eventType: EventType) {
-                        Log.d(TAG, "tagging event " + eventType)
+                        Log.d(TAG, "tagging event $eventType")
                     }
 
                     override fun tagElement(eventType: EventType, element: TrustBadgeElement) {
@@ -75,49 +72,37 @@ enum class TrustBadgeManager {
             }
             return field
         }
-
     /**
      * Store all informations about Main Data, Complementary Data, and Usage Data
      */
-    private var mTrustBadgeElements: MutableList<TrustBadgeElement> = ArrayList()
-
+    var trustBadgeElements: MutableList<TrustBadgeElement> = ArrayList()
     /**
-     * Stores all the listeners who should act when a toggable badge element value is switched
+     * Stores all the listeners who should act when a toggleable badge element value is switched
      */
-    private val mTrustBadgeElementListeners = ArrayList<TrustBadgeElementListener>()
-    /**
-     * Stores all the listeners who should act when a toggable badge element value is switched
-     */
-    private val mBadgeListeners = ArrayList<BadgeListener>()
-
+    val badgeListeners = ArrayList<BadgeListener>()
     /**
      * List of terms and conditions that should be displayed in "terms and conditions" section
      */
     var terms: List<Term>? = ArrayList()
     /**
+     * List of Custom data fragments that should be added to the default cards and fragments already available
+     */
+    var customDataFragments: MutableList<CustomDataFragment> = ArrayList()
+    /**
      * Boolean indicating if app checked improvement program
      */
+    @Deprecated("This variable is no longer used and is kept for compatibility only. It will be removed in the near future.")
     var isUsingImprovementProgram = true
-        set(usingImprovementProgram) {
-            field = usingImprovementProgram
-            val improvementProgram = TrustBadgeManager.INSTANCE.getSpecificPermission(GroupType.IMPROVEMENT_PROGRAM)
-            if (null != improvementProgram) {
-                improvementProgram.userPermissionStatus = if (usingImprovementProgram) UserPermissionStatus.GRANTED else UserPermissionStatus.NOT_GRANTED
-            }
-        }
+
     /**
      * boolean letting us know if badges are initialized, false by default
      */
     var isInitialized = false
         private set
-
     /** METHODS *********************************************************************************  */
-
     /** KEYS DATAS  */
-
     /**
      * Return the host application name
-
      * @return Host application name from AndroidManifest.xml
      */
     private fun extractApplicationName(context: Context): String {
@@ -133,25 +118,24 @@ enum class TrustBadgeManager {
 
     /**
      * provide init with default BadgeFactory
-
      * @param context : Context providing needed data to retrieve permissions infos
      */
     fun initialize(context: Context) {
         PermissionManager.INSTANCE.initPermissionList(context)
-        initialize(context, TrustBadgeElementFactory.getDefaultElements(context), ArrayList<Term>())
+        val elements = TrustBadgeElementFactory.getDefaultPermissionElements(context)
+        elements.addAll(TrustBadgeElementFactory.getDefaultAppDataElements(context))
+        initialize(context, elements, ArrayList())
     }
-
 
     /**
      * initialize
-
      * @param context            : Activity providing needed data to retrieve permissions infos
      * *
      * @param trustBadgeElements : the list of trsut badge that will be used into the app
      */
     fun initialize(context: Context, trustBadgeElements: MutableList<TrustBadgeElement>, terms: List<Term>) {
-
-        Log.d(TAG, "TrustBadgeManager initialize")
+        Log.d(TAG, "TrustBadgeManager initialize $trustBadgeElements")
+        clean()
         PermissionManager.INSTANCE.initPermissionList(context)
         applicationName = extractApplicationName(context)
         if (!applicationName!!.isEmpty()) {
@@ -174,30 +158,25 @@ enum class TrustBadgeManager {
     /**
      * retrieve list of permissions about kids
      */
-    val elementsForUsage: ArrayList<TrustBadgeElement>?
+    val appDataElements: ArrayList<TrustBadgeElement>?
         get() {
             val resultPermissionList = ArrayList<TrustBadgeElement>()
-            for (i in mTrustBadgeElements.indices) {
-                val trustBadgeElement = mTrustBadgeElements[i]
-                if (trustBadgeElement.elementType == ElementType.USAGE) {
+            for (trustBadgeElement in this.trustBadgeElements) {
+                if (trustBadgeElement.elementType == ElementType.APP_DATA) {
                     resultPermissionList.add(trustBadgeElement)
                 }
             }
             return resultPermissionList
         }
-
     /**
      * retrieve list of  permissions
      */
-    val elementsForDataCollected: ArrayList<TrustBadgeElement>?
+    val permissionElements: ArrayList<TrustBadgeElement>?
         get() {
-            Log.d(TAG, "getElementsForDataCollected")
             val resultPermissionList = ArrayList<TrustBadgeElement>()
-            for (trustBadgeElement in mTrustBadgeElements) {
-                Log.d(TAG, "getElementsForDataCollected  : " + trustBadgeElement.groupType + ", " + trustBadgeElement.elementType + ", " + trustBadgeElement.appUsesPermission + ", " + trustBadgeElement.userPermissionStatus)
-                if (trustBadgeElement.elementType != ElementType.USAGE) {
+            for (trustBadgeElement in this.trustBadgeElements) {
+                if (trustBadgeElement.elementType == ElementType.PERMISSIONS) {
                     resultPermissionList.add(trustBadgeElement)
-                    Log.d(TAG, trustBadgeElement.nameKey + " ==> ADDED")
                 }
             }
             return resultPermissionList
@@ -209,35 +188,24 @@ enum class TrustBadgeManager {
     fun getSpecificPermission(groupType: GroupType): TrustBadgeElement? {
         Log.d(TAG, "getSpecificPermission")
         var result: TrustBadgeElement? = null
-        for (trustBadgeElement in mTrustBadgeElements) {
+        for (trustBadgeElement in this.trustBadgeElements) {
             if (trustBadgeElement.groupType == groupType) {
-                Log.d(TAG, "trustBadgeElement.getElementType() equals " + ElementType.USAGE.toString())
+                Log.d(TAG, "trustBadgeElement.getElementType() equals " + groupType.toString())
                 result = trustBadgeElement
             }
         }
         return result
     }
-
     /**
      * GETTERS & SETTERS************************************************************************
      */
     /**
      * Gets the array of trustbadge elements
-
      * @return the list of TrustBadgeElements that will be displayed to the user
      */
-    var trustBadgeElements: MutableList<TrustBadgeElement>
-        get() = mTrustBadgeElements
-        set(trustBadgeElements) {
-            mTrustBadgeElements = trustBadgeElements
-        }
-
     fun addTrustBadgeElement(trustBadgeElement: TrustBadgeElement?) {
         if (null != trustBadgeElement) {
-            if (null == mTrustBadgeElements) {
-                mTrustBadgeElements = ArrayList<TrustBadgeElement>()
-            }
-            mTrustBadgeElements!!.add(trustBadgeElement)
+            this.trustBadgeElements.add(trustBadgeElement)
         }
     }
 
@@ -245,9 +213,8 @@ enum class TrustBadgeManager {
      * Remove all element from the SparseArray and the array
      */
     fun clearTrustBadgeElements() {
-        mTrustBadgeElements!!.clear()
+        this.trustBadgeElements.clear()
     }
-
 
     /**
      * Refresh the badges according to the permissions granted by the app
@@ -255,19 +222,15 @@ enum class TrustBadgeManager {
     fun refreshTrustBadgePermission(context: Context) {
         Log.d(TAG, "refreshTrustBadgePermission...")
         PermissionManager.INSTANCE.initPermissionList(context)
-        for (i in mTrustBadgeElements!!.indices) {
-            val trustBadgeElement = mTrustBadgeElements!![i]
+        for (i in this.trustBadgeElements.indices) {
+            val trustBadgeElement = this.trustBadgeElements[i]
             if (trustBadgeElement.isShouldBeAutoConfigured) {
                 val type = trustBadgeElement.groupType
-                if (type.isSystemPermission) {
+                if (type.isSystemPermission || GroupType.NOTIFICATIONS.equals(type)) {
                     trustBadgeElement.userPermissionStatus = PermissionManager.INSTANCE.doesUserAlreadyAcceptPermission(context, trustBadgeElement.groupType)
                 }
-                if (type == GroupType.IMPROVEMENT_PROGRAM) {
-                    trustBadgeElement.userPermissionStatus = if (isUsingImprovementProgram) UserPermissionStatus.GRANTED else UserPermissionStatus.NOT_GRANTED
-                }
             }
-
-            Log.d(TAG, "refresh = " + trustBadgeElement)
+            Log.d(TAG, "refresh = $trustBadgeElement")
         }
 
     }
@@ -277,10 +240,10 @@ enum class TrustBadgeManager {
 
      * @return a boolean indicating if data badges are available
      */
-    fun hasData(): Boolean {
-        val data = elementsForDataCollected != null && elementsForDataCollected!!.isNotEmpty()
-        Log.d(TAG, "hasData : " + data)
-        return data
+    fun hasPermissions(): Boolean {
+        val result = permissionElements != null && permissionElements!!.isNotEmpty()
+        Log.d(TAG, "hasPermissions : $result")
+        return result
     }
 
     /**
@@ -288,10 +251,10 @@ enum class TrustBadgeManager {
 
      * @return a boolean indicating if usage badges are available
      */
-    fun hasUsage(): Boolean {
-        val usage = elementsForUsage != null && elementsForUsage!!.isNotEmpty()
-        Log.d(TAG, "hasUsage : " + usage)
-        return usage
+    fun hasAppData(): Boolean {
+        val result = appDataElements != null && appDataElements!!.isNotEmpty()
+        Log.d(TAG, "hasAppData : $result")
+        return result
     }
 
     /**
@@ -301,92 +264,58 @@ enum class TrustBadgeManager {
      */
     fun hasTerms(): Boolean {
         val terms = terms != null && terms!!.isNotEmpty()
-        Log.d(TAG, "hasTerms : " + terms)
+        Log.d(TAG, "hasTerms : $terms")
         return terms
     }
 
     /**
-     * getPegiAge : Retrieve permission pegi age rating
+     * Method returns true if at least one term is available
 
-     * @param trustBadgeElement : th badge to retrieve pegi age value text
-     * *
-     * @return String age permission
+     * @return a boolean indicating if a term is available
      */
-    fun getPegiAge(trustBadgeElement: TrustBadgeElement): String {
-        var ageInNumber = ""
-        val ageRating = trustBadgeElement.descriptionKey!!
-        if (ageRating.contains(RatingType.THREE.name)) {
-            ageInNumber = Integer.toString(RatingType.THREE.age)
-        }
-        if (ageRating.contains(RatingType.SEVEN.name)) {
-            ageInNumber = Integer.toString(RatingType.SEVEN.age)
-        }
-        if (ageRating.contains(RatingType.TWELVE.name)) {
-            ageInNumber = Integer.toString(RatingType.TWELVE.age)
-        }
-        if (ageRating.contains(RatingType.SIXTEEN.name)) {
-            ageInNumber = Integer.toString(RatingType.SIXTEEN.age)
-        }
-        if (ageRating.contains(RatingType.EIGHTEEN.name)) {
-            ageInNumber = Integer.toString(RatingType.EIGHTEEN.age)
-        }
-        return ageInNumber
+    fun hasCustomCards(): Boolean {
+        return customDataFragments.size > 0
     }
-
-    @Deprecated("")
-    fun addTrustBadgeElementListener(trustBadgeElementListener: TrustBadgeElementListener) {
-        if (null != mTrustBadgeElementListeners && !mTrustBadgeElementListeners.contains(trustBadgeElementListener)) {
-            mTrustBadgeElementListeners.add(trustBadgeElementListener)
-        }
-    }
-
-    @Deprecated("")
-    fun clearTrustBadgeElementListener() {
-        mTrustBadgeElementListeners?.clear()
-    }
-
-
-    val trustBadgeElementListeners: List<TrustBadgeElementListener>
-        @Deprecated("")
-        get() = mTrustBadgeElementListeners
 
     fun badgeChanged(trustBadgeElement: TrustBadgeElement, toggled: Boolean, callingActivity: AppCompatActivity) {
-        if (null != mBadgeListeners) {
-            for (i in mBadgeListeners.indices) {
-                mBadgeListeners[i].onBadgeChange(trustBadgeElement, toggled, callingActivity)
-            }
+        for (i in this.badgeListeners.indices) {
+            this.badgeListeners[i].onBadgeChange(trustBadgeElement, toggled, callingActivity)
         }
         //Change the UserPermissionStatus as it has been switched by user
         trustBadgeElement.userPermissionStatus = if (toggled) UserPermissionStatus.GRANTED else UserPermissionStatus.NOT_GRANTED
     }
 
-    val badgeListeners: List<BadgeListener>
-        get() = mBadgeListeners
-
     fun addBadgeListener(badgeListener: BadgeListener) {
-        if (null != mBadgeListeners && !mBadgeListeners.contains(badgeListener)) {
-            mBadgeListeners.add(badgeListener)
+        if (!this.badgeListeners.contains(badgeListener)) {
+            this.badgeListeners.add(badgeListener)
         }
     }
 
-
-    @Deprecated("use rather the interface BadgeListener, called by\n      badgeChanged(TrustBadgeElement trustBadgeElement, boolean toggled, AppCompatActivity callingActivity)")
-    fun badgeChanged(groupType: GroupType, toggled: Boolean, callingActivity: AppCompatActivity) {
-        if (null != mTrustBadgeElementListeners) {
-            for (i in mTrustBadgeElementListeners.indices) {
-                mTrustBadgeElementListeners[i].onBadgeChange(groupType, toggled, callingActivity)
-            }
-        }
-    }
+    fun clearBadgeListeners() = badgeListeners.clear()
 
     companion object {
-
         /**
          * Log TAG
          */
-        private val TAG = "TrustBadgeManager"
+        private const val TAG = "TrustBadgeManager"
     }
 
+    /**
+     * Add a custom fragment
+     */
+    fun addCustomCard(title: String, content: String?, fragment: Fragment) {
+        customDataFragments.add(CustomDataFragment(title, content, fragment))
+    }
 
+    /**
+     * Add a custom fragment
+     */
+    private fun clean() {
+        customDataFragments.clear()
+    }
 }
 
+data class CustomDataFragment(
+        val title: String,
+        val content: String? = null,
+        val fragment: Fragment)

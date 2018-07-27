@@ -24,7 +24,6 @@ package com.orange.essentials.otb.ui
 import android.media.AudioManager
 import android.media.MediaPlayer
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
@@ -55,24 +54,24 @@ import java.util.*
  * Fragment used to display the term conditions of this lib
  */
 class OtbTermsFragment : Fragment() {
+
     private var mView: View? = null
     private var mVideoViews: MutableList<View>? = ArrayList()
     private var mPlayers: MutableList<MediaPlayer>? = ArrayList()
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         mView = inflater.inflate(R.layout.otb_terms, container, false)
         val llayout = mView!!.findViewById<LinearLayout>(R.id.otb_terms_layout)
-        val headerTv = llayout.findViewById<TextView>(R.id.otb_header_tv_text)
-        headerTv.setText(R.string.otb_home_terms_content)
         val terms = TrustBadgeManager.INSTANCE.terms
 
         for (term in terms!!) {
             var layoutToAdd: View? = null
-            if (term.termType == TermType.VIDEO && Build.VERSION.SDK_INT > Build.VERSION_CODES.GINGERBREAD_MR1) {
+            if (term.termType == TermType.VIDEO) {
                 layoutToAdd = View.inflate(activity, R.layout.otb_terms_video, null)
                 val titleTv = layoutToAdd!!.findViewById<TextView>(R.id.otb_term_video_title)
                 val anchorView = layoutToAdd.findViewById<AutoResizingFrameLayout>(R.id.videoSurfaceContainer)
                 if (mVideoViews == null) {
-                    mVideoViews = ArrayList<View>()
+                    mVideoViews = ArrayList()
                 }
                 mVideoViews!!.add(anchorView)
                 val videoSurface = layoutToAdd.findViewById<SurfaceView>(R.id.videoSurface)
@@ -81,13 +80,13 @@ class OtbTermsFragment : Fragment() {
                 val videoHolder = videoSurface.holder
                 val player = MediaPlayer()
                 if (mPlayers == null) {
-                    mPlayers = ArrayList<MediaPlayer>()
+                    mPlayers = ArrayList()
                 }
                 mPlayers!!.add(player)
                 val controller = VideoControllerView(context!!)
                 val videoCallback = VideoCallback(player, controller, anchorView)
                 videoHolder.addCallback(videoCallback)
-                anchorView.setOnTouchListener { v, event ->
+                anchorView.setOnTouchListener { _, _ ->
                     controller.show()
                     false
                 }
@@ -219,7 +218,7 @@ class OtbTermsFragment : Fragment() {
     }
 
     companion object {
-        val FRAG_TAG = "OtbTermsFragment"
+        const val FRAG_TAG = "OtbTermsFragment"
     }
 
 }

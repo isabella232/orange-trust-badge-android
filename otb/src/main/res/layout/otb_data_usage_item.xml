@@ -24,30 +24,31 @@
 -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:baselineAligned="false"
-    android:orientation="vertical">
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:baselineAligned="false"
+              android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/otb_data_usage_item_ll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:focusable="true"
         android:orientation="horizontal"
         android:paddingEnd="0dp"
-        android:paddingLeft="@dimen/otb_key_data_padding_10dp"
+        android:paddingLeft="@dimen/otb_10dp"
         android:paddingRight="0dp"
-        android:paddingStart="@dimen/otb_key_data_padding_10dp"
-        android:paddingTop="@dimen/otb_key_data_padding_24dp">
+        android:paddingStart="@dimen/otb_10dp"
+        android:paddingTop="@dimen/otb_24dp">
 
         <ImageView
             android:id="@+id/otb_data_usage_item_iv_icon"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/otb_ic_camera_black_24dp"
-            tools:ignore="ContentDescription" />
+            tools:ignore="ContentDescription"
+            tools:src="@drawable/otb_ic_camera"/>
 
         <TextView
             android:id="@+id/otb_data_usage_item_tv_title"
@@ -59,16 +60,16 @@
             android:gravity="center_vertical"
             android:maxLines="2"
             android:paddingEnd="4dp"
-            android:paddingLeft="@dimen/otb_key_data_padding_24dp"
+            android:paddingLeft="@dimen/otb_24dp"
             android:paddingRight="4dp"
-            android:paddingStart="@dimen/otb_key_data_padding_24dp" />
+            android:paddingStart="@dimen/otb_24dp"/>
 
         <android.support.v7.widget.SwitchCompat
             android:id="@+id/otb_data_usage_item_sc_switch"
             android:layout_width="wrap_content"
             android:layout_height="16dp"
             android:clickable="true"
-            android:focusable="false"
+            android:focusable="true"
             android:visibility="gone"
             app:theme="@style/otb_color_switch"/>
 
@@ -77,8 +78,8 @@
             style="@style/otb_main_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/otb_landing_padding_8dp"
-            android:layout_marginRight="@dimen/otb_landing_padding_8dp"
+            android:layout_marginEnd="@dimen/otb_8dp"
+            android:layout_marginRight="@dimen/otb_8dp"
             android:importantForAccessibility="no"
             tools:ignore="UnusedAttribute"
             tools:text="@string/otb_toggle_button_granted"/>
@@ -87,25 +88,55 @@
             android:id="@+id/otb_data_usage_item_iv_child_indicator"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:layout_marginEnd="@dimen/otb_key_data_padding_16dp"
-            android:layout_marginLeft="@dimen/otb_landing_padding_8dp"
-            android:layout_marginRight="@dimen/otb_key_data_padding_16dp"
-            android:layout_marginStart="@dimen/otb_landing_padding_8dp"
+            android:layout_marginEnd="@dimen/otb_16dp"
+            android:layout_marginLeft="@dimen/otb_8dp"
+            android:layout_marginRight="@dimen/otb_16dp"
+            android:layout_marginStart="@dimen/otb_8dp"
             android:src="@drawable/otb_ic_expand_more"
-            tools:ignore="ContentDescription" />
+            tools:ignore="ContentDescription"/>
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/otb_data_usage_item_tv_description"
-        style="@style/otb_body"
+    <LinearLayout
+        android:id="@+id/otb_data_usage_item_ll_expandableContent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingEnd="40dp"
-        android:paddingLeft="54dp"
-        android:paddingRight="40dp"
-        android:paddingStart="54dp"
-        android:paddingTop="@dimen/otb_key_data_padding_10dp"
-        android:visibility="gone"/>
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/otb_data_usage_item_tv_description"
+            style="@style/otb_body"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/otb_16dp"
+            android:paddingEnd="40dp"
+            android:paddingLeft="54dp"
+            android:paddingRight="40dp"
+            android:paddingStart="54dp"
+            android:paddingTop="@dimen/otb_10dp"
+            android:textColorLink="@color/colorAccent"
+            android:visibility="visible"/>
+
+        <TextView
+            android:id="@+id/otb_data_usage_tv_goto"
+            style="@style/otb_colored_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/otb_10dp"
+            android:paddingEnd="40dp"
+            android:paddingLeft="54dp"
+            android:paddingRight="40dp"
+            android:paddingStart="54dp"
+            android:paddingTop="@dimen/otb_10dp"
+            android:text="@string/otb_data_button_text"
+            android:visibility="visible"/>
+
+        <View
+            android:id="@+id/otb_data_usage_item_v_separator"
+            style="@style/otb_separator"
+            android:visibility="visible"/>
+    </LinearLayout>
+
 
 </LinearLayout>

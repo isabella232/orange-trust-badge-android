@@ -26,24 +26,15 @@ package com.orange.essentials.otb.event
  * This enum represents the possible events that can be triggered in the lib
  */
 enum class EventType {
-    /// Event triggered when entering in Permissions Page
     TRUSTBADGE_PERMISSION_ENTER,
-
-    /// Event triggered when entering in Usage Page
     TRUSTBADGE_USAGE_ENTER,
-
-    /// Event triggered when entering in Terms Page
     TRUSTBADGE_TERMS_ENTER,
-
-    /// Event triggered when leaving TrustBadge component
+    TRUSTBADGE_ENTER,
     TRUSTBADGE_LEAVE,
-
-    /// Event triggered when tapping a TrustBadge element to open/close associated explanations
     TRUSTBADGE_ELEMENT_TAPPED,
-
-    /// Event triggered when toggling a TrustBadge element (if toggable)
     TRUSTBADGE_ELEMENT_TOGGLED,
-
-    /// Event triggered when going into Android settings
-    TRUSTBADGE_GO_TO_SETTINGS
+    TRUSTBADGE_GO_TO_SETTINGS,
+    TRUSTBADGE_GO_TO_PERMISSION,
+    TRUSTBADGE_GO_TO_USAGE,
+    TRUSTBADGE_GO_TO_TERMS;
 }

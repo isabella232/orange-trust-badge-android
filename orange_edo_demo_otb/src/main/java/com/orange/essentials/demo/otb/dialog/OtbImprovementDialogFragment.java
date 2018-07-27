@@ -1,23 +1,3 @@
-/*
- * Copyright 2016 Orange
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-/* Orange Trust Badge library demo app
- *
- * Version:     1.0
- * Created:     2016-03-15 by Aurore Penault, Vincent Boesch, and Giovanni Battista Accetta
- */
 package com.orange.essentials.demo.otb.dialog;
 
 
@@ -37,6 +17,7 @@ import com.orange.essentials.demo.otb.MainActivity;
 import com.orange.essentials.demo.otb.R;
 import com.orange.essentials.otb.manager.TrustBadgeManager;
 import com.orange.essentials.otb.model.type.GroupType;
+import com.orange.essentials.otb.model.type.UserPermissionStatus;
 
 /**
  * Created by fab on 2/3/16.
@@ -60,7 +41,6 @@ public class OtbImprovementDialogFragment extends DialogFragment {
             public void onClick(View v) {
                 Log.d(TAG, "onClick Cancel");
                 TrustBadgeManager.INSTANCE.badgeChanged(TrustBadgeManager.INSTANCE.getSpecificPermission(GroupType.IMPROVEMENT_PROGRAM), true, (AppCompatActivity) getActivity());
-                TrustBadgeManager.INSTANCE.badgeChanged(GroupType.IMPROVEMENT_PROGRAM, true, (AppCompatActivity) getActivity());
                 dismiss();
             }
         });
@@ -72,8 +52,12 @@ public class OtbImprovementDialogFragment extends DialogFragment {
                 SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
                 SharedPreferences.Editor editor = sp.edit();
                 editor.putBoolean(MainActivity.PREF_IMPROVEMENT, false);
+                TrustBadgeManager.INSTANCE.getSpecificPermission(GroupType.IMPROVEMENT_PROGRAM).setUserPermissionStatus(UserPermissionStatus.NOT_GRANTED);
+                TrustBadgeManager.INSTANCE.badgeChanged(TrustBadgeManager.INSTANCE.getSpecificPermission(GroupType.IMPROVEMENT_PROGRAM), false, (AppCompatActivity) getActivity());
                 editor.apply();
-
+                /** If you are using AZME use
+                 *      EngagementAgent.getInstance(getApplicationContext()).setEnabled(value);
+                 *  to propagate it to the library */
                 dismiss();
             }
         });

@@ -1,53 +1,89 @@
 <resources>
 
-    <string name="otb_app_name">Orange TrustBadge Component</string>
+    <string name="otb_app_name">TrustBadge Component</string>
 
     <!-- Toggle_Button -->
     <string name="otb_toggle_button_granted">Yes</string>
     <string name="otb_toggle_button_not_granted">No</string>
 
-    <string name="otb_data_child_separator_title">Other Data and permissions</string>
-
     <!-- Landing page-->
     <string name="otb_home_title">Trust badge</string>
-    <string name="otb_home_header_title">Use in full confidence this application</string>
-    <string name="otb_home_data_title">My data</string>
-    <string name="otb_home_data_content">Personal data that this application uses and why</string>
-    <string name="otb_home_usage_title">Usages</string>
-    <string name="otb_home_usage_content">Contents and features of this application</string>
-    <string name="otb_home_usage_pegi_age">&#xA0;year +</string>
-    <string name="otb_home_terms_title">Our commitments</string>
-    <string name="otb_home_terms_content">We support you to protect your digital life and your personal information</string>
+    <string name="otb_home_header_title">Trust badge</string>
+    <string name="otb_home_subtitle">Find and control the personal data used by the application</string>
+    <string name="otb_home_permissions_title">Data that app can access</string>
+    <string name="otb_home_permission_no_data">The app  does not request access to any data </string>
+    <string name="otb_home_permission_no_granted">The app is not allowed to access any data</string>
+    <string name="otb_home_app_data_title">Data from app usage</string>
+    <string name="otb_home_app_data_no_data">The app does not use any data</string>
+    <string name="otb_home_app_data_no_granted">The app is not allowed to use any data</string>
+    <string name="otb_home_terms_title">Our commitment</string>
+    <string name="otb_home_terms_content">We respect your privacy and accompany you to protect your digital life and your personal data</string>
     <string name="otb_home_more_detail">SEE MORE</string>
+    <string name="otb_home_dynamic_and_link">\u0020and\u0020</string>
+    <string name="otb_home_dynamic_comma_link">,\u0020</string>
+    <string name="otb_home_dynamic_one_more">\u0020more</string>
+    <string name="otb_home_dynamic_more">\u0020more</string>
 
-    <!-- Main data -->
-    <string name="otb_data_title">My data</string>
-    <string name="otb_main_data_title">Main data</string>
+    <!-- System permissions -->
+    //Titles
+    <string name="otb_permission_location_title">Location</string>
+    <string name="otb_permission_contact_title">Contacts</string>
+    <string name="otb_permission_storage_title">Storage</string>
+    <string name="otb_permission_calendar_title">Calendar</string>
+    <string name="otb_permission_phone_title">Phone</string>
+    <string name="otb_permission_sms_title">SMS</string>
+    <string name="otb_permission_camera_title">Camera</string>
+    <string name="otb_permission_microphone_title">Micro</string>
+    <string name="otb_permission_sensors_title">Body Sensors</string>
 
-    <string name="otb_main_data_identity_title">My identity</string>
-    <string name="otb_main_data_location_title">Location</string>
-    <string name="otb_main_data_medias_title">Photos, medias and files</string>
-    <string name="otb_main_data_contact_title">Contacts</string>
-    <string name="otb_main_data_improvement_program_title">Usage data</string>
+    //Desc
+    <string name="otb_permission_location_desc">The geolocation service allows application to use mobile network, Wi-Fi and GPS information to locate you approximatively.</string>
+    <string name="otb_permission_contacts_desc">This application can access, add and / or change your phone contacts.</string>
+    <string name="otb_permission_storage_desc">This application can use files stored on your device or on an external storage medium. This permission allows the application to read, edit or delete stored files.</string>
+    <string name="otb_permission_calendar_desc">This application can use the calendar information on your device, including consultation of recorded events.</string>
+    <string name="otb_permission_phone_desc">This application can access the ID of your mobile and phone number. This application can also determine if you are making a call and get the number called.</string>
+    <string name="otb_permission_sms_desc">This application can use the SMS function of your device. The application can: receive, read, edit and send SMS-MMS.</string>
+    <string name="otb_permission_camera_desc">This application can use camera of your device. The camera access allows this application to take pictures and record videos.</string>
+    <string name="otb_permission_microphone_desc">This application can use micro of your device. The access to micro allows the application to record audio content.</string>
+    <string name="otb_permission_sensors_desc">This application can access data collected by your connected object which is synchronized with your device.</string>
+
+
+    <!-- App data information -->
+    //Titles
+    <string name="otb_app_data_notifications_title">Notifications</string>
+    <string name="otb_app_data_account_credentials_title">Account credentials</string>
+    <string name="otb_app_data_account_info_title">Account information</string>
+    <string name="otb_app_data_improvement_program_title">Improvement program</string>
+    <string name="otb_app_data_advertise_title">Advertising</string>
+    <string name="otb_app_data_history_title">Usage history</string>
+
+    //Desc
+    <string name="otb_app_data_notifications_desc">Receive notifications from the application. Notifications can include sounds and be displayed in different formats (message in the notification center).</string>
+    <string name="otb_app_data_account_credentials_desc">When launching the application, you must fill in your account ID and password. This information allows the creation of an authentication cookie. This allows you not to have to enter the username and password for each connection. You can delete it from settings> change account. A new cookie will be created the next time you log in.</string>
+    <string name="otb_app_data_account_info_desc">This application can access information linked to your account/profiles. This application can use your name, date of birth and email in order to identify you for example.</string>
+    <string name="otb_app_data_improvement_program_desc">This application collects information on the use of the application and sens us such information for statistical analysis to further improve the service and the relevance of the notification messages sent by the service. Such information is anonymously collected and processed in compliance with applicable laws.</string>
+    <string name="otb_app_data_advertise_desc">This application can broadcast advertising via advertising cookies in order to propose you products and services adapted to your real or supposed interests.</string>
+    <string name="otb_app_data_history_desc">This application collects information about your preferences and usage history in order to offer you personalized services.</string>
+
+    <!-- terms page -->
+    <string name="otb_terms_engagement_title">Our commitments</string>
+    <string name="otb_terms_engagament_content"><![CDATA[<h2>We respect your privacy and accompany you to protect your digital life and your personal data.</h2>With the Trust Badge, your apps become transparent to you. We inform you about how applications use your personal data and how you can control their usage.]]></string>
+    <string name="otb_terms_video_text_title">Our commitments in video</string>
+    <string name="otb_terms_video_text_content"><![CDATA[<big><b>Click <a href="https://www.youtube.com/watch?v=1ehpgbb3XD0">here</a> to discover our commitments in video</b></big>]]></string>
+    <string name="otb_terms_usage_title">How do we use your data?</string>
+    <string name="otb_terms_usage_content"><![CDATA[<h2>Using your data</h2><p>We use your personal data in order to authenticate you, to provide you with the service subscribed and, if necessary, to propose offers adapted to your needs. We also use your data for statistical purposes, in this context these data are previously anonymized irreversibly.</p><h2>Keeping your data</h2><p>We do not store your personal data for longer than is necessary for the purposes for which they were collected, or longer than the law provides for.</p><h2>Security of your data</h2>We undertake to make every effort to ensure the security and confidentiality of your personal data and in particular to prevent this data from being damaged, erased or unauthorized third parties having access to it.]]></string>
+    <string name="otb_terms_help_title">Our support</string>
+    <string name="otb_terms_help_content"><![CDATA[<h2>What are your rights and how can you exercise them?</h2><p>If needed, your application provides this email address to answer your questions:</p><a href="mailto:******@example.com">******@example.com</a>]]></string>
+    <string name="otb_terms_more_info_title">Personal data protection policy</string>
+    <string name="otb_terms_more_info_content"><![CDATA[Find also all this information in the <a href="link_to_your_privacy_policy.pdf">privacy policy</a> of this application.]]></string>
 
     <!-- Other data -->
-    <string name="otb_other_data_title">Other information</string>
-    <string name="otb_other_data_camera_title">Camera</string>
-    <string name="otb_other_data_calendar_title">Agenda</string>
-    <string name="otb_other_data_sms_title">SMS</string>
-    <string name="otb_other_data_microphone_title">Micro</string>
-    <string name="otb_other_data_phone_title">Phone</string>
-    <string name="otb_other_data_connected_devices_title">Connected objects</string>
 
-    <string name="otb_data_button_explanation">Find again the application permissions in the settings of your mobile.</string>
-    <string name="otb_data_button_text">GO TO THE SETTINGS</string>
+    <string name="otb_data_button_explanation">Find application permissions in the settings of your mobile.</string>
+    <string name="otb_data_button_text">GO TO SETTINGS</string>
     <string name="otb_data_no_other_permissions">Your application doesn\'t collect other data</string>
 
     <!-- Usages -->
-    <string name="otb_usage_pegi_title">Recommended age</string>
-    <string name="otb_usage_social_network_title">Social network</string>
-    <string name="otb_usage_inapp_purchase_title">In-app purchase</string>
-    <string name="otb_usage_advertise_title">Advertising</string>
 
     <!-- Accessibility -->
     <!-- Don't change the spelling : wording for accessibility -->
@@ -58,35 +94,16 @@
     <string name="otb_accessibility_desactivated_description">desactivated</string>
     <string name="otb_accessibility_item_not_used_description">is not used</string>
     <string name="otb_accessibility_item_is_used_description">is used</string>
+    <string name="otb_accessibility_item_containing_link">"Link, %1$s"</string>
+    <string name="otb_cannot_open_link_error">No application can handle this request.</string>
+
     <!-- boutons du media controller -->
     <string name="otb_previous_desc">previous button</string>
     <string name="otb_rewind_desc">rewind button</string>
     <string name="otb_pause_desc">pause button</string>
     <string name="otb_forward_desc">fast forward button</string>
     <string name="otb_next_desc">next button</string>
-
-    //OTB string to provide
-    //Main data (Mandatory)
-    <string name="otb_main_data_identity_desc">This application can access information linked to your account/profiles. This application can use your name, date of birth and email in order to identify you for example.</string>
-    <string name="otb_main_data_location_desc">The geolocation service allows application to use mobile network, Wi-Fi and GPS information to locate you approximatively.</string>
-    <string name="otb_main_data_medias_desc">This application can use files stored on your device or on an external storage medium. This permission allows the application to read, edit or delete stored files.</string>
-    <string name="otb_main_data_contacts_desc">This application can access, add and / or change your phone contacts.</string>
-    <string name="otb_main_data_improvement_program_desc">This application collects information on the use of the application and sens us such information for statistical analysis to further improve the service provided to you and the relevance of the notification messages sent by the service. Such information is collected and processed in compliance with applicable laws.</string>
-
-    //Other data (NOT Mandatory)
-    <string name="otb_other_data_camera_desc">This application can use camera of your device. The camera access allows this application to take pictures and record videos.</string>
-    <string name="otb_other_data_calendar_desc">This application can use the calendar information on your device, including consultation of recorded events.</string>
-    <string name="otb_other_data_sms_desc">This application can use the SMS function of your device. The application can: receive, read, edit and send SMS-MMS.</string>
-    <string name="otb_other_data_microphone_desc">This application can use micro of your device. The access to micro allows the application to record audio content.</string>
-    <string name="otb_other_data_phone_desc">This application can access the ID of your mobile and phone number. This application can also determine if you are making a call and get the number called.</string>
-    <string name="otb_other_data_connected_devices_desc">This application can access data collected by your connected object which is synchronized with your device.</string>
-
-    //Usage Data (Mandatory)
-    <string name="otb_usage_pegi_desc">The indicated age corresponds to the minimum age recommended to use this application according to presented content.</string>
-    <string name="otb_usage_social_network_desc">This application can integrate social features. This application can redirect you to social network such as Facebook or Twitter.</string>
-    <string name="otb_usage_inapp_purchase_desc">In this application, you can buy other contents or services.</string>
-    <string name="otb_usage_advertise_desc">This application can broadcast advertising via advertising cookies in order to propose you products and services adapted to your real or supposed interests.</string>
-
-    //END OTB string to provide
+    <string name="otb_back_content_description">Go back</string>
+    <string name="otb_home_header_subtitle">With the Trust badge, your apps become transparent to you.</string>
 
 </resources>

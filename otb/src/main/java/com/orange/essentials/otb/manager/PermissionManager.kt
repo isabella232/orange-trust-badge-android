@@ -24,16 +24,14 @@ package com.orange.essentials.otb.manager
 import android.content.Context
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
-import android.content.pm.PermissionInfo
 import android.os.Binder
 import android.os.Build
+import android.support.v4.app.NotificationManagerCompat
 import android.util.Log
-
 import com.orange.essentials.otb.model.type.AppUsesPermission
 import com.orange.essentials.otb.model.type.GroupType
 import com.orange.essentials.otb.model.type.UserPermissionStatus
-
-import java.util.ArrayList
+import java.util.*
 
 /**
  * PermissionManager
@@ -44,15 +42,14 @@ enum class PermissionManager {
 
     /**
      * mGroupPermissionDataList
-     * Store Permission Informations from host app Manifest.xml
+     * Store Permission informations from host app Manifest.xml
      */
     private val mGroupNameList = ArrayList<String>()
-
     var isInitialized = false
         private set
 
     fun initPermissionList(context: Context) {
-        Log.d(TAG, "initPermissionList for context " + context)
+        Log.d(TAG, "initPermissionList for context $context")
         //Cleaning old stored groups
         mGroupNameList.clear()
         var pkgInfo: PackageInfo? = null
@@ -70,29 +67,28 @@ enum class PermissionManager {
             //getting Host app permissions declared in Manifest.xml
             val requestedPermissions = pkgInfo.requestedPermissions
             if (requestedPermissions != null) {
-                Log.d(TAG, "requestedPermissions is not null")
+                Log.v(TAG, "requestedPermissions is not null")
                 for (i in requestedPermissions.indices) {
-                    Log.d(TAG, "Adding permission : " + requestedPermissions[i])
+                    Log.v(TAG, "Adding permission : " + requestedPermissions[i])
                     mGroupNameList.add(requestedPermissions[i])
                     try {
-                        Log.d(TAG, "Looking group for permission " + requestedPermissions[i])
-                        val pinfo = context.packageManager.getPermissionInfo(requestedPermissions[i], PackageManager.GET_META_DATA)
-                        if (pinfo.group != null) {
-                            Log.d(TAG, "Adding permission group " + pinfo.group)
-                            mGroupNameList.add(pinfo.group)
+                        Log.v(TAG, "Looking group for permission " + requestedPermissions[i])
+                        val pInfo = context.packageManager.getPermissionInfo(requestedPermissions[i], PackageManager.GET_META_DATA)
+                        if (pInfo.group != null) {
+                            Log.v(TAG, "Adding permission group " + pInfo.group)
+                            mGroupNameList.add(pInfo.group)
                         }
                     } catch (e: PackageManager.NameNotFoundException) {
-                        Log.d(TAG, "PackageManagerName NOT found. Adding permission name " + requestedPermissions[i] + ", " + e.message)
+                        Log.v(TAG, "PackageManagerName NOT found. Adding permission name " + requestedPermissions[i] + ", " + e.message)
                     }
 
                 }
             }
             isInitialized = true
         } else {
-            Log.d(TAG, "pkgInfo not found")
+            Log.v(TAG, "pkgInfo not found")
         }
     }
-
 
     /**
      * Return the user status about a specific permission
@@ -102,27 +98,42 @@ enum class PermissionManager {
      * @return Values.USER_STATUS
      */
     fun doesUserAlreadyAcceptPermission(context: Context, groupType: GroupType): UserPermissionStatus {
-        Log.d(TAG, "doesUserAlreadyAcceptPermissionGroup " + groupType)
+        Log.d(TAG, "doesUserAlreadyAcceptPermissionGroup $groupType")
         val result: UserPermissionStatus
 
-        if (groupType == GroupType.IMPROVEMENT_PROGRAM || groupType == GroupType.IDENTITY) {
-            result = UserPermissionStatus.MANDATORY
+        if (!groupType.isSystemPermission) {
+            var ok = true
+            if (GroupType.NOTIFICATIONS.equals(groupType)) {
+                ok = NotificationManagerCompat.from(context).areNotificationsEnabled()
+            }
+            if (ok) {
+                result = UserPermissionStatus.MANDATORY
+            } else {
+                result = UserPermissionStatus.NOT_GRANTED
+            }
         } else {
-            val currentapiVersion = Build.VERSION.SDK_INT
-            if (currentapiVersion > Build.VERSION_CODES.LOLLIPOP_MR1) {
-                Log.d(TAG, "currentapiVersion >= Build.VERSION_CODES.M =true")
-                val permission = context.checkPermission(findInAppPermission(context, groupType), android.os.Process.myPid(), Binder.getCallingUid())
-                if (permission != PackageManager.PERMISSION_GRANTED) {
-                    result = UserPermissionStatus.NOT_GRANTED
+            val currentApiVersion = Build.VERSION.SDK_INT
+            if (currentApiVersion > Build.VERSION_CODES.LOLLIPOP_MR1) {
+                Log.d(TAG, "currentApiVersion >= Build.VERSION_CODES.M =true")
+                val permissions = findInAppPermission(context, groupType)
+                var found = false
+                for (perm in permissions) {
+                    val permission = context.checkPermission(perm, android.os.Process.myPid(), Binder.getCallingUid())
+                    if (permission == PackageManager.PERMISSION_GRANTED) {
+                        found = true
+                        break
+                    }
+                }
+                result = if (found) {
+                    UserPermissionStatus.GRANTED
                 } else {
-                    result = UserPermissionStatus.GRANTED
+                    UserPermissionStatus.NOT_GRANTED
                 }
             } else {
-                if (!findInAppPermission(context, groupType).isEmpty()) {
-                    result = UserPermissionStatus.GRANTED
+                result = if (!findInAppPermission(context, groupType).isEmpty()) {
+                    UserPermissionStatus.GRANTED
                 } else {
-                    result = UserPermissionStatus.NOT_GRANTED
-
+                    UserPermissionStatus.NOT_GRANTED
                 }
 
             }
@@ -131,7 +142,6 @@ enum class PermissionManager {
         return result
     }
 
-
     /**
      * Retrieve the permissionGroupName of a specific permission
 
@@ -139,8 +149,8 @@ enum class PermissionManager {
      * *
      * @return String containing the permissionGroupName
      */
-    fun findInAppPermission(context: Context, groupType: GroupType): String {
-        var result = ""
+    private fun findInAppPermission(context: Context, groupType: GroupType): ArrayList<String> {
+        var result = ArrayList<String>()
         try {
             val pkgInfo = context.packageManager.getPackageInfo(
                     context.packageName,
@@ -149,7 +159,7 @@ enum class PermissionManager {
             val requestedPermissions = pkgInfo.requestedPermissions
             for (permissionData in requestedPermissions) {
                 if (groupType.matchPermission(permissionData)) {
-                    result = permissionData
+                    result.add(permissionData)
                 }
             }
         } catch (e: PackageManager.NameNotFoundException) {
@@ -160,9 +170,9 @@ enum class PermissionManager {
         return result
     }
 
-    fun getGroupNameForGroupType(groupType: GroupType): String? {
+    private fun getGroupNameForGroupType(groupType: GroupType): String? {
         var result: String? = null
-        Log.d(TAG, "getGroupName " + groupType + " in " + mGroupNameList.size)
+        Log.d(TAG, "getGroupName $groupType in ${mGroupNameList.size}")
         for (data in mGroupNameList) {
             if (groupType.matchPermission(data)) {
                 result = data
@@ -172,23 +182,21 @@ enum class PermissionManager {
         return result
     }
 
-
     fun getAppUsesPermissionForGroupType(groupType: GroupType): AppUsesPermission {
-        val appUsesPermission: AppUsesPermission
-        if (getGroupNameForGroupType(groupType) != null) {
-            appUsesPermission = AppUsesPermission.TRUE
+        val appUsesPermission = if (getGroupNameForGroupType(groupType) != null) {
+            AppUsesPermission.TRUE
         } else {
             if (groupType.isSystemPermission) {
-                appUsesPermission = AppUsesPermission.FALSE
+                AppUsesPermission.FALSE
             } else {
-                appUsesPermission = AppUsesPermission.NOT_SIGNIFICANT
+                AppUsesPermission.NOT_SIGNIFICANT
             }
         }
+        Log.d(TAG, "GroupType $groupType, appUses $appUsesPermission")
         return appUsesPermission
     }
 
     companion object {
-
-        val TAG = "PermissionManager"
+        const val TAG = "PermissionManager"
     }
 }

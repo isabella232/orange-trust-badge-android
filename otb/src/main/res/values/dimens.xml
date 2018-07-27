@@ -1,21 +1,18 @@
 <resources>
 
     <!-- Margin / padding -->
-    <dimen name="otb_landing_padding_24dp">24dp</dimen>
-    <dimen name="otb_landing_padding_20dp">20dp</dimen>
-    <dimen name="otb_landing_padding_16dp">16dp</dimen>
-    <dimen name="otb_landing_padding_5dp">5dp</dimen>
-    <dimen name="otb_landing_padding_6dp">6dp</dimen>
-    <dimen name="otb_landing_padding_7dp">7dp</dimen>
-    <dimen name="otb_landing_padding_8dp">8dp</dimen>
-    <dimen name="otb_landing_padding_9dp">9dp</dimen>
-    <dimen name="otb_landing_padding_12dp">12dp</dimen>
-
-    <dimen name="otb_key_data_padding_5dp">5dp</dimen>
-    <dimen name="otb_key_data_padding_10dp">10dp</dimen>
-    <dimen name="otb_key_data_padding_16dp">16dp</dimen>
-    <dimen name="otb_key_data_padding_24dp">24dp</dimen>
-    <dimen name="otb_key_data_padding_48dp">48dp</dimen>
+    <dimen name="otb_5dp">5dp</dimen>
+    <dimen name="otb_6dp">6dp</dimen>
+    <dimen name="otb_7dp">7dp</dimen>
+    <dimen name="otb_8dp">8dp</dimen>
+    <dimen name="otb_9dp">9dp</dimen>
+    <dimen name="otb_10dp">10dp</dimen>
+    <dimen name="otb_12dp">12dp</dimen>
+    <dimen name="otb_16dp">16dp</dimen>
+    <dimen name="otb_20dp">20dp</dimen>
+    <dimen name="otb_24dp">24dp</dimen>
+    <dimen name="otb_32dp">32dp</dimen>
+    <dimen name="otb_48dp">48dp</dimen>
 
     <!-- Text sizes -->
     <dimen name="about_font_size_small">14sp</dimen>

@@ -3,7 +3,7 @@
     android:layout_width="fill_parent"
     android:shape="rectangle">
     <stroke
-        android:layout_height="@dimen/otb_landing_padding_8dp"
+        android:layout_height="@dimen/otb_8dp"
         android:color="#FFFFFFFF" />
     <gradient
         android:angle="90"

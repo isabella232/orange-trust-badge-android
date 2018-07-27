@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- OTB colors -->
+    <!-- orange OTB colors -->
     <item name="otb_black" type="color">#000000</item>
-    <item name="otb_header_color" type="color">#FF39B0A8</item>
+    <item name="otb_header_color" type="color">#4BB4E6</item>
+    <item name="otb_orange" type="color">#F16E00</item>
     <item name="otb_white" type="color">#FFFFFF</item>
     <item name="otb_grey" type="color">#999999</item>
     <item name="otb_light_grey" type="color">#fafafa</item>
 
     <item name="otb_main_text" type="color">#000000</item>
     <item name="otb_page_background" type="color">#FFFFFF</item>
+    <item name="otb_highlight" type="color">#F16E00</item>
 
     <!-- White / Blacks / Greys -->
     <color name="about_color_grey_3">#CCCCCC</color>
     <color name="about_color_grey_4">#999999</color>
-    <!-- colorAccent -->
-    <color name="colorAccent">#4285f4</color>
+    <color name="colorAccent">#F16E00</color>
 
 </resources>

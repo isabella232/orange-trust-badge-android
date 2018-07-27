@@ -30,11 +30,9 @@ import java.io.Serializable
 
 /**
  *
- *
  * File name:   TrustBadgeElement
  * Created:     12/10/2015
  * Created by:  VEEB7280 (Vincent BOESCH)
- *
  *
  * Class representing an element which can be either a system permission, usage permissions, or app dedicated permission
  */
@@ -49,11 +47,11 @@ data class TrustBadgeElement(
          */
         val elementType: ElementType,
         /**
-         * mNameKey : mNameKey to be displayed in the Expandable list view
+         * nameKey : nameKey to be displayed in the Expandable list view
          */
         var nameKey: String = groupType.name,
         /**
-         * mDescriptionKey  ( OTB rules : 12)
+         * descriptionKey  ( OTB rules : 12)
          * text to inform user about the use and goals about the collected data
          * this text is provided by app  OTB component's host app.
          * status : Mandatory for key datas only
@@ -64,23 +62,19 @@ data class TrustBadgeElement(
          * Host APP UsageStatus (example : TRUE, FALSE)
          * status : Mandatory for Orange Permissions (
          */
-        var appUsesPermission: AppUsesPermission? = AppUsesPermission.TRUE,
+        var appUsesPermission: AppUsesPermission = AppUsesPermission.TRUE,
         /**
          * UserAllowedPermissionStatus (example : NOT_YET_GRANTED, MANDATORY, GRANTED, etc...)
          * User permission status
          * status : Mandatory for Orange Permissions (
          */
-        var userPermissionStatus: UserPermissionStatus? = UserPermissionStatus.GRANTED,
+        var userPermissionStatus: UserPermissionStatus = UserPermissionStatus.GRANTED,
         /**
          * data information granted icon Id
          */
-        var enabledIconId: Int = 0,
+        var iconId: Int = 0,
         /**
-         * data information Not Granted icon Id
-         */
-        var disabledIconId: Int = 0,
-        /**
-         * mToggable : shiould your element display a toggle
+         * isToggable : should your element display a toggle
          */
         var isToggable: Boolean = false,
         /***
