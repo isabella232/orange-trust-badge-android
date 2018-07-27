@@ -7,40 +7,46 @@ With the Orange trust badge, aka "Badge de confiance", give transparent informat
 ## Features
 Orange trust badge displays how are handled the following data :
 
-* Identity of the User
-* Location
-* Photos, medias and files
-* Contacts
-* Usage data
-* Camera
+System Permissions :
+
 * Calendar
-* SMS
+* Camera
+* Contacts
+* Location
 * Microphone
 * Phone
-* Body sensors / Connected objects
-* Social Sharing
-* In-app purchase
-* Advertising
+* Sensors
+* SMS
+* Storage
 
-It also displays the following information :
+App data permissions :
 
-* Application's rating
-* Data usage general description
+* Account credentials
+* Account info
+* Advertise
+* History
+* Improvement program
+* Notifications
+
+* Custom data
+
+
+It also displays the following informations :
+
 * Help
 * Privacy policy
 
 It also :
 
-* Works on Phones and Tablets with dedicated layout
-* Is Localized in 2 languages (English,French)
+* Works on Phones and Tablets with dedicated layout in portrait or landscape mode
+* Is localized in 2 languages (English, French)
 * has API hooks
 * allows UI Customization
 * allows to embed a web hosted video with a native player
 
 ## Requirements
 
-* Android 2.3.3 (API 10)
-* Embedded videos will be shown on android 4.0+ (API 14)
+* Android 4.0+ (API 14)
 
 ## Bug tracker
 
@@ -79,11 +85,11 @@ Add following dependency to the build.gradle file of the module that will use th
 ```groovy
 dependencies {
     //OTB
-    compile(name: 'Orange_trust_badge-1.3.0-release', ext: 'aar')
-    //android Support
-    compile 'com.android.support:appcompat-v7:24.2.1'
-    compile 'com.android.support:cardview-v7:24.2.1'
-    compile 'com.android.support:recyclerview-v7:24.2.1'
+    compile(name: 'Orange_trust_badge-2.0.0-release', ext: 'aar')
+    //android support
+    compile 'com.android.support:appcompat-v7:27.1.1'
+    compile 'com.android.support:cardview-v7:27.1.1'
+    compile 'com.android.support:recyclerview-v7:27.1.1'
 }
 ```   
 ### 3. Manage languages
@@ -119,10 +125,10 @@ You can also:
 In both cases you will have to add it to your dependencies as follow (supposing you named the new module `otb`):
 ```groovy
 dependencies {
-    //android Support
-    compile 'com.android.support:appcompat-v7:24.2.1'
-    compile 'com.android.support:cardview-v7:24.2.1'
-    compile 'com.android.support:recyclerview-v7:24.2.1'
+    //android support
+    compile 'com.android.support:appcompat-v7:27.1.1'
+    compile 'com.android.support:cardview-v7:27.1.1'
+    compile 'com.android.support:recyclerview-v7:27.1.1'
     //OTB
     compile project(':otb') //if you named the new module `otb`
 }
@@ -134,69 +140,53 @@ dependencies {
 
 #### 1. Create necessary elements (example)
 
-Create a list of TrustBadgeElement and a list of Term. TrustBadgeElements can be easily created using the helper class TrustBadgeElementFactory, which provide convenient methods to create a badge.
+Create a list of `TrustBadgeElement` and a list of `Term`. TrustBadgeElements can be easily created using the helper class `TrustBadgeElementFactory`, which provide convenient methods to create a badge.
+
+Two types of Badges can be created :
+
+* `ElementType.PERMISSIONS` : Those badges will reflect the phone system permissions needed by the app
+* `ElementType.APP_DATA` : Those badges will reflect the data used or needed by the app to work
+
+To easily create the default permissions, you can use these methods :
+
+* `TrustBadgeElementFactory.getDefaultPermissionElements(mContext)` : this method will create a list of `TrustBadgeElement` that will reflect the permission declared in the manifest for the app
+    * If your app needs a special way to declare the system permissions (not reflecting the manifest), you can still add badges manually, controlling every state of it
+* `TrustBadgeElementFactory.getDefaultAppDataElements(mContext)` : this method will create a list of `TrustBadgeElement` that will reflect the default app data that should be declared by an app in the trust badge
+    * If your app needs a different set of app data badges, you can still add badges manually, controlling every state of it
+
+To easily create default Terms, you can use this method :
+
+* `TrustBadgeElementFactory.getDefaultTermElements(mContext)` : this method will create a default list of Terms with labels verified and up to date regarding ORange's commitment
+    * If your app needs a different set of Terms, you can still add terms manually, controlling every state of it
 
 ```java
     List<TrustBadgeElement> trustBadgeElements = new ArrayList<TrustBadgeElement>();
-    /** MAIN BADGES - They Will appear on the main dashboard */
-    trustBadgeElements.add(TrustBadgeElementFactory.build(mContext, GroupType.IDENTITY, ElementType.MAIN, AppUsesPermission.TRUE));
-    
-    //Define your own system app permission status
-    //No scan for app permission is done in that case
-    TrustBadgeElement elt = TrustBadgeElementFactory.build(mContext, GroupType.LOCATION, ElementType.MAIN);
-    elt.setShouldBeAutoConfigured(false);
-    elt.setAppUsesPermission(AppUsesPermission.TRUE);
-    elt.setUserPermissionStatus(UserPermissionStatus.GRANTED);
-    mTrustBadgeElements.add(elt);
-    
-    trustBadgeElements.add(TrustBadgeElementFactory.build(mContext, GroupType.STORAGE, ElementType.MAIN));
-    trustBadgeElements.add(TrustBadgeElementFactory.build(mContext, GroupType.CONTACTS, ElementType.MAIN));
-    trustBadgeElements.add(TrustBadgeElementFactory.build(mContext, GroupType.IMPROVEMENT_PROGRAM, ElementType.MAIN, AppUsesPermission.TRUE));
-    //Custom Badge Element in MAIN Category
-    TrustBadgeElement customBadge1 = TrustBadgeElementFactory.build(mContext, GroupType.OTHER, ElementType.MAIN, R.string.custom_badge_1_title,R.string.custom_badge_1_label);
-    customBadge1.setEnabledIconId(R.drawable.ic_contacts_black_32dp);
-    customBadge1.setDisabledIconId(R.drawable.ic_contacts_black_32dp);
-    customBadge1.setToggable(true);
-    customBadge1.setAppUsesPermission(AppUsesPermission.TRUE);
-    customBadge1.setUserPermissionStatus(UserPermissionStatus.GRANTED);
-    mTrustBadgeElements.add(customBadge1);
+    /** SYSTEM PERMISSIONS */
 
-    /** OTHERS BADGES - They Will appear when entering More Data info*/
-    trustBadgeElements.add(TrustBadgeElementFactory.build(mContext, GroupType.CAMERA, ElementType.OTHERS));
-    trustBadgeElements.add(TrustBadgeElementFactory.build(mContext, GroupType.AGENDA, ElementType.OTHERS));
-    trustBadgeElements.add(TrustBadgeElementFactory.build(mContext, GroupType.SMS, ElementType.OTHERS));
-    trustBadgeElements.add(TrustBadgeElementFactory.build(mContext, GroupType.MICROPHONE, ElementType.OTHERS));
-    trustBadgeElements.add(TrustBadgeElementFactory.build(mContext, GroupType.PHONE, ElementType.OTHERS));
-    trustBadgeElements.add(TrustBadgeElementFactory.build(mContext, GroupType.SENSORS, ElementType.OTHERS));
-    //Custom Badge Element in OTHERS Category
-    TrustBadgeElement customBadge2 = TrustBadgeElementFactory.build(mContext, GroupType.OTHER, ElementType.OTHERS, R.string.custom_badge_2_title,R.string.custom_badge_2_label);
-    customBadge2.setEnabledIconId(R.drawable.ic_contacts_black_32dp);
-    customBadge2.setDisabledIconId(R.drawable.ic_contacts_black_32dp);
-    customBadge2.setToggable(true);
-    customBadge2.setAppUsesPermission(AppUsesPermission.TRUE);
-    customBadge2.setUserPermissionStatus(UserPermissionStatus.NOT_GRANTED);
-    mTrustBadgeElements.add(customBadge2);
+    //Adds the permisssions declared by the app in the manifest
+    trustBadgeElements.add(TrustBadgeElementFactory.getDefaultPermissionElements(mContext));
 
+    //Adds the default app data that should be declared by an app in the trust badge
+    trustBadgeElements.add(TrustBadgeElementFactory.getDefaultAppDataElements(mContext);
 
-    /** USAGE BADGES */
-    trustBadgeElements.add(TrustBadgeElementFactory.build(mContext, RatingType.TWELVE));
-    trustBadgeElements.add(TrustBadgeElementFactory.build(mContext, GroupType.BILLING, ElementType.USAGE));
-    trustBadgeElements.add(TrustBadgeElementFactory.build(mContext, GroupType.ADVERTISE, ElementType.USAGE));
-    trustBadgeElements.add(TrustBadgeElementFactory.build(mContext, GroupType.SOCIAL_INFO, ElementType.USAGE));
-
-    /** Terms - You can add how many videos and terms section as you need */
+    /** Terms - You can add how many videos and terms section as you need, but you can also just use the default method to get default terms elements */
     List<Term> terms = new ArrayList<Term>();
-    //Provide your own terms if you want terms to be exposed
+    /** A video hosted on a third party provider such as Daily Motion has to be added as a text link */
+    terms.add(new Term(TermType.TEXT, R.string.otb_terms_video_text_title, R.string.otb_terms_video_text_content));
+    /** A video hosted on your servers or directly accessible can be embedded in the otb componenet */
     terms.add(new Term(TermType.VIDEO, "Video Title" , "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"));
+    //Provide your own terms if you want terms to be exposed
     terms.add(new Term(TermType.TEXT, "Personal Data Usage Title", "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."));
     terms.add(new Term(TermType.TEXT, "Help Title", "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."));
     terms.add(new Term(TermType.TEXT, "More Info Title", "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."));
+    /** or use default method to get default terms elements */
+    terms.add(TrustBadgeElementFactory.getDefaultTermElements(mContext));
+
 ```
 
 #### 2. Initialize
 
-Initialize TrustBadgeManager singleton with added items : a list of TrustBadgeElement and a list of Terms.
-Normally, on a standard implementation, you should also clean previous badge listeners.
+Initialize TrustBadgeManager singleton with added items : a list of `TrustBadgeElement` and a list of `Terms`.
 
 ```java
     TrustBadgeManager.INSTANCE.initialize(getApplicationContext(), trustBadgeElements, terms);
@@ -204,7 +194,7 @@ Normally, on a standard implementation, you should also clean previous badge lis
 
 #### 3. Launch activity
 
-Launch the main activity named OtbActivity to access to the TrustBadge component main UI.
+Launch the main activity named `OtbActivity` to access to the TrustBadge component main UI.
 
 ```java
     Intent intent = new Intent(MainActivity.this, OtbActivity.class);
@@ -212,6 +202,10 @@ Launch the main activity named OtbActivity to access to the TrustBadge component
 ```
 
 ### Implementation of optional features
+
+#### Improvement program
+
+The improvment program method has been deprecated and is no longer used by the Trust Badge. It will be removed in the near future
 
 #### Custom badge element
 
@@ -221,7 +215,7 @@ Add an element to your badge Elements List :
 
 ```java
     /** How to create a custom badge and/or set it as a toggable */
-    TrustBadgeElement customBadge = TrustBadgeElementFactory.build(mContext, GroupType.OTHER, ElementType.MAIN, R.string.custom_badge_2_title,R.string.custom_badge_2_label);
+    TrustBadgeElement customBadge = TrustBadgeElementFactory.build(mContext, GroupType.CUSTOM_DATA, ElementType.APP_DATA, R.string.custom_badge_2_title,R.string.custom_badge_2_label);
     customBadge.setEnabledIconId(R.drawable.otb_ic_contacts_black_32dp);
     customBadge.setDisabledIconId(R.drawable.otb_ic_contacts_black_32dp);
     customBadge.setToggable(true);
@@ -233,16 +227,6 @@ Add an element to your badge Elements List :
 When you initialize the badge, if you have added Toggle switches, provide initialization if you want persistent state.
 If you saved the value in the shared preferences:
 
-```java
-    for (TrustBadgeElement element : TrustBadgeManager.INSTANCE.getTrustBadgeElements()) {
-        //check if element is toggable and if is not improvement program (we managed it differently in our example)
-        if (element.isToggable() && element.getGroupType() != GroupType.IMPROVEMENT_PROGRAM) {
-            boolean granted = sp.getBoolean(element.getNameKey(), true);
-            element.setUserPermissionStatus(granted?UserPermissionStatus.GRANTED:UserPermissionStatus.NOT_GRANTED);
-        }
-    }
-```
-
 #### Badge listener
 
 Optionally provide a listener to listen to badges with toggles (such as improvement program).
@@ -253,41 +237,38 @@ One BadgeListener is enough to listen for all the toggles in your implementation
 ```java
 
     //We can add a badge listener. Make sure to do not have multiple copy of the same listener
-    //You can also clear existing listener using: TrustBadgeManager.INSTANCE.clearBadgeListener();
+    //You can also clear existing listener using: TrustBadgeManager.INSTANCE.clearBadgeListeners();
     if (!TrustBadgeManager.INSTANCE.getBadgeListeners().contains(this)) {
         TrustBadgeManager.INSTANCE.addBadgeListener(this);
     }
 
-    TrustBadgeManager.INSTANCE.addTrustBadgeElementListener(new TrustBadgeElementListener(){
+    TrustBadgeManager.INSTANCE.addBadgeListener(new BadgeListener(){
         @Override
-        public void onBadgeChange(GroupType groupType, boolean value, AppCompatActivity callingActivity) {
-            //Do your own work : example, what to do if badge improvement program change
+        public void onBadgeChange(TrustBadgeElement trustBadgeElement, boolean value, AppCompatActivity callingActivity) {
+            Log.d(TAG, "onBadgeChange trustBadgeElement =" + trustBadgeElement + " value=" + value);
+            if (null != trustBadgeElement) {
+                //In this example we treat differently the improvement Program switch
+                if (GroupType.IMPROVEMENT_PROGRAM.equals(trustBadgeElement.getGroupType())) {
+                    if (!value) {
+                        //if user is deactivating the program, we ask for confirmation
+                        showDialog(callingActivity); //check demo app for a sample dialog implementation
+                    } else {
+                        //Activate again the improvement program
+                        saveValueToPreferences(true, PREF_IMPROVEMENT);
+                        TrustBadgeManager.INSTANCE.setUsingImprovementProgram(true);
+                    }
+                } else { //We do not use the dialog for other switches
+                    //Save this new value to preferences to make it persistent
+                    saveValueToPreferences(value, trustBadgeElement.getNameKey());
+                    //Change the UserPermissionStatus as it has been switched by user
+                    trustBadgeElement.setUserPermissionStatus(value ? UserPermissionStatus.GRANTED : UserPermissionStatus.NOT_GRANTED);
+                }
+            }
         }
     });
 ```
 
-Please Note: addTrustBadgeElementListener has been deprecated in version G01R00C01 to allow managing custom toggable badges.
-
-
-#### Improvement program
-
-Optionally set a value defining if your app currently uses improvement program badge (default true, if value not provided)
-
-```java
-    TrustBadgeManager.INSTANCE.setUsingImprovementProgram(isImprovementEnabled);
-```
-
-#### Prevent permission to be autoconfigured by system permission
-
-Orange trust badge SDK configures automatically permission with the declaration made in manifest and user acceptation. If you want to bypass this behavior, you can set the "isShouldAutoConfigured" parameter of "TrustBadgeElement" to false.
-
-```java
-TrustBadgeElement elt = TrustBadgeElementFactory.build(mContext, GroupType.LOCATION, ElementType.MAIN);
-elt.setShouldBeAutoConfigured(false);
-elt.setAppUsesPermission(AppUsesPermission.TRUE);
-elt.setUserPermissionStatus(UserPermissionStatus.GRANTED);
-mTrustBadgeElements.add(elt);
-```
+Please Note: `addTrustBadgeElementListener` has been deprecated in version G01R00C01 to allow managing custom toggable badges and remove in G02R00C00.
 
 
 ## Customization 
@@ -341,7 +322,7 @@ Then, in your styles.xml file you can for exemple override the toolbar colors by
 
 ## Release note
 
-Version 1.0
+Version 2.0.0
 
 ## License
 
