@@ -18,7 +18,7 @@
  * Version:     1.0
  * Created:     2016-03-15 by Aurore Penault, Vincent Boesch, and Giovanni Battista Accetta
  */
-package com.orange.essentials.demo.otb;
+package com.orange.demo.otb;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -31,7 +31,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
-import com.orange.essentials.demo.otb.dialog.OtbImprovementDialogFragment;
+import com.orange.demo.otb.dialog.OtbImprovementDialogFragment;
 import com.orange.essentials.otb.OtbActivity;
 import com.orange.essentials.otb.manager.BadgeListener;
 import com.orange.essentials.otb.manager.TrustBadgeManager;

@@ -4,7 +4,7 @@ configurations.all {
     resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
 }
 android {
-    compileSdkVersion 27
+    compileSdkVersion 28
     buildToolsVersion "28.0.1"
 
     lintOptions{
@@ -12,7 +12,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.orange.essentials.demo.otb"
+        applicationId "com.orange.demo.otb"
         minSdkVersion 14
         targetSdkVersion 28
         versionCode 16

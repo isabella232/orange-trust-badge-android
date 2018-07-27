@@ -1,4 +1,4 @@
-package com.orange.essentials.demo.otb.dialog;
+package com.orange.demo.otb.dialog;
 
 
 import android.content.SharedPreferences;
@@ -13,8 +13,8 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 
-import com.orange.essentials.demo.otb.MainActivity;
-import com.orange.essentials.demo.otb.R;
+import com.orange.demo.otb.MainActivity;
+import com.orange.demo.otb.R;
 import com.orange.essentials.otb.manager.TrustBadgeManager;
 import com.orange.essentials.otb.model.type.GroupType;
 import com.orange.essentials.otb.model.type.UserPermissionStatus;

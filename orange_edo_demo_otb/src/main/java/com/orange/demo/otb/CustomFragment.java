@@ -1,4 +1,4 @@
-package com.orange.essentials.demo.otb;
+package com.orange.demo.otb;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
