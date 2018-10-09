@@ -40,7 +40,7 @@
 
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical">
 
@@ -63,6 +63,7 @@
                 style="@style/otb_main_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/otb_16dp"
                 android:layout_marginTop="@dimen/otb_8dp"
                 android:focusable="false"
                 android:importantForAccessibility="yes"
