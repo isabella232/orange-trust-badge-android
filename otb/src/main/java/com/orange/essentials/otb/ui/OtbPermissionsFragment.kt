@@ -27,7 +27,6 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.SwitchCompat
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,6 +35,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import com.orange.essentials.otb.R
 import com.orange.essentials.otb.event.EventType
+import com.orange.essentials.otb.logger.Logger
 import com.orange.essentials.otb.manager.TrustBadgeManager
 import com.orange.essentials.otb.model.type.AppUsesPermission
 import com.orange.essentials.otb.model.type.UserPermissionStatus
@@ -64,7 +64,7 @@ class OtbPermissionsFragment : Fragment() {
     }
 
     override fun onResume() {
-        Log.d(TAG, "onResume")
+        Logger.d(TAG, "onResume")
         super.onResume()
         /** Manage ActionBar  */
         val actionBar = (activity as AppCompatActivity).supportActionBar

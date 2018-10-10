@@ -24,9 +24,9 @@ package com.orange.essentials.otb.manager
 import android.content.Context
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import com.orange.essentials.otb.event.EventTagger
 import com.orange.essentials.otb.event.EventType
+import com.orange.essentials.otb.logger.Logger
 import com.orange.essentials.otb.model.Term
 import com.orange.essentials.otb.model.TrustBadgeElement
 import com.orange.essentials.otb.model.type.ElementType
@@ -62,11 +62,11 @@ enum class TrustBadgeManager {
             if (null == field) {
                 eventTagger = object : EventTagger {
                     override fun tag(eventType: EventType) {
-                        Log.d(TAG, "tagging event $eventType")
+                        Logger.d(TAG, "tagging event $eventType")
                     }
 
                     override fun tagElement(eventType: EventType, element: TrustBadgeElement) {
-                        Log.d(TAG, "tagging event $eventType for element $element")
+                        Logger.d(TAG, "tagging event $eventType for element $element")
                     }
                 }
             }
@@ -107,12 +107,12 @@ enum class TrustBadgeManager {
      */
     private fun extractApplicationName(context: Context): String {
         var appName = context.packageName
-        Log.d(TAG, "extractApplicationName")
+        Logger.d(TAG, "extractApplicationName")
         val csName = context.applicationInfo.loadLabel(context.packageManager)
-        if (null != csName) {
+        if (csName.isNotEmpty()) {
             appName = csName.toString()
         }
-        Log.d(TAG, "extractApplicationName")
+        Logger.d(TAG, "extractApplicationName")
         return appName
     }
 
@@ -130,27 +130,39 @@ enum class TrustBadgeManager {
     /**
      * initialize
      * @param context            : Activity providing needed data to retrieve permissions infos
-     * *
-     * @param trustBadgeElements : the list of trsut badge that will be used into the app
+     * @param trustBadgeElements : the list of trust badge that will be used into the app
+     * @param terms : the list of terms that will be used into the app
      */
     fun initialize(context: Context, trustBadgeElements: MutableList<TrustBadgeElement>, terms: List<Term>) {
-        Log.d(TAG, "TrustBadgeManager initialize $trustBadgeElements")
+        initialize(context, trustBadgeElements, terms, false)
+    }
+
+    /**
+     * initialize
+     * @param context            : Activity providing needed data to retrieve permissions infos
+     * @param trustBadgeElements : the list of trust badge that will be used into the app
+     * @param terms : the list of terms that will be used into the app
+     * @param logEnabled : should log be enabled on trust badge lib : default no
+     */
+    fun initialize(context: Context, trustBadgeElements: MutableList<TrustBadgeElement>, terms: List<Term>, logEnabled: Boolean = false) {
+        Logger.loggingAllowed = logEnabled
+        Logger.d(TAG, "TrustBadgeManager initialize $trustBadgeElements")
         clean()
         PermissionManager.INSTANCE.initPermissionList(context)
         applicationName = extractApplicationName(context)
         if (!applicationName!!.isEmpty()) {
-            Log.d(TAG, "mApplicationName is NOT empty")
+            Logger.d(TAG, "mApplicationName is NOT empty")
             applicationPackageName = context.packageName
             if (applicationPackageName != null && applicationPackageName!!.length != 0) {
-                Log.d(TAG, "mApplicationPackageName is NOT empty")
+                Logger.d(TAG, "mApplicationPackageName is NOT empty")
                 /** Initialisation of TrustBadgeElements to 15 permissions  */
                 this.trustBadgeElements = trustBadgeElements
                 this.terms = terms
             } else {
-                Log.d(TAG, "Context does not provide PackageName.")
+                Logger.d(TAG, "Context does not provide PackageName.")
             }
         } else {
-            Log.d(TAG, "Context does not provide ApplicationName.")
+            Logger.d(TAG, "Context does not provide ApplicationName.")
         }
         isInitialized = true
     }
@@ -186,11 +198,11 @@ enum class TrustBadgeManager {
      * retrieve a specific badge according to type
      */
     fun getSpecificPermission(groupType: GroupType): TrustBadgeElement? {
-        Log.d(TAG, "getSpecificPermission")
+        Logger.d(TAG, "getSpecificPermission")
         var result: TrustBadgeElement? = null
         for (trustBadgeElement in this.trustBadgeElements) {
             if (trustBadgeElement.groupType == groupType) {
-                Log.d(TAG, "trustBadgeElement.getElementType() equals " + groupType.toString())
+                Logger.d(TAG, "trustBadgeElement.getElementType() equals " + groupType.toString())
                 result = trustBadgeElement
             }
         }
@@ -220,7 +232,7 @@ enum class TrustBadgeManager {
      * Refresh the badges according to the permissions granted by the app
      */
     fun refreshTrustBadgePermission(context: Context) {
-        Log.d(TAG, "refreshTrustBadgePermission...")
+        Logger.d(TAG, "refreshTrustBadgePermission...")
         PermissionManager.INSTANCE.initPermissionList(context)
         for (i in this.trustBadgeElements.indices) {
             val trustBadgeElement = this.trustBadgeElements[i]
@@ -230,7 +242,7 @@ enum class TrustBadgeManager {
                     trustBadgeElement.userPermissionStatus = PermissionManager.INSTANCE.doesUserAlreadyAcceptPermission(context, trustBadgeElement.groupType)
                 }
             }
-            Log.d(TAG, "refresh = $trustBadgeElement")
+            Logger.d(TAG, "refresh = $trustBadgeElement")
         }
 
     }
@@ -242,7 +254,7 @@ enum class TrustBadgeManager {
      */
     fun hasPermissions(): Boolean {
         val result = permissionElements != null && permissionElements!!.isNotEmpty()
-        Log.d(TAG, "hasPermissions : $result")
+        Logger.d(TAG, "hasPermissions : $result")
         return result
     }
 
@@ -253,7 +265,7 @@ enum class TrustBadgeManager {
      */
     fun hasAppData(): Boolean {
         val result = appDataElements != null && appDataElements!!.isNotEmpty()
-        Log.d(TAG, "hasAppData : $result")
+        Logger.d(TAG, "hasAppData : $result")
         return result
     }
 
@@ -264,7 +276,7 @@ enum class TrustBadgeManager {
      */
     fun hasTerms(): Boolean {
         val terms = terms != null && terms!!.isNotEmpty()
-        Log.d(TAG, "hasTerms : $terms")
+        Logger.d(TAG, "hasTerms : $terms")
         return terms
     }
 

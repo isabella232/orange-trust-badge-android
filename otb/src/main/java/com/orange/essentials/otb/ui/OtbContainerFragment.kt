@@ -24,7 +24,6 @@ package com.orange.essentials.otb.ui
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,6 +32,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import com.orange.essentials.otb.OtbActivity
 import com.orange.essentials.otb.R
+import com.orange.essentials.otb.logger.Logger
 import com.orange.essentials.otb.manager.TrustBadgeManager
 import com.orange.essentials.otb.model.TrustBadgeElement
 import com.orange.essentials.otb.model.type.AppUsesPermission
@@ -69,7 +69,7 @@ class OtbContainerFragment : android.support.v4.app.Fragment() {
     }
 
     override fun onResume() {
-        Log.d(tag, "Resuming Fragment")
+        Logger.d(FRAG_TAG, "Resuming Fragment")
         super.onResume()
         /** Manage ActionBar title */
         val actionBar = (activity as AppCompatActivity).supportActionBar
@@ -142,7 +142,7 @@ class OtbContainerFragment : android.support.v4.app.Fragment() {
      * Add the policy buttons ont appropriate layout
      */
     private fun buildCards() {
-        Log.d(tag, "buildCards")
+        Logger.d(FRAG_TAG, "buildCards")
         layoutContainer = activity!!.findViewById(R.id.otb_home_ll_container)
         val permissionLayout: LinearLayout?
         val appDataLayout: LinearLayout?
@@ -204,7 +204,7 @@ class OtbContainerFragment : android.support.v4.app.Fragment() {
         if (TrustBadgeManager.INSTANCE.hasAppData()) {
             val trustBadgeElementsAppDatas = TrustBadgeManager.INSTANCE.appDataElements!!.sortedByDescending { it.appUsesPermission != AppUsesPermission.FALSE && it.userPermissionStatus != UserPermissionStatus.NOT_GRANTED }
             for (trustBadgeElement in trustBadgeElementsAppDatas) {
-                Log.d(tag, trustBadgeElement.toString())
+                Logger.d(FRAG_TAG, trustBadgeElement.toString())
                 if (indexUsage < 5 && hasAtLeastOneAppDataGranted) {
                     val view = View.inflate(context, R.layout.otb_custom_toggle_button, null)
                     val icon = view.findViewById<ImageView>(R.id.otb_custom_toggle_button_iv_id)
@@ -237,7 +237,7 @@ class OtbContainerFragment : android.support.v4.app.Fragment() {
             for (customFragment in TrustBadgeManager.INSTANCE.customDataFragments) {
                 var v: View?
                 val finalIndex = index
-                Log.d(tag, "Adding custom fragment " + customFragment.title + ", index " + index)
+                Logger.d(FRAG_TAG, "Adding custom fragment " + customFragment.title + ", index " + index)
                 if (OtbActivity.isMasterDetail) {
                     v = layoutInflater.inflate(R.layout.otb_home_tv_large, layoutContainer, false)
                     v.findViewById<TextView>(R.id.otb_home_custom_data_card).text = customFragment.title

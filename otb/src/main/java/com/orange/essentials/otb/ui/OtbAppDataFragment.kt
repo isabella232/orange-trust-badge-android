@@ -28,7 +28,6 @@ import android.provider.Settings
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.SwitchCompat
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,6 +35,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import com.orange.essentials.otb.R
 import com.orange.essentials.otb.event.EventType
+import com.orange.essentials.otb.logger.Logger
 import com.orange.essentials.otb.manager.TrustBadgeManager
 import com.orange.essentials.otb.model.type.AppUsesPermission
 import com.orange.essentials.otb.model.type.GroupType
@@ -82,14 +82,14 @@ class OtbAppDataFragment : Fragment() {
         val view = appDataLinearLayout!!
         view.removeAllViews()
         val appDatas = TrustBadgeManager.INSTANCE.appDataElements
-        Log.v(TAG, "appDatas elements: " + appDatas!!.size)
+        Logger.v(TAG, "appDatas elements: " + appDatas!!.size)
         for (appData in appDatas) {
             val appDataView = View.inflate(context, R.layout.otb_data_usage_item, null)
             ViewHelper.INSTANCE.buildView(appDataView, appData, context!!, GroupType.NOTIFICATIONS.equals(appData.groupType))
             val tvPerm = appDataView.findViewById<TextView>(R.id.otb_data_usage_tv_goto)
             tvPerm.setOnClickListener { gotoPermissions() }
 
-            Log.v(TAG, "add appData view")
+            Logger.v(TAG, "add appData view")
             view.addView(appDataView)
             if (appData.isToggable) {
                 val switchCompat = appDataView.findViewById<SwitchCompat>(R.id.otb_data_usage_item_sc_switch)
