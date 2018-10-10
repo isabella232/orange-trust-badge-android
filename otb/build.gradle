@@ -5,7 +5,7 @@ apply from: '../constants.gradle'
 
 
 group = 'com.orange.essentials'
-version = 'G02R00C00'
+version = 'G02R00C05'
 
 android {
     compileSdkVersion 28
