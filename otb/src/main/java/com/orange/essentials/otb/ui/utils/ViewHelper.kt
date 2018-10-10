@@ -87,13 +87,14 @@ enum class ViewHelper {
         descriptionTv.text = Html.fromHtml(element.descriptionKey)
         descriptionTv.movementMethod = LinkMovementMethod.getInstance()
         val expandClick = View.OnClickListener {
-            TrustBadgeManager.INSTANCE.eventTagger?.tagElement(EventType.TRUSTBADGE_ELEMENT_TAPPED, element)
             if (childIndicator.tag == tagMoreValue) {
                 childIndicator.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.otb_ic_expand_less))
                 childIndicator.tag = tagLessValue
                 if (isPerm) {
+                    TrustBadgeManager.INSTANCE.eventTagger?.tagElement(EventType.TRUSTBADGE_ELEMENT_TAPPED, element)
                     settingTv.visibility = View.VISIBLE
                 } else {
+                    TrustBadgeManager.INSTANCE.eventTagger?.tagElement(EventType.TRUSTBADGE_ELEMENT_TAPPED_COLLAPSE, element)
                     settingTv.visibility = View.GONE
                 }
                 expand(expandLayout, view)

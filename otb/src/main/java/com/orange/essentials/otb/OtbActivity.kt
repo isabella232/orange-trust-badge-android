@@ -122,9 +122,18 @@ open class OtbActivity : AppCompatActivity(), OtbContainerFragment.OtbFragmentLi
     override fun onCardClick(index: Int) {
         Log.d(TAG, "onCardClick, index $index")
         when (index) {
-            OtbContainerFragment.DATA_SELECTED -> displayDetail(OtbPermissionsFragment(), OtbPermissionsFragment.FRAG_TAG)
-            OtbContainerFragment.USAGE_SELECTED -> displayDetail(OtbAppDataFragment(), OtbAppDataFragment.FRAG_TAG)
-            OtbContainerFragment.TERM_SELECTED -> displayDetail(OtbTermsFragment(), OtbTermsFragment.FRAG_TAG)
+            OtbContainerFragment.DATA_SELECTED -> {
+                displayDetail(OtbPermissionsFragment(), OtbPermissionsFragment.FRAG_TAG)
+                TrustBadgeManager.INSTANCE.eventTagger?.tag(EventType.TRUSTBADGE_GO_TO_PERMISSION)
+            }
+            OtbContainerFragment.USAGE_SELECTED -> {
+                displayDetail(OtbAppDataFragment(), OtbAppDataFragment.FRAG_TAG)
+                TrustBadgeManager.INSTANCE.eventTagger?.tag(EventType.TRUSTBADGE_GO_TO_USAGE)
+            }
+            OtbContainerFragment.TERM_SELECTED -> {
+                displayDetail(OtbTermsFragment(), OtbTermsFragment.FRAG_TAG)
+                TrustBadgeManager.INSTANCE.eventTagger?.tag(EventType.TRUSTBADGE_GO_TO_TERMS)
+            }
             else -> displayDetail(TrustBadgeManager.INSTANCE.customDataFragments[index - 3].fragment, TrustBadgeManager.INSTANCE.customDataFragments[index - 3].fragment.tag.toString())
         }
     }
@@ -204,8 +213,8 @@ open class OtbActivity : AppCompatActivity(), OtbContainerFragment.OtbFragmentLi
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
         Log.d(TAG, "Restoring factory")
-        super.onRestoreInstanceState(savedInstanceState)
         restoreFactory(savedInstanceState)
+        super.onRestoreInstanceState(savedInstanceState)
     }
 
     @Suppress("UNCHECKED_CAST")
@@ -216,6 +225,11 @@ open class OtbActivity : AppCompatActivity(), OtbContainerFragment.OtbFragmentLi
             val terms = savedInstanceState.getSerializable(TERMS_KEY) as List<Term>
             TrustBadgeManager.INSTANCE.initialize(applicationContext, badges, terms)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        TrustBadgeManager.INSTANCE.eventTagger?.tag(EventType.TRUSTBADGE_ENTER)
     }
 
     companion object {
