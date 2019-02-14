@@ -156,6 +156,7 @@ open class OtbActivity : AppCompatActivity(), OtbContainerFragment.OtbFragmentLi
     override fun onDestroy() {
         TrustBadgeManager.INSTANCE.eventTagger?.tag(EventType.TRUSTBADGE_LEAVE)
         super.onDestroy()
+        TrustBadgeManager.INSTANCE.removeBadgeListener(this)
     }
 
     // endregion
