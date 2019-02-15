@@ -303,6 +303,10 @@ enum class TrustBadgeManager {
         }
     }
 
+    fun removeBadgeListener(badgeListener: BadgeListener) {
+        badgeListeners.remove(badgeListener)
+    }
+
     fun clearBadgeListeners() = badgeListeners.clear()
 
     companion object {
